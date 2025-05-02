@@ -1,20 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { View } from "react-native";
+import { styles } from "./src/styles/GlobalStyles";
+import ButtonDefault from "./src/components/ButtonDefault";
+import ButtonDark from "./src/components/ButtonDark";
+import ButtonLoginGoogle from "./src/components/ButtonLoginGoogle";
+import InputUser from "./src/components/InputUser";
 
-export default function App() {
-  return (
+const App:React.FC = () => {
+  return(
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+
+      <ButtonDark PlaceHolderButtonDark={'Entrar'}/>
+      <ButtonDefault PlaceHolderButtonDefault={'Cadastrar'}/>
+      <ButtonLoginGoogle />
+
+      <InputUser PlaceHolderInputUser={'Digite seu e-mail'} ImageInputUser={require('./src/images/ic_outline-email.png')}/>
+
+
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
