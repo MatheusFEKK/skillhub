@@ -1,15 +1,12 @@
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, Button } from "react-native";
 import { styles } from "../styles/GlobalStyles";
+import { ButtonType } from "../types/ButtonType";
 
-interface ButtonDarkProps{
-    PlaceHolderButtonDark:string
-}
-
-const ButtonDark:React.FC<ButtonDarkProps> = (props) => {
+const ButtonDark:React.FC<ButtonType> = (props) => {
     return(
         <>
             <TouchableOpacity style={[styles.buttonDark, styles.borderRadius3]}>
-                <Text style={[{fontWeight:'bold', color:'white'}, styles.fontSize2]}>{props.PlaceHolderButtonDark}</Text>
+                <Text style={[{fontWeight:'bold', color:'white'}, styles.fontSize2]}>{props.ButtonPlaceHolder}</Text>
             </TouchableOpacity>
         </>
     );

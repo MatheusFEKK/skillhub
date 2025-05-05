@@ -14,8 +14,8 @@ const Welcome:React.FC = () => {
                     </View>
                     <View style={styles.centralizeItems}>
                         <View style={[styles.gap3]}>
-                            <ButtonDark PlaceHolderButtonDark={"Entrar"} />
-                            <ButtonDefault PlaceHolderButtonDefault={"Cadastrar"} />
+                            <ButtonDark ButtonPlaceHolder={"Entrar"} />
+                            <ButtonDefault ButtonPlaceHolder={"Cadastrar"} />
                         </View>
                     </View>
                 </View>
