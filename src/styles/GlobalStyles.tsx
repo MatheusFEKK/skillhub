@@ -1,8 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 
 export const styles = StyleSheet.create({
-    container:{
+    root:{
         flex:1,
+        marginHorizontal:'auto',
+        width:'100%',
+    },
+    centralizeItems:{
         alignItems:'center',
         justifyContent:'center',
     },
@@ -36,6 +40,21 @@ export const styles = StyleSheet.create({
         alignItems:'center',
         width:350,
         height:60,
+    },
+    WelcomeSquare:{
+        position:'absolute',
+        alignItems:'center',
+        borderTopRightRadius: 40,
+        borderTopLeftRadius:40,
+        bottom:0,
+        backgroundColor:'white',
+        width:'100%',
+        height:'50%',
+    },
+    TextHeader:{
+        color:'#20202A',
+        fontSize:32,
+        fontWeight:'bold'
     },
     borderRadius1:{
         borderRadius:5
