@@ -6,7 +6,6 @@ import { AuthScreen } from "../screens/AuthScreen";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import { BottomBarHome } from "../screens/BottomBarHome";
-import Welcome from "../screens/Welcome";
 
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
@@ -36,10 +35,9 @@ export const Stack:React.FC = () => {
                 {userAuthenticated ? (
                     <RootStack.Screen  name={"HomeBottomBar"} component={BottomBarHome} />
                 ): (
-                <RootStack.Screen name={"Welcome"} component={Welcome}/>
+                <RootStack.Screen name={"Auth"} component={AuthScreen}/>
             )
                 }
-                <RootStack.Screen name={"Auth"} component={AuthScreen} />
                 
             </RootStack.Navigator>
         </NavigationContainer>

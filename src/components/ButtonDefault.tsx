@@ -1,5 +1,6 @@
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, Button } from "react-native";
 import { styles } from "../styles/GlobalStyles";
+import { ButtonType } from "../types/ButtonType";
 
 interface ButtonDefaultProps{
     PlaceHolderButtonDefault:string;

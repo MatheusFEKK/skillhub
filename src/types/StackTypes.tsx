@@ -1,6 +1,6 @@
 export type StackTypes = {
     Welcome: undefined;
-    Auth   : { userAuth:boolean };
+    Auth   : { userAuth:boolean | null };
     HomeBottomBar   : undefined;
     Post   : undefined;
 }

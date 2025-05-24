@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
 import { UserConditions } from "../components/CheckBoxUser";
 import ValidatePassword from "../hooks/PasswordValidation";
+import { BottomBarProps } from "../routes/BottomBar";
 
 interface userObj {
     name:string;
@@ -30,7 +31,7 @@ export const AuthScreen:React.FC = () => {
     
     
     const { password, setPassword, passwordLengthRequirement, passwordHaveNumber, passwordHaveSpecialCaptalize, canProceed, setUserCondition, userConditions } = ValidatePassword();
-    
+
     const [ passwordConfirm, setPasswordConfirm ] = useState<string>(''); 
 
     useEffect(() => {
