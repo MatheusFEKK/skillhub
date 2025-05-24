@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container:{
         flex:1,
-        alignItems:'center',
         justifyContent:'center',
     },
     buttonDefault:{
@@ -12,6 +11,12 @@ export const styles = StyleSheet.create({
         backgroundColor:'#395DD3',
         width:360,
         height:60,
+    },
+    buttonDefaultMin:{
+        width:150,
+        height:50,
+        borderBottomColor:'#54A7F4',
+        borderBottomWidth:5
     },
     buttonDark:{
         alignItems:'center',
@@ -31,11 +36,34 @@ export const styles = StyleSheet.create({
     },
     inputUser:{
         flexDirection:'row',
-        borderColor:'#20202A',
-        borderWidth:3,
+        borderColor:'#7B8499',
+        borderWidth:2,
         alignItems:'center',
         width:350,
         height:60,
+    },
+    containerAccessOption:{
+        position:'absolute',
+        bottom:0,
+        height:'55%',
+        backgroundColor:'#eef2f9',
+        borderTopLeftRadius:40,
+        borderTopRightRadius:40,
+        gap:50
+    },
+    containerButtons:{
+        height:'40%'
+    },
+    flexDirectionRow:{
+        flexDirection:'row'
+    },
+    alignItemsCenter:{
+        alignItems:'center'
+    },
+    justifyContentCenter:{
+        justifyContent:'center'
+    },
+    Roboto_Flex:{
     },
     borderRadius1:{
         borderRadius:5
@@ -47,13 +75,37 @@ export const styles = StyleSheet.create({
         borderRadius:15
     },
     fontSize1:{
-        fontSize:15
+        fontSize:12
     },
     fontSize2:{
-        fontSize:20
+        fontSize:14
     },
     fontSize3:{
-        fontSize:25
+        fontSize:16
+    },
+    fontSize4:{
+        fontSize:20
+    },
+    fontSize5:{
+        fontSize:24
+    },
+    fontSize6:{
+        fontSize:28
+    },
+    fontSize7:{
+        fontSize:32
+    },
+    fontSize8:{
+        fontSize:40
+    },
+    fontSize9:{
+        fontSize:68
+    },
+    fontWeightMedium:{
+        fontWeight:"500"
+    },
+    fontWeightBold:{
+        fontWeight:'bold'
     },
     gap1:{
         gap:5
@@ -73,4 +125,20 @@ export const styles = StyleSheet.create({
     padding3:{
         padding:15
     },
+    margin1:{
+        margin:5
+    },
+    margin2:{
+        margin:10
+    },
+    margin3:{
+        margin:15
+    },
+    margin4:{
+        margin:20
+    },
+    margin5:{
+        margin:25
+    }
+    
 })
