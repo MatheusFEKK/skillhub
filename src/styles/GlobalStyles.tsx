@@ -1,9 +1,13 @@
 import { StyleSheet, StatusBar } from "react-native";
 
 export const styles = StyleSheet.create({
+    root:{
+        marginTop: StatusBar.currentHeight || 0,
+        flex: 1
+    },
     container:{
-        flex:1,
-        justifyContent:'center',
+        width: '80%',
+        marginHorizontal: 'auto'
     },
     buttonDefault:{
         alignItems:'center',
@@ -35,11 +39,13 @@ export const styles = StyleSheet.create({
         height:60,
     },
     inputUser:{
+        paddingLeft: 12,
         flexDirection:'row',
         borderColor:'#7B8499',
         borderWidth:2,
         alignItems:'center',
         width:350,
+        gap: 4,
         height:60,
     },
     containerAccessOption:{
@@ -132,13 +138,43 @@ export const styles = StyleSheet.create({
         margin:10
     },
     margin3:{
-        margin:15
+        margin:16
     },
     margin4:{
         margin:20
     },
     margin5:{
         margin:25
+    },
+    marginLeft1:{
+        marginLeft:5
+    },
+    marginLeft2:{
+        marginLeft:10
+    },
+    marginLeft3:{
+        marginLeft:16
+    },
+    marginLeft4:{
+        marginLeft:20
+    },
+    marginLeft5:{
+        marginLeft:25
     }
-    
+    ,
+    marginRight1:{
+        marginRight:5
+    },
+    marginRight2:{
+        marginRight:10
+    },
+    marginRight3:{
+        marginRight:16
+    },
+    marginRight4:{
+        marginRight:20
+    },
+    marginRight5:{
+        marginRight:25
+    }
 })
