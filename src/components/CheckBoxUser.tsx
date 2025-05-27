@@ -10,7 +10,6 @@ interface CheckBoxProps{
 }
 
 export const UserConditions:React.FC<CheckBoxProps> = (props) => {
-    let colorButton:string;
     return(
         <View style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.gap2]}>
 

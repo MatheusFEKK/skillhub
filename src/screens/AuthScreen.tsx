@@ -111,23 +111,25 @@ export const AuthScreen:React.FC = () => {
     }
 
     return(
-      <View style={[styles.alignItemsCenter, styles.justifyContentCenter, styles.gap3]}>
+    <View style={styles.root}>
+        
+      <View style={[ styles.container, styles.gap3]}>
             <Text style={{color:'red'}}>{message}</Text>
-            <ButtonGroup Activated={buttonActivated} textButton1="Login" textButton2="Inscreva-se" functionButton1={(value) =>buttonActive(value)} functionButton2={(value) =>buttonActive(value)}/>
+            <View >
+                <ButtonGroup Activated={buttonActivated} textButton1="Login" textButton2="Inscreva-se" functionButton1={(value) =>buttonActive(value)} functionButton2={(value) =>buttonActive(value)}/>
+            </View>
 
-            
-        {buttonActivated == 0 ? ( 
+        {buttonActivated == 0 ? (
             <View style={[styles.gap3]}>
-
+                
                 <InputUser valueInput={email} ImageInputUser={require('../images/ic_outline-email.png')} PlaceHolderInputUser="E-mail" textInsert={(value) => setEmail(value)} inputSecure={false} autoCapitalize="none"/>
 
                 <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Senha" textInsert={(value) => setPassword(value)} inputSecure={true} autoCapitalize="none"/>
-                
+            
                 <ButtonDefault PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()}/>
-
             </View>
         ): 
-            <View style={[styles.gap3]}>
+            <View style={[styles.gap2]}>
                 
                 <InputUser valueInput={name} ImageInputUser={require('../images/userInputIcon.png')} PlaceHolderInputUser="Insira seu nome" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words"/>
 
@@ -139,19 +141,23 @@ export const AuthScreen:React.FC = () => {
                 <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Senha" textInsert={(value) => setPassword(value)} inputSecure={false} autoCapitalize="none" maxLength={18}/>
 
                 <InputUser valueInput={passwordConfirm} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setPasswordConfirm(value)} inputSecure={true} autoCapitalize="none" maxLength={18}/>
+                <View style={styles.gap1}>
 
                 
                     <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos 8 caracteres"} isChecked={passwordLengthRequirement} />
 
                     <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos um número"} isChecked={passwordHaveNumber} />
 
-                    <UserConditions  CheckIsDisabled={false} TextCondition={"Pelo menos uma letra maiúsculo ou um caracter especial"} isChecked={passwordHaveSpecialCaptalize}/>
+                    <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos uma letra maiúsculo ou um caracter especial"} isChecked={passwordHaveSpecialCaptalize}/>
 
                     <UserConditions  CheckIsDisabled={false} TextCondition={"Ao criar uma conta você concorda com os termos e\n condições, de uso em um contrato legal."} isChecked={userConditions} OnChangeCheck={(value) => setUserCondition(value)}/>
-                  
+
+                </View>
                     <ButtonDefault PlaceHolderButtonDefault="Inscrever-se" functionButtonDefault={() => signUpUser()} isDisabled={canProceed}/>
+                  
             </View>
                 }
         </View>
+    </View>
     );
 }

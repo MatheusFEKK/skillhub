@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         flex: 1
     },
     container:{
-        width: '80%',
+        width: '90%',
         marginHorizontal: 'auto'
     },
     buttonDefault:{
@@ -17,10 +17,10 @@ export const styles = StyleSheet.create({
         height:60,
     },
     buttonDefaultMin:{
-        width:150,
+        width:'50%',
         height:50,
         borderBottomColor:'#54A7F4',
-        borderBottomWidth:5
+        borderBottomWidth:4
     },
     buttonDark:{
         alignItems:'center',
@@ -44,9 +44,13 @@ export const styles = StyleSheet.create({
         borderColor:'#7B8499',
         borderWidth:2,
         alignItems:'center',
-        width:350,
+        width: '100%',
         gap: 4,
-        height:60,
+        height:50,
+    },
+    inputIcons:{
+        width: 32,
+        height:32 
     },
     containerAccessOption:{
         position:'absolute',
