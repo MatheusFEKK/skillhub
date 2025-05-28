@@ -19,7 +19,7 @@ export const ProfileUser:React.FC = () => {
     }
 
     return(
-        <View style={[styles.container, styles.alignItemsCenter]}>
+        <View style={[styles.root, styles.justifyContentCenter, styles.alignItemsCenter]}>
             <Text style={[styles.fontSize2, styles.fontWeightBold]}>Profile Screen</Text>
             <ButtonDark PlaceHolderButtonDark="Desconectar" functionButtonDark={() => signOutUser()} />
         </View>

@@ -135,6 +135,12 @@ export const styles = StyleSheet.create({
     padding3:{
         padding:15
     },
+    padding4:{
+        padding:20,
+    },
+    padding5:{
+        padding:25,
+    },
     margin1:{
         margin:5
     },
@@ -180,5 +186,20 @@ export const styles = StyleSheet.create({
     },
     marginRight5:{
         marginRight:25
-    }
+    },
+    alignSelfStart:{
+        alignSelf:'flex-start',
+    },
+    containerToPost:{
+        backgroundColor:'#F4F7FD',
+        width:379,
+        height:143,
+        borderRadius:15,
+    },
+    colorTextLightGrey:{
+        color:'#C3C8D7',
+    },
+    backgroundTransparent:{
+        backgroundColor:'transparent',
+    },
 })
