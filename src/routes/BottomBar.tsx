@@ -3,9 +3,10 @@ import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-naviga
 import { Home } from "../screens/Home";
 import { ProfileUser } from "../screens/Profile";
 
-const BottomBarNav = createBottomTabNavigator();
+export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes>;
 
-export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes>
+const BottomBarNav = createBottomTabNavigator<BottomBarTypes>();
+
 
 export const BottomBar:React.FC = () => {
     return(

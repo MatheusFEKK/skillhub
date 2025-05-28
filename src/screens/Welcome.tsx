@@ -9,8 +9,8 @@ const Welcome:React.FC = () => {
     const navigation = useNavigation<NavigationPropStack>();
 
     return(
-        <View style={[styles.container, styles.alignItemsCenter]}>
-            <Image style={{position:'absolute', height:'100%'}} source={require('../images/image1.png')} />
+        <View style={[styles.root, styles.alignItemsCenter]}>
+            <Image style={{position:'absolute', height:'100%'}} source={require('../images/LoginSplashScreen.png')} />
             <View style={[styles.containerAccessOption, styles.alignItemsCenter, styles.justifyContentCenter]}>
                     <View style={styles.margin5}>
 
@@ -20,9 +20,9 @@ const Welcome:React.FC = () => {
                     
                     <View style={[styles.containerButtons, styles.alignItemsCenter, styles.gap3]}>
 
-                        <ButtonDark PlaceHolderButtonDark={"Entrar"} functionButtonDark={() => navigation.navigate("Auth", {userAuth: false})} />
+                        <ButtonDark PlaceHolderButtonDark={"Entrar"} functionButtonDark={() => navigation.navigate("Auth")} />
                         
-                        <ButtonDefault isDisabled={false} PlaceHolderButtonDefault={"Cadastrar"} functionButtonDefault={() => navigation.navigate("Auth", {userAuth:true})} />
+                        <ButtonDefault isDisabled={false} PlaceHolderButtonDefault={"Cadastrar"} functionButtonDefault={() => navigation.navigate("Auth")} />
 
                     </View>  
             </View>

@@ -18,8 +18,9 @@ interface userObj {
     username: string;
 }
 
-export const AuthScreen: React.FC = () => {
-    const navigation = useNavigation<NavigationPropStack>();
+export const AuthScreen:React.FC = () => {
+    const navigation = useNavigation<BottomBarProps>();
+    
 
     const [buttonActivated, buttonActive] = useState(0);
     const [user, setUser] = useState('');
