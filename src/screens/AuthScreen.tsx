@@ -4,7 +4,7 @@ import { styles } from "../styles/GlobalStyles";
 import ButtonDefault from "../components/ButtonDefault";
 import InputUser from "../components/InputUser";
 import { ButtonGroup } from "../components/ButtonGroup";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase/connectionFirebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -19,7 +19,8 @@ interface userObj {
 }
 
 export const AuthScreen:React.FC = () => {
-    const navigation = useNavigation<NavigationPropStack>();
+    const navigation = useNavigation<BottomBarProps>();
+    
 
     const [ buttonActivated, buttonActive ] = useState(0);
     const [ user, setUser ] = useState('');
@@ -89,13 +90,10 @@ export const AuthScreen:React.FC = () => {
                 {
                     console.log("Error occured trying to create the account and storing in the firestore " + error);
                 }
-
             }else
             {
                 setMessage("The passwords doens't match")
             }
-
-    
         }
         else
         {
@@ -106,18 +104,17 @@ export const AuthScreen:React.FC = () => {
     const loginUser = () => 
     {
         signInWithEmailAndPassword(auth, email, password)
-        .then((userCredencial) => console.log(userCredencial.user.toJSON()))
-        Alert.alert("Logged with sucess!");
+        .then((userCredencial) => {console.log(userCredencial.user.toJSON()); Alert.alert("Logged with sucess!")})
     }
 
     return(
     <View style={styles.root}>
         
-      <View style={[ styles.container, styles.gap3]}>
+        <View style={[ styles.container, styles.gap3]}>
             <Text style={{color:'red'}}>{message}</Text>
-            <View >
+            <View>
                 <ButtonGroup Activated={buttonActivated} textButton1="Login" textButton2="Inscreva-se" functionButton1={(value) =>buttonActive(value)} functionButton2={(value) =>buttonActive(value)}/>
-            </View>
+        </View>
 
         {buttonActivated == 0 ? (
             <View style={[styles.gap3]}>
@@ -126,7 +123,7 @@ export const AuthScreen:React.FC = () => {
 
                 <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Senha" textInsert={(value) => setPassword(value)} inputSecure={true} autoCapitalize="none"/>
             
-                <ButtonDefault PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()}/>
+                <ButtonDefault isDisabled={false} PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()}/>
             </View>
         ): 
             <View style={[styles.gap2]}>
