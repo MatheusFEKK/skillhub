@@ -28,7 +28,7 @@ export const ProfileUser:React.FC = () => {
             
             <ScrollView>
                 <View style={[styles.container, styles.mV2]}>
-                    <ButtonDark PlaceHolderButtonDark="Desconectar" functionButtonDark={() => signOutUser()} />
+                    <ButtonDark PlaceHolderButtonDark="Desconectar" FunctionButtonDark={() => signOutUser()} />
                         <Button title="Retornar" onPress={()=>{
                             navigation.navigate("Home");
                         }}/>
