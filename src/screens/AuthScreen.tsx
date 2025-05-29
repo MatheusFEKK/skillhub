@@ -18,9 +18,9 @@ interface userObj {
     username: string;
 }
 
-export const AuthScreen:React.FC = () => {
+export const AuthScreen: React.FC = () => {
     const navigation = useNavigation<BottomBarProps>();
-    
+
 
     const [buttonActivated, buttonActive] = useState(0);
     const [user, setUser] = useState('');
@@ -120,9 +120,9 @@ export const AuthScreen:React.FC = () => {
             </View>
 
             <View style={[styles.container, styles.gap3]}>
-                <Text style={{ color: 'red' }}>{message}</Text>
+                {message !== null && <Text style={{ color: 'red' }}>{message}</Text>}
                 {buttonActivated == 0 ? (
-                    <View style={[styles.gap3]}>
+                    <View style={[styles.gap3, styles.mT5]}>
 
                         <InputUser valueInput={email} ImageInputUser={require('../images/ic_outline-email.png')} PlaceHolderInputUser="E-mail" textInsert={(value) => setEmail(value)} inputSecure={false} autoCapitalize="none" />
 
@@ -131,7 +131,7 @@ export const AuthScreen:React.FC = () => {
                         <ButtonDefault PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()} />
                     </View>
                 ) :
-                    <View style={[styles.gap2]}>
+                    <View style={[styles.gap2,  styles.mT5]}>
 
                         <InputUser valueInput={name} ImageInputUser={require('../images/userInputIcon.png')} PlaceHolderInputUser="Insira seu nome" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
 
@@ -143,7 +143,7 @@ export const AuthScreen:React.FC = () => {
                         <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Senha" textInsert={(value) => setPassword(value)} inputSecure={false} autoCapitalize="none" maxLength={18} />
 
                         <InputUser valueInput={passwordConfirm} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setPasswordConfirm(value)} inputSecure={true} autoCapitalize="none" maxLength={18} />
-                        <View style={[styles.gap1, {marginLeft: 8}]}>
+                        <View style={[styles.gap1, { marginLeft: 8 }]}>
 
 
                             <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos 8 caracteres"} isChecked={passwordLengthRequirement} />

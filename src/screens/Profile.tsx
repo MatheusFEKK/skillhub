@@ -17,11 +17,14 @@ export const ProfileUser:React.FC = () => {
             console.log("It was not possible to log out from the app! " + error);
         }
     }
-
     return(
-        <View style={[styles.root, styles.justifyContentCenter, styles.alignItemsCenter]}>
-            <Text style={[styles.fontSize2, styles.fontWeightBold]}>Profile Screen</Text>
-            <ButtonDark PlaceHolderButtonDark="Desconectar" functionButtonDark={() => signOutUser()} />
+        <View style={[styles.root]}>
+            <View style={[styles.container]}>
+                
+            </View>
+            <View style={[styles.container, styles.mV2]}>
+                <ButtonDark PlaceHolderButtonDark="Desconectar" functionButtonDark={() => signOutUser()} />
+            </View>
         </View>
     )
 }

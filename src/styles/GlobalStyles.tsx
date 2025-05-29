@@ -126,66 +126,216 @@ export const styles = StyleSheet.create({
     gap3:{
         gap:15
     },
-    padding1:{
+    p1:{
         padding:5
     },
-    padding2:{
+    p2:{
         padding:10
     },
-    padding3:{
+    p3:{
         padding:15
     },
-    padding4:{
+    p4:{
         padding:20,
     },
-    padding5:{
+    p5:{
         padding:25,
     },
-    margin1:{
+    pT1:{
+        paddingTop:5
+    },
+    pT2:{
+        paddingTop:10
+    },
+    pT3:{
+        paddingTop:15
+    },
+    pT4:{
+        paddingTop:20,
+    },
+    pT5:{
+        paddingTop:25,
+    },
+    pB1:{
+        paddingBottom:5
+    },
+    pB2:{
+        paddingBottom:10
+    },
+    pB3:{
+        paddingBottom:15
+    },
+    pB4:{
+        paddingBottom:20,
+    },
+    pB5:{
+        paddingBottom:25,
+    },
+    pL1:{
+        paddingLeft:5
+    },
+    pL2:{
+        paddingLeft:10
+    },
+    pL3:{
+        paddingLeft:15
+    },
+    pL4:{
+        paddingLeft:20,
+    },
+    pL5:{
+        paddingLeft:25,
+    },
+    pR1:{
+        paddingRight:5
+    },
+    pR2:{
+        paddingRight:10
+    },
+    pR3:{
+        paddingRight:15
+    },
+    pR4:{
+        paddingRight:20,
+    },
+    pR5:{
+        paddingRight:25,
+    },
+    pH1:{
+        paddingHorizontal:5
+    },
+    pH2:{
+        paddingHorizontal:10
+    },
+    pH3:{
+        paddingHorizontal:15
+    },
+    pH4:{
+        paddingHorizontal:20,
+    },
+    pH5:{
+        paddingHorizontal:25,
+    },
+    pV1:{
+        paddingVertical:5
+    },
+    pV2:{
+        paddingVertical:10
+    },
+    pV3:{
+        paddingVertical:15
+    },
+    pV4:{
+        paddingVertical:20,
+    },
+    pV5:{
+        paddingVertical:25,
+    },
+    m1:{
         margin:5
     },
-    margin2:{
+    m2:{
         margin:10
     },
-    margin3:{
+    m3:{
         margin:16
     },
-    margin4:{
+    m4:{
         margin:20
     },
-    margin5:{
+    m5:{
         margin:25
     },
-    marginLeft1:{
+    mL1:{
         marginLeft:5
     },
-    marginLeft2:{
+    mL2:{
         marginLeft:10
     },
-    marginLeft3:{
+    mL3:{
         marginLeft:16
     },
-    marginLeft4:{
+    mL4:{
         marginLeft:20
     },
-    marginLeft5:{
+    mL5:{
         marginLeft:25
     }
     ,
-    marginRight1:{
+    mR1:{
         marginRight:5
     },
-    marginRight2:{
+    mR2:{
         marginRight:10
     },
-    marginRight3:{
+    mR3:{
         marginRight:16
     },
-    marginRight4:{
+    mR4:{
         marginRight:20
     },
-    marginRight5:{
+    mR5:{
         marginRight:25
+    },
+    mT1:{
+        marginTop:5
+    },
+    mT2:{
+        marginTop:10
+    },
+    mT3:{
+        marginTop:16
+    },
+    mT4:{
+        marginTop:20
+    },
+    mT5:{
+        marginTop:25
+    },
+    mB1:{
+        marginBottom:5
+    },
+    mB2:{
+        marginBottom:10
+    },
+    mB3:{
+        marginBottom:16
+    },
+    mB4:{
+        marginBottom:20
+    },
+    mB5:{
+        marginBottom:25
+    },
+    mV1:{
+        marginVertical:5
+    },
+    mV2:{
+        marginVertical:10
+    },
+    mV3:{
+        marginVertical:16
+    },
+    mV4:{
+        marginVertical:20
+    },
+    mV5:{
+        marginVertical:25
+    },
+    mH1:{
+        marginHorizontal:5
+    },
+    mH2:{
+        marginHorizontal:10
+    },
+    mH3:{
+        marginHorizontal:16
+    },
+    mH4:{
+        marginHorizontal:20
+    },
+    mH5:{
+        marginHorizontal:25
     },
     alignSelfStart:{
         alignSelf:'flex-start',
