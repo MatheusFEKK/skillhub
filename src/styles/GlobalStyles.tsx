@@ -383,4 +383,8 @@ export const styles = StyleSheet.create({
     backgroundTransparent:{
         backgroundColor:'transparent',
     },
+    headerHead:{
+        position: "static"
+    },
+    
 })
