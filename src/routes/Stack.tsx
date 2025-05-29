@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import { BottomBar } from "./BottomBar";
 import Welcome from "../screens/Welcome";
+import { CreatePost } from "../screens/CreatePost";
 
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
@@ -43,6 +44,7 @@ export const Stack:React.FC = () => {
                     </>
                 )
             }
+            <RootStack.Screen name={"CreatePost"} component={CreatePost} />
             </RootStack.Navigator>
         </NavigationContainer>
     );

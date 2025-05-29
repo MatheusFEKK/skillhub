@@ -2,6 +2,7 @@ import { BottomBarTypes } from "../types/BottomBarTypes";
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home } from "../screens/Home";
 import { ProfileUser } from "../screens/Profile";
+import { CreatePost } from "../screens/CreatePost";
 
 export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes>;
 

@@ -12,15 +12,15 @@ const Welcome:React.FC = () => {
         <View style={[styles.root, styles.alignItemsCenter]}>
             <Image style={{position:'absolute', height:'100%'}} source={require('../images/LoginSplashScreen.png')} />
             <View style={[styles.containerAccessOption, styles.alignItemsCenter, styles.justifyContentCenter]}>
-                    <View style={styles.margin5}>
+                    <View style={styles.m5}>
 
                         <Text style={{fontSize:32, color:'#20202a', fontWeight:'bold'}}>Um lugar para aprender e compartilhar</Text>
                         
                     </View>
                     
-                    <View style={[styles.containerButtons, styles.alignItemsCenter, styles.gap3]}>
+                    <View style={[styles.containerButtons, styles.alignItemsCenter, styles.gap3, styles.width6]}>
 
-                        <ButtonDark PlaceHolderButtonDark={"Entrar"} functionButtonDark={() => navigation.navigate("Auth")} />
+                        <ButtonDark PlaceHolderButtonDark={"Entrar"} FunctionButtonDark={() => navigation.navigate("Auth")} />
                         
                         <ButtonDefault isDisabled={false} PlaceHolderButtonDefault={"Cadastrar"} functionButtonDefault={() => navigation.navigate("Auth")} />
 

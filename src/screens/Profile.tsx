@@ -23,7 +23,7 @@ export const ProfileUser:React.FC = () => {
                 
             </View>
             <View style={[styles.container, styles.mV2]}>
-                <ButtonDark PlaceHolderButtonDark="Desconectar" functionButtonDark={() => signOutUser()} />
+                <ButtonDark PlaceHolderButtonDark="Desconectar" FunctionButtonDark={() => signOutUser()} />
             </View>
         </View>
     )
