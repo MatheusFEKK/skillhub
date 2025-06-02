@@ -29,8 +29,8 @@ export const CreatePost:React.FC = () => {
             UIDUser:auth.currentUser?.uid,
             DescriptionPost: textPost,
             CommentsPost:[],
-            LikeCount:0,
-            DeslikeCount:0,
+            Likes:[],
+            Deslikes:[],
         }
         
         const newPost = doc(collection(db, "posts"));

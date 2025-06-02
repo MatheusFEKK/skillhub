@@ -25,7 +25,6 @@ export const ProfileUser:React.FC = () => {
 
     return(
         <View style={[styles.root]}>
-            
             <ScrollView>
                 <View style={[styles.container, styles.mV2]}>
                     <ButtonDark PlaceHolderButtonDark="Desconectar" FunctionButtonDark={() => signOutUser()} />

@@ -3,7 +3,7 @@ import { styles } from "../styles/GlobalStyles";
 
 interface ButtonAccessProps{
     AccessButtonImage:ImageSourcePropType;
-    FunctionOnPress:() => void;
+    FunctionOnPress?:() => void;
 }
 
 export const AccessDataImage:React.FC<ButtonAccessProps> = (props) => {

@@ -1,13 +1,17 @@
 import { ImageSourcePropType } from "react-native";
 import { CommentObj } from "./CommentObject";
 
-export type PostObj = {
+export interface Post{
+    Username:string;
+    Realname:string;
     IdPost?:string;
     UIDUser?:string;
-    ImagePost?:ImageSourcePropType;
+    ImagePost?:ImageSourcePropType | null;
     DescriptionPost?: string;
-    LikeCount?:number;
-    DeslikeCount?:number;
+    Likes?:[];
+    Deslikes?:[];
     ViewCount?:number;
     CommentsPost?:CommentObj[];
 }
+
+export type PostArray = Post[];

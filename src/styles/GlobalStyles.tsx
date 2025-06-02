@@ -124,6 +124,9 @@ export const styles = StyleSheet.create({
     fontWeightMedium:{
         fontWeight:"500"
     },
+    fontWeightSemiBold:{
+        fontWeight:'700'
+    },
     fontWeightBold:{
         fontWeight:'bold'
     },
