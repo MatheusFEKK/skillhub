@@ -5,6 +5,21 @@ export const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
         flex: 1
     },
+    card: {
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 15,
+        borderWidth: 2,
+        borderRadius: 5,
+        backgroundColor: "#EEF2F9",
+        gap: 60,
+    },
+    iconContainer: {
+        width: 60,
+        height: 70,
+        justifyContent: "center",
+        alignItems: "center",
+    },
     container:{
         width: '90%',
         marginHorizontal: 'auto'
@@ -352,4 +367,5 @@ export const styles = StyleSheet.create({
     backgroundTransparent:{
         backgroundColor:'transparent',
     },
+    
 })

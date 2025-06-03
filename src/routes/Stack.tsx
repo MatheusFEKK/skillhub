@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import { BottomBar } from "./BottomBar";
 import Welcome from "../screens/Welcome";
+import { Achievements } from "../screens/Achievements";
 
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
@@ -40,6 +41,8 @@ export const Stack:React.FC = () => {
                     <>
                         <RootStack.Screen  name={"Welcome"} component={Welcome} />
                         <RootStack.Screen name={"Auth"} component={AuthScreen}/>
+                        <RootStack.Screen name={"Achievements"} component={Achievements}/>
+
                     </>
                 )
             }
