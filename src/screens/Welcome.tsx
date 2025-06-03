@@ -5,26 +5,32 @@ import { NavigationPropStack } from "../routes/Stack";
 import ButtonDefault from "../components/ButtonDefault";
 import ButtonDark from "../components/ButtonDark";
 
-const Welcome:React.FC = () => {
+const Welcome: React.FC = () => {
     const navigation = useNavigation<NavigationPropStack>();
 
-    return(
+    return (
         <View style={[styles.root, styles.alignItemsCenter]}>
-            <Image style={{position:'absolute', height:'100%'}} source={require('../images/LoginSplashScreen.png')} />
-            <View style={[styles.containerAccessOption, styles.alignItemsCenter, styles.justifyContentCenter]}>
-                    <View style={styles.m5}>
-
-                        <Text style={{fontSize:32, color:'#20202a', fontWeight:'bold'}}>Um lugar para aprender e compartilhar</Text>
-                        
-                    </View>
+            <Image style={{ position: 'absolute', height: '50%' }} source={require('../images/LoginSplashScreen.png')} />
+            <View style={[styles.containerAccessOption]}>
+                <View style={[styles.container, styles.alignItemsCenter]}>
+                    <Image 
+                    style={[styles.absolute, {top:-50}]}
+                    source={require('../images/IconPlaceHolderMaxHeightWidth.png')}
                     
-                    <View style={[styles.containerButtons, styles.alignItemsCenter, styles.gap3, styles.width6]}>
+                    />
+                </View>
+                <View style={[styles.container, styles.mH5]}>
+                    <Text style={{ fontSize: 32, color: '#20202a', fontWeight: '900' }}>Um lugar para aprender</Text>
+                    <Text style={{ fontSize: 32, color: '#20202a', fontWeight: '900' }}>E compartilhar</Text>
+                </View>
 
-                        <ButtonDark PlaceHolderButtonDark={"Entrar"} FunctionButtonDark={() => navigation.navigate("Auth")} />
-                        
-                        <ButtonDefault isDisabled={false} PlaceHolderButtonDefault={"Cadastrar"} functionButtonDefault={() => navigation.navigate("Auth")} />
+                <View style={[styles.container, styles.gap3]}>
 
-                    </View>  
+                    <ButtonDark PlaceHolderButtonDark={"Entrar"} FunctionButtonDark={() => navigation.navigate("Auth")} />
+
+                    <ButtonDefault isDisabled={false} PlaceHolderButtonDefault={"Cadastrar"} functionButtonDefault={() => navigation.navigate("Auth")} />
+
+                </View>
             </View>
         </View>
     );

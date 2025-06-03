@@ -63,14 +63,13 @@ export const styles = StyleSheet.create({
         position:'absolute',
         bottom:0,
         height:'55%',
+        width: '100%',
         backgroundColor:'#eef2f9',
         borderTopLeftRadius:40,
         borderTopRightRadius:40,
-        gap:50
+        gap:54
     },
-    containerButtons:{
-        height:'40%'
-    },
+    
     flexDirectionRow:{
         flexDirection:'row'
     },
@@ -389,5 +388,14 @@ export const styles = StyleSheet.create({
     headerHead:{
         position: "static"
     },
+    fixed:{
+        position: "static"
+    },
+    absolute:{
+        position: "absolute"
+    },
+    relative:{
+        position: "relative"
+    }
     
 })
