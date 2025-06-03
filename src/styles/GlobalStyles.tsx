@@ -6,7 +6,8 @@ export const styles = StyleSheet.create({
         flex: 1
     },
     splashRoot:{
-        flex: 1
+        flex: 1,
+        backgroundColor: 'transparent'
     },
     card: {
         flexDirection: "row",
