@@ -11,7 +11,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
 import { PseudoHeaderNavigateProps } from "../types/PseudoHeaderType";
 
-export const PseudoHeader = (navigate:string, headerTitle:string)=>{
+interface Props  {
+    navigate:string;
+    headerTitle:string | null;
+}
+
+
+export const PseudoHeader: React.FC<Props> = (Props) =>{
 
 
 
@@ -20,10 +26,10 @@ export const PseudoHeader = (navigate:string, headerTitle:string)=>{
 
     return(
         <View style={[styles.container, styles.flexDirectionRow, styles.justifyContentBetween, styles.pV2 , styles.alignItemsCenter, {height:45}]}>
-                <TouchableOpacity onPress={()=> navigation.navigate(`${navigate ? "Home" : "Profile"}`)}>
+                <TouchableOpacity onPress={()=> navigation.navigate(`${Props.navigate ? "Home" : "Profile"}`)}>
                     <Image style={{height: 40, width:40}} source={require("../images/back-icon.png")} />
                 </TouchableOpacity>
-                {headerTitle ? <Text>{headerTitle}</Text> : <Text>N/A</Text>}
+                {Props.headerTitle ? <Text style={[styles.fontSize4, {fontWeight:"700"}]}>{Props.headerTitle}</Text> : <Text style={styles.fontSize4}>N/A</Text>}
                 <Image 
                 source={require("../images/IconPlaceHolderMaxHeightWidth.png")}
                 style={{width: 40, height: 40}}
