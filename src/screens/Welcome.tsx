@@ -4,12 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
 import ButtonDefault from "../components/ButtonDefault";
 import ButtonDark from "../components/ButtonDark";
+import { StatusBar } from "expo-status-bar";
 
 const Welcome: React.FC = () => {
     const navigation = useNavigation<NavigationPropStack>();
 
     return (
-        <View style={[styles.root, styles.alignItemsCenter]}>
+        <View style={[styles.splashRoot, styles.alignItemsCenter]}>
             <Image style={{ position: 'absolute', height: '50%' }} source={require('../images/LoginSplashScreen.png')} />
             <View style={[styles.containerAccessOption]}>
                 <View style={[styles.container, styles.alignItemsCenter]}>
@@ -32,6 +33,7 @@ const Welcome: React.FC = () => {
 
                 </View>
             </View>
+            <StatusBar style="light" />
         </View>
     );
 }

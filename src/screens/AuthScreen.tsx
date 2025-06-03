@@ -12,6 +12,7 @@ import { NavigationPropStack } from "../routes/Stack";
 import { UserConditions } from "../components/CheckBoxUser";
 import ValidatePassword from "../hooks/PasswordValidation";
 import { BottomBarProps } from "../routes/BottomBar";
+import { StatusBar } from "expo-status-bar";
 
 interface userObj {
     name: string;
@@ -156,10 +157,13 @@ export const AuthScreen: React.FC = () => {
 
                         </View>
                         <ButtonDefault PlaceHolderButtonDefault="Inscrever-se" functionButtonDefault={() => signUpUser()} isDisabled={canProceed} />
+                        <ButtonDefault PlaceHolderButtonDefault="Ir para Conquistas" functionButtonDefault={() => navigation.navigate("Achievements")}
+                />
 
                     </View>
                 }
             </View>
+            <StatusBar style="dark" />
         </View>
     );
 }
