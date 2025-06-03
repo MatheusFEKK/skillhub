@@ -11,7 +11,7 @@ export interface Post{
     Likes?:[];
     Deslikes?:[];
     ViewCount?:number;
-    CommentsPost?:CommentObj[];
+    CommentsPost?:CommentObj[] | null;
 }
 
 export type PostArray = Post[];

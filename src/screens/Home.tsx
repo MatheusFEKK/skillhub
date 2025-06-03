@@ -8,10 +8,10 @@ import { NavigationPropStack } from "../routes/Stack";
 import { db } from "../firebase/connectionFirebase";
 import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
 import { PostArray } from "../types/Post";
-
+import { Post } from "../types/Post";
 
 export const Home:React.FC = () => {
-    const [ posts, refreshPosts ] = useState<PostArray | null>([]);
+    const [ posts, refreshPosts ] = useState<PostArray>([]);
 
     const getUserInfo = async (UIDUser:string) => {
         const userRef = doc(db, "users/" + UIDUser);
@@ -25,38 +25,31 @@ export const Home:React.FC = () => {
         
         const posts = await getDocs(queryPosts);
 
+        const usersArrays:Post[] = [];
         const postsPromises = posts.docs.map(async (doc) => {
             const response = await getUserInfo(doc.data()?.UIDUser);
             console.log(response.data()?.username)
             console.log(doc.data()?.IdPost)
-
-            if (response && response.exists())
-            {
-                return {
-                    Realname: response.data()?.name,
-                    IdPost: doc.data()?.IdPost,
-                    UIDUser: doc.data()?.UIDUser,
-                    Username: response.data()?.username,
-                    ImagePost: null,
-                    DescriptionPost: doc.data()?.DescriptionPost,
-                    Likes: doc.data()?.Likes,
-                    Deslikes: doc.data()?.Deslikes,
-                    ViewCount: 0,
-                    CommentsPost: null,
-                } as unknown as PostArray;
-            }
+            usersArrays.push({
+                Realname: response.data()?.name,
+                IdPost: doc.data()?.IdPost,
+                UIDUser: doc.data()?.UIDUser,
+                Username: response.data()?.username,
+                ImagePost: null,
+                DescriptionPost: doc.data()?.DescriptionPost,
+                Likes: doc.data()?.Likes,
+                Deslikes: doc.data()?.Deslikes,
+                ViewCount: 0,
+                CommentsPost: null,
+            });
+            
+            refreshPosts(usersArrays);
             return null;   
         });
-        
-        const allPosts:PostArray = await Promise.all(postsPromises);
-        refreshPosts(allPosts);
-            
-        
     }
 
     useEffect(() => {
         getAllPosts();
-        console.log(posts)
     },[])
 
     const likePost = async (postId:string, userId:string) => {
@@ -87,8 +80,8 @@ export const Home:React.FC = () => {
                         </View>
                     </TouchableOpacity>
                 
-            {/* <FlatList data={posts} renderItem={({item}
-            ) => <PostTemplate Username={String(item?.Username)} Realname={String(item?.Realname)} TextPost={item?.TextPost} /> } keyExtractor={item => item.}/> */}
+            <FlatList contentContainerStyle={[styles.mT5]} data={posts} renderItem={({item}
+            ) => <PostTemplate Username={String(item?.Username)} Realname={String(item?.Realname)} TextPost={item?.DescriptionPost} /> }/>
             </View>
         </View>
     );
