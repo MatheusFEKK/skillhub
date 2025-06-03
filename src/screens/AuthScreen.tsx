@@ -12,6 +12,7 @@ import { NavigationPropStack } from "../routes/Stack";
 import { UserConditions } from "../components/CheckBoxUser";
 import ValidatePassword from "../hooks/PasswordValidation";
 import { BottomBarProps } from "../routes/BottomBar";
+import { StatusBar } from "expo-status-bar";
 
 interface userObj {
     name: string;
@@ -160,6 +161,7 @@ export const AuthScreen: React.FC = () => {
                     </View>
                 }
             </View>
+            <StatusBar style="dark" />
         </View>
     );
 }

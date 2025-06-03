@@ -5,6 +5,9 @@ export const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
         flex: 1
     },
+    splashRoot:{
+        flex: 1
+    },
     container:{
         width: '90%',
         marginHorizontal: 'auto'
