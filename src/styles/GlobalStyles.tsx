@@ -5,10 +5,9 @@ export const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
         flex: 1
     },
-<<<<<<< HEAD
     splashRoot:{
         flex: 1
-=======
+    },
     card: {
         flexDirection: "row",
         alignItems: "center",
@@ -23,7 +22,6 @@ export const styles = StyleSheet.create({
         height: 70,
         justifyContent: "center",
         alignItems: "center",
->>>>>>> 682b0fa5fd896b069a5d88c1a45bd4ce772b5791
     },
     container:{
         width: '90%',
