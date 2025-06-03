@@ -157,6 +157,8 @@ export const AuthScreen: React.FC = () => {
 
                         </View>
                         <ButtonDefault PlaceHolderButtonDefault="Inscrever-se" functionButtonDefault={() => signUpUser()} isDisabled={canProceed} />
+                        <ButtonDefault PlaceHolderButtonDefault="Ir para Conquistas" functionButtonDefault={() => navigation.navigate("Achievements")}
+                />
 
                     </View>
                 }

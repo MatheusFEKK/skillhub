@@ -5,8 +5,25 @@ export const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
         flex: 1
     },
+<<<<<<< HEAD
     splashRoot:{
         flex: 1
+=======
+    card: {
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 15,
+        borderWidth: 2,
+        borderRadius: 5,
+        backgroundColor: "#EEF2F9",
+        gap: 60,
+    },
+    iconContainer: {
+        width: 60,
+        height: 70,
+        justifyContent: "center",
+        alignItems: "center",
+>>>>>>> 682b0fa5fd896b069a5d88c1a45bd4ce772b5791
     },
     container:{
         width: '90%',
