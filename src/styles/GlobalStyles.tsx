@@ -373,6 +373,9 @@ export const styles = StyleSheet.create({
     alignSelfStart:{
         alignSelf:'flex-start',
     },
+    alignSelfEnd:{
+        alignSelf:'flex-end',
+    },
     containerToPost:{
         backgroundColor:'#F4F7FD',
         width:379,

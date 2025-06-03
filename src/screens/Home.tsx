@@ -25,8 +25,11 @@ export const Home:React.FC = () => {
         
         const posts = await getDocs(queryPosts);
 
+         // Otimizar método de puxar os posts do banco (Se sobrar tempo)
+         
         const usersArrays:Post[] = [];
-        const postsPromises = posts.docs.map(async (doc) => {
+
+        posts.docs.map(async (doc) => {
             const response = await getUserInfo(doc.data()?.UIDUser);
             console.log(response.data()?.username)
             console.log(doc.data()?.IdPost)
@@ -80,8 +83,8 @@ export const Home:React.FC = () => {
                         </View>
                     </TouchableOpacity>
                 
-            <FlatList contentContainerStyle={[styles.mT5]} data={posts} renderItem={({item}
-            ) => <PostTemplate Username={String(item?.Username)} Realname={String(item?.Realname)} TextPost={item?.DescriptionPost} /> }/>
+            <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
+            ) => <PostTemplate Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} /> }/>
             </View>
         </View>
     );
