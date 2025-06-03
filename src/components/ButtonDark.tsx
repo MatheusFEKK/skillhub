@@ -7,7 +7,7 @@ interface ButtonDarkProps{
     FunctionButtonDark?: () => void; 
 }
 
-const ButtonDark:React.FC<ButtonDarkProps> = (props) => {
+export const ButtonDark:React.FC<ButtonDarkProps> = (props) => {
     return(
         <>
             <TouchableOpacity style={[styles.buttonDark, styles.borderRadius3]} onPress={props.FunctionButtonDark}>
@@ -16,5 +16,3 @@ const ButtonDark:React.FC<ButtonDarkProps> = (props) => {
         </>
     );
 }
-
-export default ButtonDark;

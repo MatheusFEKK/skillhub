@@ -2,21 +2,31 @@ import { TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, Platfor
 import { NavigationPropStack } from "../routes/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../styles/GlobalStyles";
-import ButtonDark from "../components/ButtonDark";
+import { ButtonDark } from "../components/ButtonDark";
 import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 import { AccessDataImage } from "../components/ButtonAccessDataImage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { auth } from "../firebase/connectionFirebase";
 import { db } from "../firebase/connectionFirebase";
-import { PostObj } from "../types/PostObject";
 import { BottomBarProps } from "../routes/BottomBar";
+import { ImagePickerComponent } from "../components/GalleryAccess";
+import * as ImagePicker from 'expo-image-picker';
+
+interface PostData{
+    IdPost:string,
+    UIDUser:string | undefined,
+    DescriptionPost: string,
+    CommentsPost:[],
+    Likes:[],
+    Deslikes:[],
+}
 
 export const CreatePost:React.FC = () => {
-    const [ imageSelected, chooseImage ] = useState();
+    const [ image, setImage ] = useState<string | null>(null);
     const [ textPost, textingThePost ] = useState<string>('');
     const navigationStack = useNavigation<NavigationPropStack>();
-
+    const [ GalleryVisible, setGallery ] = useState(false);
 
     const getTime = () => {
         return new Date().getTime().toString();
@@ -24,7 +34,7 @@ export const CreatePost:React.FC = () => {
 
     async function CreatePost()
     {
-        const PostData:PostObj = {
+        const PostData:PostData = {
             IdPost:getTime(),
             UIDUser:auth.currentUser?.uid,
             DescriptionPost: textPost,
@@ -40,6 +50,23 @@ export const CreatePost:React.FC = () => {
         .catch((response) => Alert.alert("the post is fucked"))
     }
     
+     
+        async function pickImage(){
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ['images'],
+                allowsEditing:false,
+                aspect: [4,3],
+                quality: 1,
+            });
+    
+            console.log(result);
+    
+            if (!result.canceled)
+            {
+                setImage(result.assets[0].uri);
+            }
+        }
+    
 
     return(
         <View style={[styles.root]}>
@@ -52,11 +79,13 @@ export const CreatePost:React.FC = () => {
                 <Image source={require('../images/userIcon.png')} />
                 <TextInput style={[styles.width6]} placeholder={"Compartilhe sua ideia..."} onChangeText={(value) => textingThePost(value)} />
             </View>
+            <ImagePickerComponent VisibilityGallery={GalleryVisible} ChangeVisibility={() => setGallery(false)}/>
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={[styles.root, styles.alignItemsCenter]} >
                     <View style={[styles.width5,{borderTopWidth:2, borderTopColor:'#C3C8D7'}]}></View>
                     <View style={[styles.width5, styles.flexDirectionRow, styles.justifyContentBetween, styles.p1]}>
-                        <AccessDataImage AccessButtonImage={require('../images/GalleryIcon.png')} />
+                        <AccessDataImage AccessButtonImage={require('../images/GalleryIcon.png')} FunctionOnPress={() => pickImage} />
+                        {image && <Image source={{uri:image}} width={50} height={50}/>}
                         <SmallerButtonDark PlaceHolderButtonSmallerDark={"Postar"} FunctionButtonSmallerDark={() => CreatePost()} />   
                     </View>
             </KeyboardAvoidingView>
