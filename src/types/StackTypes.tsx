@@ -3,4 +3,5 @@ export type StackTypes = {
     BottomBar  : undefined;
     Auth   : undefined;
     Post   : undefined;
+    CreatePost: undefined;
 }

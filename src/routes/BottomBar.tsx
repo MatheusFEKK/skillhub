@@ -1,5 +1,6 @@
 import { BottomBarTypes } from "../types/BottomBarTypes";
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Button, Text, getHeaderTitle } from "@react-navigation/elements";
 import { Home } from "../screens/Home";
 import { ProfileUser } from "../screens/Profile";
 import { Achievements } from "../screens/Achievements";

@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'#395DD3',
-        width:360,
+        width:'100%',
         height:60,
     },
     buttonDefaultMin:{
@@ -41,8 +41,15 @@ export const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'#20202A',
-        width:360,
+        width:'100%',
         height:60
+    },
+    buttonSmallerDark:{
+        alignItems:'center',
+        justifyContent:'center',
+        backgroundColor:'#20202A',
+        width:'30%',
+        height:44,
     },
     buttonLoginGoogle:{
         flexDirection:'row',
@@ -71,14 +78,13 @@ export const styles = StyleSheet.create({
         position:'absolute',
         bottom:0,
         height:'55%',
+        width: '100%',
         backgroundColor:'#eef2f9',
         borderTopLeftRadius:40,
         borderTopRightRadius:40,
-        gap:50
+        gap:54
     },
-    containerButtons:{
-        height:'40%'
-    },
+    
     flexDirectionRow:{
         flexDirection:'row'
     },
@@ -87,6 +93,9 @@ export const styles = StyleSheet.create({
     },
     justifyContentCenter:{
         justifyContent:'center'
+    },
+    justifyContentBetween:{
+        justifyContent:'space-between'
     },
     Roboto_Flex:{
     },
@@ -128,6 +137,9 @@ export const styles = StyleSheet.create({
     },
     fontWeightMedium:{
         fontWeight:"500"
+    },
+    fontWeightSemiBold:{
+        fontWeight:'700'
     },
     fontWeightBold:{
         fontWeight:'bold'
@@ -352,6 +364,27 @@ export const styles = StyleSheet.create({
     mH5:{
         marginHorizontal:25
     },
+    width1:{
+        width:'15%',
+    },
+    width2:{
+        width:'30%',
+    },
+    width3:{
+        width:'45%',
+    },
+    width4:{
+        width:'65%',
+    },
+    width5:{
+        width:'80%',
+    },
+    width6:{
+        width:'95%',
+    },
+    width7:{
+        width:'100%',
+    },
     alignSelfStart:{
         alignSelf:'flex-start',
     },
@@ -367,5 +400,17 @@ export const styles = StyleSheet.create({
     backgroundTransparent:{
         backgroundColor:'transparent',
     },
+    headerHead:{
+        position: "static"
+    },
+    fixed:{
+        position: "static"
+    },
+    absolute:{
+        position: "absolute"
+    },
+    relative:{
+        position: "relative"
+    }
     
 })

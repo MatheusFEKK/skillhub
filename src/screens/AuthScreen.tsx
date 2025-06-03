@@ -128,7 +128,7 @@ export const AuthScreen: React.FC = () => {
 
                         <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Senha" textInsert={(value) => setPassword(value)} inputSecure={true} autoCapitalize="none" />
 
-                        <ButtonDefault PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()} />
+                        <ButtonDefault isDisabled={false} PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()} />
                     </View>
                 ) :
                     <View style={[styles.gap2,  styles.mT5]}>

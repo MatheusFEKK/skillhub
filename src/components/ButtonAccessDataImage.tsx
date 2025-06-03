@@ -1,10 +1,17 @@
-import { View, Image } from "react-native";
+import { View, Image, ImageSourcePropType, TouchableOpacity } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 
-export const AcessDataImage:React.FC = () => {
+interface ButtonAccessProps{
+    AccessButtonImage:ImageSourcePropType;
+    FunctionOnPress?:() => void;
+}
+
+export const AccessDataImage:React.FC<ButtonAccessProps> = (props) => {
     return(
-        <View style={[styles.borderRadius3, styles.backgroundTransparent, styles.alignItemsCenter, styles.justifyContentCenter, {borderWidth:2, borderColor:'#C3C8D7', width:32, height:32}]}>
-            <Image source={require('../images/GalleryIcon.png')} />
+        <View style={[styles.borderRadius3, styles.backgroundTransparent, styles.alignItemsCenter, styles.justifyContentCenter, styles.m2,{borderWidth:2, borderColor:'#C3C8D7', width:32, height:32}]}>
+            <TouchableOpacity onPress={props.FunctionOnPress}>
+                <Image source={props.AccessButtonImage} />
+            </TouchableOpacity>
         </View>
     );
 }
