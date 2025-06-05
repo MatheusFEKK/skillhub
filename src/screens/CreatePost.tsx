@@ -2,18 +2,16 @@ import { TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, Platfor
 import { NavigationPropStack } from "../routes/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../styles/GlobalStyles";
-import { ButtonDark } from "../components/ButtonDark";
 import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 import { AccessDataImage } from "../components/ButtonAccessDataImage";
 import { useEffect, useState } from "react";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { auth } from "../firebase/connectionFirebase";
 import { db } from "../firebase/connectionFirebase";
-import { BottomBarProps } from "../routes/BottomBar";
 import { ImagePickerComponent } from "../components/GalleryAccess";
 import * as ImagePicker from 'expo-image-picker';
-import { UploadFile } from "../aws/uploadFile";
 import { v4 as uuid } from 'uuid';
+
 interface PostData{
     IdPost:string,
     UIDUser:string | undefined,
@@ -32,6 +30,37 @@ export const CreatePost:React.FC = () => {
 
     const getTime = () => {
         return new Date().getTime().toString();
+    }
+
+    const UploadFile = async (filePath:string) => {
+    const randomKeyFile = uuid();
+    const response = await fetch(filePath);
+
+    const imageBlob = await response.blob();
+
+    const formData = new FormData();
+    formData.append('sendFile', '1');
+    formData.append('uploadFile', imageBlob, randomKeyFile+".jpeg");
+    formData.append('jsonData', JSON.stringify(randomKeyFile));
+    console.log(formData);
+
+    const URL:string = 'http://10.75.45.30/storageServer/receiveFile.php'
+    
+        const uploadResponse = await fetch (URL, {
+            method:'POST',
+            headers:{
+                'Content-Type':'multipart/form-data',
+            },
+            body:formData,
+        });
+
+        if (uploadResponse.ok)
+        {
+            const responseText = await uploadResponse.text();
+            console.log("Uploaded with success " + responseText);
+        }else{
+            console.log("Upload failed " + uploadResponse.statusText);
+        }
     }
 
     async function CreatePost()
@@ -55,14 +84,8 @@ export const CreatePost:React.FC = () => {
 
         if (image !== null)
         {
-            const keyFile = uuid();
-            await UploadFile('pitwapp', keyFile, image)
-            .then((response) => {
-                console.log("File uploaded to the AWS S3 Service " + response);
-            })
-            .catch((response) => {
-                console.log("Error trying to upload the file to the AWS S3 Service " + response);
-            })
+            await UploadFile(image)
+            
         }else
         {
             return;

@@ -1,34 +1,50 @@
-import { PutObjectCommand, S3Client, S3ServiceException } from "@aws-sdk/client-s3";
-import { client } from "./awsConfig";
-import { Buffer } from "buffer";
-import * as FileSystem from 'expo-file-system';
+import { v4 as uuid } from 'uuid'
 
-export const UploadFile = async (bucketName:string, key:string, filePath:string) => {
-    const pathOnS3 = `social/${key}`
 
-    const fileData = await FileSystem.readAsStringAsync(filePath, { encoding:FileSystem.EncodingType.Base64 });
+export const UploadFile = async (filePath:string) => {
+    const randomKeyFile = uuid();
+    const response = await fetch(filePath);
 
-    const command = new PutObjectCommand({
-        Bucket: bucketName,
-        Key: pathOnS3,
-        Body: Buffer.from(fileData, 'base64'),
-    });
+    const imageBlob = await response.blob();
 
-    try{
-        const response = await client.send(command);
-        console.log(response);
-    }catch (error)
-    {
-        if (error instanceof S3ServiceException && error.name === "EntityTooLarge")
+    const formData = new FormData();
+    formData.append('uploadFile', imageBlob, randomKeyFile+".jpeg");
+    formData.append('jsonData', JSON.stringify(randomKeyFile));
+    console.log(formData);
+    const URL:string = 'http://10.75.45.30/storageServer/receiveFile.php/'
+    
+
+        const uploadResponse = await fetch (URL, {
+            method:'POST',
+            body:formData,
+        });
+
+        if (uploadResponse.ok)
         {
-            return`Error from S3 while uploading object to ${bucketName}. \
-            The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
-            or the multipart upload API (5TB max).`
-        }else if (error instanceof S3ServiceException)
-        {
-            return `Error from S3 while uploading object to ${bucketName}. ${error.name}: ${error.message}`
+            const responseText = await uploadResponse.text();
+            console.log("Uploaded with success " + responseText);
         }else{
-            throw error;
+            console.log("Upload failed " + uploadResponse.statusText);
         }
-    }
-};
+        // const responseJson = await data.json();
+        // if (responseJson.status == 1)
+        // {
+        //     console.log("Connected with the storage server")
+        // }else{
+        //     console.log("Failed connection");
+        // }
+    
+            // const uploadResponse = await fetch(URL, {
+            //     method:'POST',
+            //     body: formData,
+            //     headers:{
+            //         'Content-Type': 'multipart/form-data;',
+            //     },
+            // }).then((response) => {
+            //     console.log(response.json());
+            // })
+            // .catch((response) => {
+            //     console.log(response.json);
+            // })
+        
+}
