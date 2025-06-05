@@ -12,8 +12,6 @@ export const ImagePickerComponent:React.FC<ImagePickerProps> = (props) => {
    
     return(
         <Modal visible={props.VisibilityGallery} style={styles.container}>
-            <Button title={"Pick an image from the cmaera roll"} onPress={pickImage} />
-            
             <TouchableOpacity onPress={props.ChangeVisibility}>
                 <Text>X</Text>
             </TouchableOpacity>

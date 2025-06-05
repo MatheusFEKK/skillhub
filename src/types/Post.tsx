@@ -6,7 +6,7 @@ export interface Post{
     Realname:string;
     IdPost?:string;
     UIDUser?:string;
-    ImagePost?:ImageSourcePropType | null;
+    ImagePost?:string;
     DescriptionPost?: string;
     Likes?:[];
     Deslikes?:[];
