@@ -9,24 +9,43 @@ import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
-import { PseudoHeaderNavigateProps } from "../types/PseudoHeaderType";
+import { PseudoHeaderNavigateProps, PseudoHeaderType } from "../types/PseudoHeaderType";
 
 interface Props  {
     navigate:string;
-    headerTitle:string | null;
+    headerTitle:string | undefined;
 }
+
+
+
 
 
 export const PseudoHeader: React.FC<Props> = (Props) =>{
 
-
-
     const navigation = useNavigation<PseudoHeaderNavigateProps>()
+
+    const navigationHandler = () =>{
+        let rota : keyof PseudoHeaderType;
+        switch (Props.navigate) {
+            case "Home":
+            case "Profile":
+            case "Options":
+
+                rota = Props.navigate;
+            break;
+            default:
+                rota = "Home";
+            break;
+        }
+        navigation.navigate(rota);
+    }
+
+
 
 
     return(
-        <View style={[styles.container, styles.flexDirectionRow, styles.justifyContentBetween, styles.pV2 , styles.alignItemsCenter, {height:45}]}>
-                <TouchableOpacity onPress={()=> navigation.navigate(`${Props.navigate ? "Home" : "Profile"}`)}>
+        <View style={[styles.container, styles.flexDirectionRow, styles.justifyContentBetween , styles.alignItemsCenter, {height:45}]}>
+                <TouchableOpacity onPress={navigationHandler}>
                     <Image style={{height: 40, width:40}} source={require("../images/back-icon.png")} />
                 </TouchableOpacity>
                 {Props.headerTitle ? <Text style={[styles.fontSize4, {fontWeight:"700"}]}>{Props.headerTitle}</Text> : <Text style={styles.fontSize4}>N/A</Text>}

@@ -163,7 +163,7 @@ export const AuthScreen: React.FC = () => {
                     </View>
                 }
             </View>
-            <StatusBar style="dark" />
+            <StatusBar style="dark" translucent />
         </View>
     );
 }

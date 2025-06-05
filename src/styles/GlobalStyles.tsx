@@ -5,6 +5,9 @@ export const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
         flex: 1
     },
+    defaultRootBackground:{
+        backgroundColor: "#EEF2F9"
+    },
     splashRoot:{
         flex: 1,
         backgroundColor: 'transparent'

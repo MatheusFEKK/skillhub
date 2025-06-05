@@ -9,6 +9,8 @@ import { BottomBar } from "./BottomBar";
 import Welcome from "../screens/Welcome";
 import { CreatePost } from "../screens/CreatePost";
 import { Achievements } from "../screens/Achievements";
+import { UserOptions } from "../screens/UserOptions";
+import { ProfileUser } from "../screens/Profile";
 
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
@@ -43,7 +45,8 @@ export const Stack:React.FC = () => {
                         <RootStack.Screen  name={"Welcome"} component={Welcome} />
                         <RootStack.Screen name={"Auth"} component={AuthScreen}/>
                         <RootStack.Screen name={"Achievement"} component={Achievements}/>
-
+                        <RootStack.Screen name={"Options"} component={UserOptions}/>
+                        <RootStack.Screen name={"Profile"} component={ProfileUser}/>
                     </>
                 )
             }

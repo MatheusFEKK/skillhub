@@ -33,7 +33,7 @@ const Welcome: React.FC = () => {
 
                 </View>
             </View>
-            <StatusBar style="light" />
+            <StatusBar style="light" backgroundColor="#EEF2F9" />
         </View>
     );
 }

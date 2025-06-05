@@ -1,7 +1,7 @@
 import { Text, View, ScrollView, Pressable, Image, TouchableOpacity } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { useState, useEffect } from "react";
-import { signOut } from "firebase/auth";
+import { signOut, User } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import ButtonDark from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
@@ -9,30 +9,73 @@ import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
 import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface UserInterface {
+    Username:string;
+    Nickname:string;
+    Description?:string;
+}
+
 
 export const ProfileUser: React.FC = () => {
 
+    const [user, setUser] = useState<UserInterface | null>();
+    const [userStored, setUserStored] = useState<UserInterface | null>();
     const [userName, setUserName] = useState<string | null>();
+    const [userStoredName, setUserStoredName] = useState<string | null>();
 
-    async function getUserNameProfile() {
+    async function getUserInfo(){
         const usuario = auth.currentUser;
-        const idUsuario = String(usuario?.uid);
-        const docRef = doc(db, "users/" + idUsuario);
+        const idUser = String(usuario?.uid);
+        const docRef = doc(db, "users/" + idUser);
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            setUserName(docSnap.data()?.name);
-        } else {
-            console.log("User does not exists");
+        if(docSnap.exists()){
+            const UserObject = {
+                Username : docSnap.data()?.name,
+                Nickname : docSnap.data()?.username
+            }
+            setUser(UserObject);
+            
         }
     }
-    useEffect(() => {
-        getUserNameProfile();
 
+    useEffect(() => {
+        getUserInfo();
+        storeUser('UsuarioSalvo', user);
     }, [])
 
+    useEffect(()=>{
+        changePreviousUser();
+    },[user])
 
 
+    const storeUser = async(key:string, data:any)=>{
+        try{
+            const jsonObject = JSON.stringify(data);
+            await AsyncStorage.setItem(key, jsonObject);
+
+        }catch(error){
+            console.log(error)
+        }
+
+    }
+
+    const changePreviousUser = async() =>{
+        try{
+            const savedValue = await AsyncStorage.getItem('UsuarioSalvo');
+            if(savedValue!=null){
+                const objectValue = JSON.parse(savedValue);
+                setUserStored(objectValue);
+            }
+
+        }catch(error){
+            console.log(error);
+        }
+
+
+    }
 
 
     const signOutUser = async () => {
@@ -46,8 +89,8 @@ export const ProfileUser: React.FC = () => {
     const navigation = useNavigation<BottomBarProps>();
 
     return (
-        <View style={[styles.root, {backgroundColor: "#EEF2F9"}]}>
-            <PseudoHeader navigate="Home" headerTitle={userName} />
+        <View style={[styles.root, styles.defaultRootBackground]}>
+            <PseudoHeader navigate="Home" headerTitle={userStored?.Nickname} />
             <ScrollView>
                 <View style={[styles.container, styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
                     <View style={[styles.flexDirectionRow, styles.justifyContentBetween, styles.mV2]}>
@@ -55,12 +98,12 @@ export const ProfileUser: React.FC = () => {
                             <Image source={require("../images/Profile_avatar_placeholder_large.png")}
                                 style={{ borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
                             <View style={[styles.gap1]}>
-                                <Text style={{ fontWeight: "800", fontSize: 14 }}>@KaiserStudant</Text>
-                                <Text style={{ color: "#7B8499", fontSize: 12 }}>Gael Lopes</Text>
+                                <Text style={{ fontWeight: "800", fontSize: 14 }}>@{userStored?.Nickname}</Text>
+                                <Text style={{ color: "#7B8499", fontSize: 12 }}>{userStored?.Username}</Text>
                             </View>
                         </View>
                         <View style={styles.justifyContentCenter}>
-                            <TouchableOpacity style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#20202A", borderRadius: 10 }]}>
+                            <TouchableOpacity onPress={()=>{navigation.navigate("Options")}} style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#20202A", borderRadius: 10 }]}>
                                 <Text style={{ color: "#EEF2F9", fontWeight: 600 }}>Editar</Text>
                             </TouchableOpacity>
                         </View>

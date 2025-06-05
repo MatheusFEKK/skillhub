@@ -4,6 +4,7 @@ import { Button, Text, getHeaderTitle } from "@react-navigation/elements";
 import { Home } from "../screens/Home";
 import { ProfileUser } from "../screens/Profile";
 import { Achievements } from "../screens/Achievements";
+import { UserOptions } from "../screens/UserOptions";
 
 export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes>;
 
@@ -18,6 +19,7 @@ export const BottomBar: React.FC = () => {
             <BottomBarNav.Screen name={"Home"} component={Home} />
             <BottomBarNav.Screen name={"Achievements"} component={Achievements} />
             <BottomBarNav.Screen name={"Profile"} component={ProfileUser} />
+            <BottomBarNav.Screen name={"Options"} component={UserOptions} />
         </BottomBarNav.Navigator>
     );
 };
