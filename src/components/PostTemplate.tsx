@@ -11,7 +11,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
                 <Image width={45} height={45} source={require('../images/userIcon.png')} />
                 <View style={{margin:10}}>
                     <Text style={{fontWeight:'bold'}}>{props.Username}</Text>
-                    <Text style={{opacity:0.5}}>{props.Realname}</Text>
+                    <Text style={{opacity:0.5}}>{props.Realname} Post N: {props.IdPost}</Text>
                 </View>
             </View>
                     <View style={[styles.container, {position:'relative', bottom:10}]}>
@@ -19,11 +19,11 @@ export const PostTemplate:React.FC<Post> = (props) => {
                             {props.DescriptionPost}
                         </Text>
                     </View>
-            {props.ImagePost == undefined ? (
+            {props.ImagePost == null ? (
                 <View></View>
             ) :
-                <View style={{width:310, height:327,backgroundColor:'black', borderRadius:15}}>
-                    <Image source={props.ImagePost} />
+                <View style={{width:310, height:327, borderRadius:15}}>
+                    <Image width={310} height={327} source={{uri:props.ImagePost}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>

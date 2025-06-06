@@ -1,18 +1,16 @@
-import { v4 as uuid } from 'uuid'
-
-export const UploadFile = async (fileURI:string) => {
-        const randomNameFile = uuid() + '.jpg';
+export const UploadFile = async (fileURI:string, fileName:string) => {
+        
         const formData = new FormData();
         
         formData.append('uploadFile', {
             uri:fileURI,
             type:'image/jpeg',
-            name:randomNameFile,
+            name:fileName,
         } as any); 
         formData.append('testing', 'teste');
         
         try{
-            await fetch('http://192.168.0.107/storageSkillHub/receiveFile.php', 
+            await fetch('http://192.168.22.47/storageSkillHub/endpoints/uploadFile.php', 
                 {
                     method:'POST',
                     body:formData,

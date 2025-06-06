@@ -1,12 +1,12 @@
-import { ImageSourcePropType } from "react-native";
+import { Image, ImageSourcePropType } from "react-native";
 import { CommentObj } from "./CommentObject";
 
 export interface Post{
     Username:string;
     Realname:string;
-    IdPost?:string;
+    IdPost:string;
     UIDUser?:string;
-    ImagePost?:string;
+    ImagePost?:string | null;
     DescriptionPost?: string;
     Likes?:[];
     Deslikes?:[];

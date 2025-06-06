@@ -11,6 +11,7 @@ import { db } from "../firebase/connectionFirebase";
 import { ImagePickerComponent } from "../components/GalleryAccess";
 import * as ImagePicker from 'expo-image-picker';
 import { UploadFile } from "../storage/uploadFile";
+import { v4 as uuid } from 'uuid'
 
 interface PostData{
     IdPost:string,
@@ -35,11 +36,13 @@ export const CreatePost:React.FC = () => {
 
     async function CreatePost()
     {
+        const randomNameFile = uuid() + '.jpg';
+
         const PostData:PostData = {
             IdPost:getTime(),
             UIDUser:auth.currentUser?.uid,
             DescriptionPost: textPost,
-            ImagePost: String(image),
+            ImagePost: randomNameFile,
             CommentsPost:[],
             Likes:[],
             Deslikes:[],
@@ -52,9 +55,9 @@ export const CreatePost:React.FC = () => {
         .then((response) => navigationStack.goBack())
         .catch((response) => Alert.alert("Failed on posting" + response))
 
-        if (image !== null)
+        if (image != null)
         {
-            await UploadFile(image.assets[0].uri)
+            await UploadFile(image.assets[0].uri, randomNameFile)
             
         }else
         {
