@@ -18,7 +18,7 @@ interface UserInterface {
 }
 
 export const ProfileUser: React.FC = () => {
-
+ 
     const [user, setUser] = useState<UserInterface | null>();
     const [userStored, setUserStored] = useState<UserInterface | null>();
     const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
