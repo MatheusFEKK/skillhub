@@ -41,7 +41,7 @@ export const Home:React.FC = () => {
             console.log(response.data()?.username)
             console.log(doc.data()?.IdPost)
 
-            const fetchImage = await fetch(`http://192.168.22.47/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
+            const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
                 return response.url
             });
             

@@ -1,15 +1,15 @@
-export const UploadFile = async (fileURI:string, fileName:string) => {
+export const UploadProfileImage = async (fileURI:string, fileName:string) => {
         
         const formData = new FormData();
         
-        formData.append('uploadFile', {
+        formData.append('profileImageUpload', {
             uri:fileURI,
             type:'image/jpeg',
             name:fileName,
         } as any); 
         
         try{
-            await fetch('http://10.75.45.30/storageSkillHub/endpoints/uploadFile.php', 
+            await fetch('http://10.75.45.30/storageSkillHub/endpoints/profilePhotoUpload.php', 
                 {
                     method:'POST',
                     body:formData,

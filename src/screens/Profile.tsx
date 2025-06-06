@@ -15,7 +15,7 @@ export const ProfileUser: React.FC = () => {
     const [userName, setUserName] = useState<null | string>();
 
     async function getUserNameProfile(){
-         const usuario = auth.currentUser;
+        const usuario = auth.currentUser;
         const idUsuario = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUsuario );
         const docSnap = await getDoc(docRef);
@@ -31,7 +31,7 @@ export const ProfileUser: React.FC = () => {
 
     useEffect(()=>{
         getUserNameProfile();
-    
+        
     },[])
 
 

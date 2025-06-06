@@ -22,8 +22,8 @@ export const PostTemplate:React.FC<Post> = (props) => {
             {props.ImagePost == null ? (
                 <View></View>
             ) :
-                <View style={{width:310, height:327, borderRadius:15}}>
-                    <Image width={310} height={327} source={{uri:props.ImagePost}} />
+                <View>
+                    <Image width={310} height={327} borderRadius={5} source={{uri:props.ImagePost}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>
