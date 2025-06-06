@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, Alert, Image } from "react-native";
 import { styles } from "../styles/GlobalStyles";
-import ButtonDefault from "../components/ButtonDefault";
+import { ButtonDefault } from "../components/ButtonDefault";
 import InputUser from "../components/InputUser";
 import { ButtonGroup } from "../components/ButtonGroup";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";

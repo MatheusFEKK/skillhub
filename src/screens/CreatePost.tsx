@@ -1,22 +1,34 @@
-import { TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, Platform, Alert } from "react-native";
+import { TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, Platform, Alert, Text } from "react-native";
 import { NavigationPropStack } from "../routes/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../styles/GlobalStyles";
-import ButtonDark from "../components/ButtonDark";
 import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 import { AccessDataImage } from "../components/ButtonAccessDataImage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { auth } from "../firebase/connectionFirebase";
 import { db } from "../firebase/connectionFirebase";
-import { PostObj } from "../types/PostObject";
-import { BottomBarProps } from "../routes/BottomBar";
+import { ImagePickerComponent } from "../components/GalleryAccess";
+import * as ImagePicker from 'expo-image-picker';
+import { UploadFile } from "../storage/uploadFile";
+import { v4 as uuid } from 'uuid'
+
+interface PostData{
+    IdPost:string,
+    UIDUser:string | undefined,
+    DescriptionPost: string,
+    ImagePost: string | null,
+    CommentsPost:[],
+    Likes:[],
+    Deslikes:[],
+}
 
 export const CreatePost:React.FC = () => {
-    const [ imageSelected, chooseImage ] = useState();
+    const [ image, setImage ] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
+    const [ imageType, setImageType ] = useState<string | undefined>(undefined);
     const [ textPost, textingThePost ] = useState<string>('');
     const navigationStack = useNavigation<NavigationPropStack>();
-
+    const [ GalleryVisible, setGallery ] = useState(false);
 
     const getTime = () => {
         return new Date().getTime().toString();
@@ -24,10 +36,13 @@ export const CreatePost:React.FC = () => {
 
     async function CreatePost()
     {
-        const PostData:PostObj = {
+        const randomNameFile = uuid() + '.jpg';
+
+        const PostData:PostData = {
             IdPost:getTime(),
             UIDUser:auth.currentUser?.uid,
             DescriptionPost: textPost,
+            ImagePost: randomNameFile,
             CommentsPost:[],
             Likes:[],
             Deslikes:[],
@@ -35,10 +50,40 @@ export const CreatePost:React.FC = () => {
         
         const newPost = doc(collection(db, "posts"));
 
+        
         await setDoc(newPost, PostData)
         .then((response) => navigationStack.goBack())
-        .catch((response) => Alert.alert("the post is fucked"))
+        .catch((response) => Alert.alert("Failed on posting" + response))
+
+        if (image != null)
+        {
+            await UploadFile(image.assets[0].uri, randomNameFile)
+            
+        }else
+        {
+            return;
+        }
     }
+    
+    
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            base64:false,
+            mediaTypes: ['images'],
+            allowsMultipleSelection: true,
+            allowsEditing:false,
+            aspect: [4,3],
+            quality: 1,
+        });
+        
+        console.log(result);
+        
+        if (!result.canceled)
+            {
+                setImage(result);
+            }
+
+        };
     
 
     return(
@@ -52,15 +97,23 @@ export const CreatePost:React.FC = () => {
                 <Image source={require('../images/userIcon.png')} />
                 <TextInput style={[styles.width6]} placeholder={"Compartilhe sua ideia..."} onChangeText={(value) => textingThePost(value)} />
             </View>
+            <ImagePickerComponent VisibilityGallery={GalleryVisible} ChangeVisibility={() => setGallery(false)}/>
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={[styles.root, styles.alignItemsCenter]} >
                     <View style={[styles.width5,{borderTopWidth:2, borderTopColor:'#C3C8D7'}]}></View>
                     <View style={[styles.width5, styles.flexDirectionRow, styles.justifyContentBetween, styles.p1]}>
-                        <AccessDataImage AccessButtonImage={require('../images/GalleryIcon.png')} />
-                        <SmallerButtonDark PlaceHolderButtonSmallerDark={"Postar"} FunctionButtonSmallerDark={() => CreatePost()} />   
+                        <AccessDataImage AccessButtonImage={require('../images/GalleryIcon.png')} FunctionOnPress={() => pickImage()} />
+
+                        
+            <SmallerButtonDark PlaceHolderButtonSmallerDark={"Postar"} FunctionButtonSmallerDark={() => CreatePost()} />   
                     </View>
             </KeyboardAvoidingView>
 
+                        {image && 
+                        <View style={[styles.flexDirectionRow, styles.alignItemsCenter, {position:'absolute', bottom:70}]}> 
+                            <Text style={styles.fontWeightBold}>Selected Images</Text>
+                            <Image source={{uri:image.assets[0].uri}} width={50} height={50}/> 
+                        </View>}
         </View>
     );
 }

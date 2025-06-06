@@ -2,8 +2,8 @@ import { Text, View, Image } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
-import ButtonDefault from "../components/ButtonDefault";
-import ButtonDark from "../components/ButtonDark";
+import { ButtonDefault } from "../components/ButtonDefault";
+import { ButtonDark } from "../components/ButtonDark";
 import { StatusBar } from "expo-status-bar";
 
 const Welcome: React.FC = () => {

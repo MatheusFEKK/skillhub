@@ -8,7 +8,7 @@ interface ButtonDefaultProps{
     isDisabled?: boolean;
 }
 
-const ButtonDefault:React.FC<ButtonDefaultProps> = (props) => {
+export const ButtonDefault:React.FC<ButtonDefaultProps> = (props) => {
     return(
         <>
             <TouchableOpacity style={[styles.buttonDefault, styles.borderRadius3, {backgroundColor:props.isDisabled == false ? '#395DD3' : '#A1A7B9'}]} onPress={props.functionButtonDefault} disabled={props.isDisabled}>
@@ -17,5 +17,3 @@ const ButtonDefault:React.FC<ButtonDefaultProps> = (props) => {
         </>
     );
 }
-
-export default ButtonDefault;

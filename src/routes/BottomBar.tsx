@@ -13,7 +13,7 @@ const BottomBarNav = createBottomTabNavigator<BottomBarTypes>();
 export const BottomBar: React.FC = () => {
     return (
         <BottomBarNav.Navigator 
-            initialRouteName={"Achievements"} 
+            initialRouteName={"Home"} 
             screenOptions={{ headerShown: false }}
         >
             <BottomBarNav.Screen name={"Home"} component={Home} />
