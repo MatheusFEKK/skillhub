@@ -46,9 +46,9 @@ export const PseudoHeader: React.FC<Props> = (Props) =>{
     return(
         <View style={[styles.container, styles.flexDirectionRow, styles.justifyContentBetween , styles.alignItemsCenter, {height:45}]}>
                 <TouchableOpacity onPress={navigationHandler}>
-                    <Image style={{height: 40, width:40}} source={require("../images/back-icon.png")} />
+                    <Image style={{height: 35, width:35, objectFit:'fill'}} source={require("../images/return.png")} />
                 </TouchableOpacity>
-                {Props.headerTitle ? <Text style={[styles.fontSize4, {fontWeight:"700"}]}>{Props.headerTitle}</Text> : <Text style={styles.fontSize4}>N/A</Text>}
+                {Props.headerTitle ? <Text style={[styles.fontSize3, {fontWeight:"700"}]}>{Props.headerTitle}</Text> : <Text style={styles.fontSize4}>N/A</Text>}
                 <Image 
                 source={require("../images/IconPlaceHolderMaxHeightWidth.png")}
                 style={{width: 40, height: 40}}

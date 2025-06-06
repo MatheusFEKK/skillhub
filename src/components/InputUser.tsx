@@ -13,7 +13,7 @@ interface InputUserProps{
 
 const InputUser:React.FC<InputUserProps> = (props) => {
     return(
-        <View style={[styles.inputUser ,styles.flexDirectionRow, styles.borderRadius2]}>
+        <View style={[styles.inputUser ,styles.flexDirectionRow, styles.borderRadius2, {height: 56}]}>
             <Image style={styles.inputIcons} source={props.ImageInputUser} />
             <TextInput style={{flex:1}} placeholderTextColor={'#20202A'} placeholder={props.PlaceHolderInputUser} onChangeText={props.textInsert} value={props.valueInput} secureTextEntry={props.inputSecure} autoCapitalize={props.autoCapitalize} maxLength={props.maxLength} />
         </View>

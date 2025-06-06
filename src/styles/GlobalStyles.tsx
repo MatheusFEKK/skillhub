@@ -152,22 +152,25 @@ export const styles = StyleSheet.create({
         fontWeight:'bold'
     },
     gap1:{
-        gap:5
+        gap:6
     },
     gap2:{
         gap:10
     },
     gap3:{
-        gap:15
+        gap:16
+    },
+    gap5:{
+        gap:46
     },
     p1:{
-        padding:5
+        padding:6
     },
     p2:{
-        padding:10
+        padding:12
     },
     p3:{
-        padding:15
+        padding:16
     },
     p4:{
         padding:20,
@@ -236,28 +239,28 @@ export const styles = StyleSheet.create({
         paddingRight:25,
     },
     pH1:{
-        paddingHorizontal:5
+        paddingHorizontal:6
     },
     pH2:{
-        paddingHorizontal:10
+        paddingHorizontal:12
     },
     pH3:{
-        paddingHorizontal:15
+        paddingHorizontal:16
     },
     pH4:{
         paddingHorizontal:20,
     },
     pH5:{
-        paddingHorizontal:25,
+        paddingHorizontal:26,
     },
     pV1:{
-        paddingVertical:5
+        paddingVertical:6
     },
     pV2:{
-        paddingVertical:10
+        paddingVertical:12
     },
     pV3:{
-        paddingVertical:15
+        paddingVertical:16
     },
     pV4:{
         paddingVertical:20,
@@ -391,6 +394,9 @@ export const styles = StyleSheet.create({
     },
     width7:{
         width:'100%',
+    },
+    wFlex:{
+        width: '100%'
     },
     alignSelfStart:{
         alignSelf:'flex-start',

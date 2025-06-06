@@ -24,6 +24,20 @@ export const ProfileUser: React.FC = () => {
     const [userStored, setUserStored] = useState<UserInterface | null>();
     const [userName, setUserName] = useState<string | null>();
     const [userStoredName, setUserStoredName] = useState<string | null>();
+    const [postViewSwitcher, setPostViewSwitcher] = useState("Visão Geral");
+
+    function switcherActive(key:string){
+        if(key === "Visão geral"){
+            setPostViewSwitcher("Visão geral")
+        }
+        if(key === "Posts"){
+            setPostViewSwitcher("Posts")
+        }
+        if(key === "Respostas"){
+            setPostViewSwitcher("Respostas")
+        }
+
+    }
 
     async function getUserInfo(){
         const usuario = auth.currentUser;
@@ -91,8 +105,8 @@ export const ProfileUser: React.FC = () => {
     return (
         <View style={[styles.root, styles.defaultRootBackground]}>
             <PseudoHeader navigate="Home" headerTitle={userStored?.Nickname} />
-            <ScrollView>
-                <View style={[styles.container, styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
+            <ScrollView style={styles.container}>
+                <View style={[ styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
                     <View style={[styles.flexDirectionRow, styles.justifyContentBetween, styles.mV2]}>
                         <View style={[styles.flexDirectionRow, styles.gap2, styles.alignItemsCenter]}>
                             <Image source={require("../images/Profile_avatar_placeholder_large.png")}
@@ -121,15 +135,15 @@ export const ProfileUser: React.FC = () => {
                          </View>
                     </View>
                 </View>
-                <View style={[styles.container, styles.flexDirectionRow, styles.mV5]}>
-                    <Pressable style={[styles.pV2, styles.pH5, styles.alignItemsCenter, styles.justifyContentCenter,{backgroundColor: "#E5E7EF", borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]} >
+                <View style={[ styles.flexDirectionRow, styles.mV5, styles.justifyContentCenter]}>
+                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter,{flex:1,backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF" , borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]} >
                         <Text>Visão geral</Text>
                     </Pressable>
-                    <Pressable style={[styles.pV2, styles.pH5, styles.alignItemsCenter, styles.justifyContentCenter,{backgroundColor: "#E5E7EF",}]} >
-                        <Text>Visão geral</Text>
+                    <Pressable onPress={() => switcherActive("Posts")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter,{flex:1,backgroundColor: postViewSwitcher === "Posts" ? "#54A7F4" : "#E5E7EF",}]} >
+                        <Text>Posts</Text>
                     </Pressable>
-                    <Pressable style={[styles.pV2, styles.pH5, styles.alignItemsCenter, styles.justifyContentCenter,{backgroundColor: "#E5E7EF",}]} >
-                        <Text>Visão geral</Text>
+                    <Pressable onPress={() => switcherActive("Respostas")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter,{flex:1,backgroundColor: postViewSwitcher === "Respostas" ? "#54A7F4" : "#E5E7EF", borderTopRightRadius: 10, borderBottomRightRadius: 10}]} >
+                        <Text>Respostas</Text>
                     </Pressable>
                 </View>
                 <View style={[styles.container, styles.mV2]}>
