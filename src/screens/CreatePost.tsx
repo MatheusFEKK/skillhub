@@ -10,7 +10,7 @@ import { auth } from "../firebase/connectionFirebase";
 import { db } from "../firebase/connectionFirebase";
 import { ImagePickerComponent } from "../components/GalleryAccess";
 import * as ImagePicker from 'expo-image-picker';
-import { v4 as uuid } from 'uuid';
+import { UploadFile } from "../storage/uploadFile";
 
 interface PostData{
     IdPost:string,
@@ -23,44 +23,14 @@ interface PostData{
 }
 
 export const CreatePost:React.FC = () => {
-    const [ image, setImage ] = useState<string | null>(null);
+    const [ image, setImage ] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
+    const [ imageType, setImageType ] = useState<string | undefined>(undefined);
     const [ textPost, textingThePost ] = useState<string>('');
     const navigationStack = useNavigation<NavigationPropStack>();
     const [ GalleryVisible, setGallery ] = useState(false);
 
     const getTime = () => {
         return new Date().getTime().toString();
-    }
-
-    const UploadFile = async (filePath:string) => {
-    const randomKeyFile = uuid();
-    const response = await fetch(filePath);
-
-    const imageBlob = await response.blob();
-
-    const formData = new FormData();
-    formData.append('sendFile', '1');
-    formData.append('uploadFile', imageBlob, randomKeyFile+".jpeg");
-    formData.append('jsonData', JSON.stringify(randomKeyFile));
-    console.log(formData);
-
-    const URL:string = 'http://10.75.45.30/storageServer/receiveFile.php'
-    
-        const uploadResponse = await fetch (URL, {
-            method:'POST',
-            headers:{
-                'Content-Type':'multipart/form-data',
-            },
-            body:formData,
-        });
-
-        if (uploadResponse.ok)
-        {
-            const responseText = await uploadResponse.text();
-            console.log("Uploaded with success " + responseText);
-        }else{
-            console.log("Upload failed " + uploadResponse.statusText);
-        }
     }
 
     async function CreatePost()
@@ -84,7 +54,7 @@ export const CreatePost:React.FC = () => {
 
         if (image !== null)
         {
-            await UploadFile(image)
+            await UploadFile(image.assets[0].uri)
             
         }else
         {
@@ -95,6 +65,7 @@ export const CreatePost:React.FC = () => {
     
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
+            base64:false,
             mediaTypes: ['images'],
             allowsMultipleSelection: true,
             allowsEditing:false,
@@ -106,7 +77,7 @@ export const CreatePost:React.FC = () => {
         
         if (!result.canceled)
             {
-                setImage(result.assets[0].uri);
+                setImage(result);
             }
 
         };
@@ -138,7 +109,7 @@ export const CreatePost:React.FC = () => {
                         {image && 
                         <View style={[styles.flexDirectionRow, styles.alignItemsCenter, {position:'absolute', bottom:70}]}> 
                             <Text style={styles.fontWeightBold}>Selected Images</Text>
-                            <Image source={{uri:image}} width={50} height={50}/> 
+                            <Image source={{uri:image.assets[0].uri}} width={50} height={50}/> 
                         </View>}
         </View>
     );
