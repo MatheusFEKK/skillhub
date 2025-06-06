@@ -17,14 +17,11 @@ interface UserInterface {
     Description?:string;
 }
 
-
 export const ProfileUser: React.FC = () => {
 
     const [user, setUser] = useState<UserInterface | null>();
     const [userStored, setUserStored] = useState<UserInterface | null>();
-    const [userName, setUserName] = useState<string | null>();
-    const [userStoredName, setUserStoredName] = useState<string | null>();
-    const [postViewSwitcher, setPostViewSwitcher] = useState("Visão Geral");
+    const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
 
     function switcherActive(key:string){
         if(key === "Visão geral"){
@@ -36,7 +33,6 @@ export const ProfileUser: React.FC = () => {
         if(key === "Respostas"){
             setPostViewSwitcher("Respostas")
         }
-
     }
 
     async function getUserInfo(){
@@ -50,46 +46,44 @@ export const ProfileUser: React.FC = () => {
                 Username : docSnap.data()?.name,
                 Nickname : docSnap.data()?.username
             }
-            setUser(UserObject);
+            storeUser('UsuarioSalvo', UserObject);
+            changePreviousUser();
             
         }
     }
-
-    useEffect(() => {
-        getUserInfo();
-        storeUser('UsuarioSalvo', user);
-    }, [])
-
-    useEffect(()=>{
-        changePreviousUser();
-    },[user])
-
-
     const storeUser = async(key:string, data:any)=>{
         try{
             const jsonObject = JSON.stringify(data);
             await AsyncStorage.setItem(key, jsonObject);
-
+            console.log("The user has been stored in the AsyncStorage");
         }catch(error){
             console.log(error)
         }
 
     }
-
     const changePreviousUser = async() =>{
         try{
             const savedValue = await AsyncStorage.getItem('UsuarioSalvo');
+            console.log(savedValue)
             if(savedValue!=null){
                 const objectValue = JSON.parse(savedValue);
                 setUserStored(objectValue);
+                console.log("The user has been changed!")
             }
-
         }catch(error){
             console.log(error);
         }
-
-
     }
+
+    useEffect(() => {
+        getUserInfo();
+    }, [])
+    
+    useEffect(()=>{
+        console.log(userStored);
+    },[user])
+
+
 
 
     const signOutUser = async () => {
