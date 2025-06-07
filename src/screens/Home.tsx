@@ -10,15 +10,8 @@ import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "
 import { PostArray } from "../types/Post";
 import { Post } from "../types/Post";
 
-interface url {
-    url:string
-}
-
-type UrlArray = url[]
-
 export const Home:React.FC = () => {
     const [ posts, refreshPosts ] = useState<PostArray>([]);
-    const [ imagePosts, refreshImages ] = useState<UrlArray>([]);
 
     const getUserInfo = async (UIDUser:string) => {
         const userRef = doc(db, "users/" + UIDUser);
@@ -41,9 +34,10 @@ export const Home:React.FC = () => {
             console.log(response.data()?.username)
             console.log(doc.data()?.IdPost)
 
-            const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
-                return response.url
-            });
+
+                const fetchImage = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
+                    return response.url
+                });
             
             usersArrays.push({
                 Realname: response.data()?.name,
@@ -51,7 +45,7 @@ export const Home:React.FC = () => {
                 UIDUser: doc.data()?.UIDUser,
                 Username: response.data()?.username,
                 DescriptionPost: doc.data()?.DescriptionPost,
-                ImagePost:fetchImage,
+                ImagePost: doc.data().ImagePost == null ? null : fetchImage,
                 Likes: doc.data()?.Likes,
                 Deslikes: doc.data()?.Deslikes,
                 ViewCount: 0,
@@ -69,19 +63,34 @@ export const Home:React.FC = () => {
         }))
     },[])
 
-    const likePost = async (postId:string, userId:string) => {
+    const likePost = async (postId:string, userId:string | undefined) => {
         const postRef = doc(db, 'posts/'+postId);
         
         try {
             await updateDoc(postRef, {
-                likes: arrayUnion(userId)
+                Likes: arrayUnion(userId)
             })
         }
         catch(error)
         {
-            console.log("Error trying to save the like in the post " + postId);
+            console.log("Error trying to save the like in the post " + postId + error);
         }
     }
+
+    const deslikePost = async (postId:string, userId:string | undefined) => {
+        const postRef = doc(db, 'posts/'+postId);
+
+        try {
+            await updateDoc(postRef, {
+                Deslikes: arrayUnion(userId),
+            })
+        }
+        catch(error)
+        {
+            console.log("Error trying to save the deslike in the post " + postId + error);
+        }
+    }
+
 
     const navigation = useNavigation<NavigationPropStack>();
     return(
@@ -98,7 +107,7 @@ export const Home:React.FC = () => {
                     </TouchableOpacity>
                 
             <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
-            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} /> }/>
+            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => likePost(item?.IdPost, item?.UIDUser)} /> }/>
             </View>
         </View>
     );

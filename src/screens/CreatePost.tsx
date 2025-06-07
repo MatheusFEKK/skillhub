@@ -38,19 +38,20 @@ export const CreatePost:React.FC = () => {
     {
         const randomNameFile = uuid() + '.jpg';
 
+        const postID = getTime();
+
         const PostData:PostData = {
-            IdPost:getTime(),
+            IdPost:postID,
             UIDUser:auth.currentUser?.uid,
             DescriptionPost: textPost,
-            ImagePost: randomNameFile,
+            ImagePost: image != null ? randomNameFile : null,
             CommentsPost:[],
             Likes:[],
             Deslikes:[],
         }
         
-        const newPost = doc(collection(db, "posts"));
+        const newPost = doc(collection(db, "posts"), postID);
 
-        
         await setDoc(newPost, PostData)
         .then((response) => navigationStack.goBack())
         .catch((response) => Alert.alert("Failed on posting" + response))

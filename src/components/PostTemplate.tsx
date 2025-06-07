@@ -3,7 +3,6 @@ import { styles } from "../styles/GlobalStyles";
 import { Post } from "../types/Post";
 
 
-
 export const PostTemplate:React.FC<Post> = (props) => {
     return(
         <View style={[styles.alignItemsCenter, {backgroundColor:'#F4F7FD', width:350, borderRadius:15}]}>
@@ -23,7 +22,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
                 <View></View>
             ) :
                 <View>
-                    <Image width={310} height={327} borderRadius={5} source={{uri:props.ImagePost}} />
+                    <Image width={310} height={327} borderRadius={5} source={{uri: props.ImagePost}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>
@@ -36,12 +35,12 @@ export const PostTemplate:React.FC<Post> = (props) => {
                     </View>
 
                     <View style={[styles.flexDirectionRow, styles.gap1,{borderColor:'#A1A7B9', borderWidth:1, borderRadius:40}]}>
-                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderStartStartRadius:40}]}>
+                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderStartStartRadius:40}]} onPress={props.LikeFunction}>
                             <Text style={[styles.fontWeightSemiBold, {color:'#7B8499'}]}>0</Text>
                             <Image source={require('../images/thumbs-up.png')} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderStartStartRadius:40}]}>
+                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderStartStartRadius:40}]} onPress={props.DeslikeFunction}>
                             <Text style={[styles.fontWeightSemiBold, {color:'#7B8499'}]}>0</Text>
                             <Image source={require('../images/thumbs-down.png')} />
                         </TouchableOpacity>

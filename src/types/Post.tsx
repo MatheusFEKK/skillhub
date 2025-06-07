@@ -1,4 +1,3 @@
-import { Image, ImageSourcePropType } from "react-native";
 import { CommentObj } from "./CommentObject";
 
 export interface Post{
@@ -12,6 +11,9 @@ export interface Post{
     Deslikes?:[];
     ViewCount?:number;
     CommentsPost?:CommentObj[] | null;
+    LikeFunction?: () => void;
+    DeslikeFunction?: () => void;
+    onSubmit?: () => void;
 }
 
 export type PostArray = Post[];
