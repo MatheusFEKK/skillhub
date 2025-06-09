@@ -5,8 +5,8 @@ import { PostTemplate } from "../components/PostTemplate";
 import { AccessDataImage } from "../components/ButtonAccessDataImage";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
-import { db } from "../firebase/connectionFirebase";
-import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebase/connectionFirebase";
+import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { PostArray } from "../types/Post";
 import { Post } from "../types/Post";
 
@@ -19,6 +19,8 @@ export const Home:React.FC = () => {
 
         return userInfo;
     }
+
+    
 
     const getAllPosts = async () => {
         const queryPosts = query(collection(db, "posts"));
@@ -51,6 +53,7 @@ export const Home:React.FC = () => {
                 ViewCount: 0,
                 CommentsPost: null,
             });
+
             
             refreshPosts(usersArrays);  
         });
@@ -107,7 +110,7 @@ export const Home:React.FC = () => {
                     </TouchableOpacity>
                 
             <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
-            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => likePost(item?.IdPost, item?.UIDUser)} /> }/>
+            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => likePost(item?.IdPost, item?.UIDUser)} DeslikeFunction={() => deslikePost(item?.IdPost, item?.UIDUser)}/> }/>
             </View>
         </View>
     );

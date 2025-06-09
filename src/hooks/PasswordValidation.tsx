@@ -5,7 +5,7 @@ const ValidatePassword = () =>
 {
     const [ password, setPassword ] = useState<string>(''); 
     const [ passwordLengthRequirement, setLengthRequirement ] = useState(false);
-    const [ passwordHaveNumber, setHaveNumber]      = useState(false);
+    const [ passwordHaveNumber, setHaveNumber] = useState(false);
     const [ passwordHaveSpecialCaptalize , setSpecialCaptalize] = useState(false);
     const [ canProceed, setToProceed ] = useState(true);
     const [ userConditions, setUserCondition ] = useState(false);

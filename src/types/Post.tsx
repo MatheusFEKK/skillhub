@@ -14,6 +14,7 @@ export interface Post{
     LikeFunction?: () => void;
     DeslikeFunction?: () => void;
     onSubmit?: () => void;
+    VerifyLikeDeslike?: boolean;
 }
 
 export type PostArray = Post[];

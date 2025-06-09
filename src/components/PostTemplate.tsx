@@ -1,9 +1,20 @@
-import { Text, View, Image, ImageSourcePropType, TouchableOpacity } from "react-native";
+import { useEffect } from "react";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { Post } from "../types/Post";
+import { auth, db } from "../firebase/connectionFirebase";
+import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
+import { doc, onSnapshot } from "firebase/firestore";
 
 
 export const PostTemplate:React.FC<Post> = (props) => {
+    const { IsLiked, isDesliked ,setPostId, setUserId, countLike, countDeslike } = VerifyLikeDeslike();
+
+    useEffect(() => {
+        setPostId(props.IdPost);
+        setUserId(auth.currentUser?.uid)
+    },[])
+    
     return(
         <View style={[styles.alignItemsCenter, {backgroundColor:'#F4F7FD', width:350, borderRadius:15}]}>
             <View style={{alignSelf:'flex-start', margin:15, flexDirection:'row', alignItems:'center'}}>
@@ -33,17 +44,31 @@ export const PostTemplate:React.FC<Post> = (props) => {
                         </TouchableOpacity>
 
                     </View>
-
+            
                     <View style={[styles.flexDirectionRow, styles.gap1,{borderColor:'#A1A7B9', borderWidth:1, borderRadius:40}]}>
-                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderStartStartRadius:40}]} onPress={props.LikeFunction}>
-                            <Text style={[styles.fontWeightSemiBold, {color:'#7B8499'}]}>0</Text>
+                    {IsLiked == false ? (
+                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1]} onPress={props.LikeFunction}>
+                            <Text style={[styles.fontWeightSemiBold, {color:'#7B8499'}]}>{countLike}</Text>
                             <Image source={require('../images/thumbs-up.png')} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderStartStartRadius:40}]} onPress={props.DeslikeFunction}>
-                            <Text style={[styles.fontWeightSemiBold, {color:'#7B8499'}]}>0</Text>
+                    ) : 
+                         <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderTopLeftRadius:15, borderBottomLeftRadius:15, backgroundColor:'#4781EE'}]} onPress={props.LikeFunction}>
+                            <Text style={[styles.fontWeightSemiBold, {color:'#FFFFFF'}]}>{countLike}</Text>
+                            <Image source={require('../images/thumbs-up-liked.png')} />
+                        </TouchableOpacity>
+                    }
+                    {isDesliked == false ? (
+                        <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1]} onPress={props.DeslikeFunction}>
+                            <Text style={[styles.fontWeightSemiBold, {color:'#7B8499'}]}>{countDeslike}</Text>
                             <Image source={require('../images/thumbs-down.png')} />
                         </TouchableOpacity>
+                    ) : 
+                         <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderEndStartRadius:15, borderEndEndRadius:15, backgroundColor:'#4781EE'}]} onPress={props.DeslikeFunction}>
+                            <Text style={[styles.fontWeightSemiBold, {color:'#FFFFFF'}]}>{countDeslike}</Text>
+                            <Image source={require('../images/thumbs-down-desliked.png')} />
+                        </TouchableOpacity>
+                    }
                     </View>
                 </View>
             </View>
