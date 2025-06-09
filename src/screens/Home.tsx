@@ -1,96 +1,16 @@
 import { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, FlatList } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { PostTemplate } from "../components/PostTemplate";
 import { AccessDataImage } from "../components/ButtonAccessDataImage";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
-import { auth, db } from "../firebase/connectionFirebase";
-import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
-import { PostArray } from "../types/Post";
-import { Post } from "../types/Post";
+import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
+import PostHome from "../hooks/Posts";
 
 export const Home:React.FC = () => {
-    const [ posts, refreshPosts ] = useState<PostArray>([]);
-
-    const getUserInfo = async (UIDUser:string) => {
-        const userRef = doc(db, "users/" + UIDUser);
-        const userInfo = await getDoc(userRef);
-
-        return userInfo;
-    }
-
-    const getAllPosts = async () => {
-        const queryPosts = query(collection(db, "posts"));
-        
-        const posts = await getDocs(queryPosts);
-
-         // Otimizar método de puxar os posts do banco (Se sobrar tempo)
-         
-        const usersArrays:Post[] = [];
-
-        posts.docs.map(async (doc) => {
-            const response = await getUserInfo(doc.data()?.UIDUser);
-            console.log(response.data()?.username);
-            console.log(doc.data()?.IdPost);
-
-                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
-                    return response.url
-                });
-            
-            usersArrays.push({
-                Realname: response.data()?.name,
-                IdPost: doc.data()?.IdPost,
-                UIDUser: doc.data()?.UIDUser,
-                Username: response.data()?.username,
-                DescriptionPost: doc.data()?.DescriptionPost,
-                ImagePost: doc.data().ImagePost == null ? null : fetchImage,
-                Likes: doc.data()?.Likes,
-                Deslikes: doc.data()?.Deslikes,
-                ViewCount: 0,
-                CommentsPost: null,
-            });
-
-            
-            refreshPosts(usersArrays);  
-        });
-    }
-    
-    useEffect(() => {
-        getAllPosts();
-        console.log(posts.forEach((response) => {
-            console.log('From post object : ' + response.ImagePost)
-        }))
-    },[])
-
-    const likePost = async (postId:string, userId:string | undefined) => {
-        const postRef = doc(db, 'posts/'+postId);
-        
-        try {
-            await updateDoc(postRef, {
-                Likes: arrayUnion(userId)
-            })
-        }
-        catch(error)
-        {
-            console.log("Error trying to save the like in the post " + postId + error);
-        }
-    }
-
-    const deslikePost = async (postId:string, userId:string | undefined) => {
-        const postRef = doc(db, 'posts/'+postId);
-
-        try {
-            await updateDoc(postRef, {
-                Deslikes: arrayUnion(userId),
-            })
-        }
-        catch(error)
-        {
-            console.log("Error trying to save the deslike in the post " + postId + error);
-        }
-    }
-
+    const { WhichReacting } = VerifyLikeDeslike();
+    const { posts } = PostHome();
 
     const navigation = useNavigation<NavigationPropStack>();
     return(
@@ -107,7 +27,7 @@ export const Home:React.FC = () => {
                     </TouchableOpacity>
                 
             <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
-            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => likePost(item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => deslikePost(item?.IdPost, auth.currentUser?.uid)}/> }/>
+            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, item?.UIDUser)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, item?.UIDUser)}/> }/>
             </View>
         </View>
     );

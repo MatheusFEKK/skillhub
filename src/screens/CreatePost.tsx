@@ -12,6 +12,7 @@ import { ImagePickerComponent } from "../components/GalleryAccess";
 import * as ImagePicker from 'expo-image-picker';
 import { UploadFile } from "../storage/uploadFile";
 import { v4 as uuid } from 'uuid'
+import PostHome from "../hooks/Posts";
 
 interface PostData{
     IdPost:string,
@@ -29,6 +30,7 @@ export const CreatePost:React.FC = () => {
     const [ textPost, textingThePost ] = useState<string>('');
     const navigationStack = useNavigation<NavigationPropStack>();
     const [ GalleryVisible, setGallery ] = useState(false);
+    const { getAllPosts } = PostHome();
 
     const getTime = () => {
         return new Date().getTime().toString();
