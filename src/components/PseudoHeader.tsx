@@ -1,14 +1,6 @@
 import { Text, View, ScrollView, Pressable, Image, TouchableOpacity } from "react-native";
 import { styles } from "../styles/GlobalStyles";
-import { useState, useEffect } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase/connectionFirebase";
-import ButtonDark from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
-import { BottomBarProps } from "../routes/BottomBar";
-import { db } from "../firebase/connectionFirebase";
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
 import { PseudoHeaderNavigateProps, PseudoHeaderType } from "../types/PseudoHeaderType";
 
 interface Props  {

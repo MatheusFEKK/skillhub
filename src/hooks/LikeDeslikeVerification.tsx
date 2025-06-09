@@ -11,6 +11,16 @@ const VerifyLikeDeslike = () =>
     const [ countLike, setCountLike ]       = useState(0);
     const [ countDeslike, setCountDeslike ] = useState(0);
 
+    const WhichReacting = async (reaction:string) => {
+        if (reaction == 'like')
+        {
+            if (isDesliked == true)
+            {
+                
+            }
+        }
+    }
+
     const verifyLike = async () => {
         const postRef = doc(db, 'posts', postId);
         const postSnapshot = await getDoc(postRef);

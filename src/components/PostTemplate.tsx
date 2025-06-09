@@ -4,7 +4,6 @@ import { styles } from "../styles/GlobalStyles";
 import { Post } from "../types/Post";
 import { auth, db } from "../firebase/connectionFirebase";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
-import { doc, onSnapshot } from "firebase/firestore";
 
 
 export const PostTemplate:React.FC<Post> = (props) => {
@@ -21,7 +20,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
                 <Image width={45} height={45} source={require('../images/userIcon.png')} />
                 <View style={{margin:10}}>
                     <Text style={{fontWeight:'bold'}}>{props.Username}</Text>
-                    <Text style={{opacity:0.5}}>{props.Realname} Post N: {props.IdPost}</Text>
+                    <Text style={{opacity:0.5}}>{props.Realname}{'\n'}Post N: {props.IdPost}</Text>
                 </View>
             </View>
                     <View style={[styles.container, {position:'relative', bottom:10}]}>

@@ -20,8 +20,6 @@ export const Home:React.FC = () => {
         return userInfo;
     }
 
-    
-
     const getAllPosts = async () => {
         const queryPosts = query(collection(db, "posts"));
         
@@ -33,11 +31,10 @@ export const Home:React.FC = () => {
 
         posts.docs.map(async (doc) => {
             const response = await getUserInfo(doc.data()?.UIDUser);
-            console.log(response.data()?.username)
-            console.log(doc.data()?.IdPost)
+            console.log(response.data()?.username);
+            console.log(doc.data()?.IdPost);
 
-
-                const fetchImage = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
+                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
                     return response.url
                 });
             
@@ -110,7 +107,7 @@ export const Home:React.FC = () => {
                     </TouchableOpacity>
                 
             <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
-            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => likePost(item?.IdPost, item?.UIDUser)} DeslikeFunction={() => deslikePost(item?.IdPost, item?.UIDUser)}/> }/>
+            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => likePost(item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => deslikePost(item?.IdPost, auth.currentUser?.uid)}/> }/>
             </View>
         </View>
     );

@@ -1,5 +1,4 @@
 import { useState, useEffect, use } from "react";
-import { UserConditions } from "../components/CheckBoxUser";
 
 const ValidatePassword = () =>
 {
