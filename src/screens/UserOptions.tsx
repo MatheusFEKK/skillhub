@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, Pressable, Image, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, Pressable, Image, TouchableOpacity, TextInput } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { useState, useEffect } from "react";
 import { signOut, User } from "firebase/auth";
@@ -37,9 +37,7 @@ const HeaderUserInfoOptions: React.FC<childComponentFunction> = ({ updateHeaderT
 
 
     const changeHeaderParent = () => {
-
         updateHeaderType(page);
-
     }
 
     return (
@@ -59,14 +57,38 @@ const HeaderUserInfoOptions: React.FC<childComponentFunction> = ({ updateHeaderT
 
 const UserInfoOptions = () => {
     const [userName, setName] = useState<string>('');
-    const [userEmail, setEmail] = useState<string>('');
+
+    useEffect(() => {
+
+
+    }, [])
+
+    async function changeUsername(){
+        const usuario = auth.currentUser;
+        const idUser = String(usuario?.uid);
+        const docRef = doc(db, "users/" + idUser);
+        
+
+        
+    }
+   
+
+    function getUserEmail(){
+         const usuario = auth.currentUser;
+        if (usuario !== null) {
+            return String(usuario.email)
+        }
+    }
 
     return (
         <View style={[styles.root]}>
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
                     <InputUser valueInput={userName} ImageInputUser={require('../images/userInputIcon.png')} PlaceHolderInputUser="Alterar seu nome" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={userEmail} ImageInputUser={require('../images/ic_outline-email.png')} PlaceHolderInputUser="Alterar e-mail" textInsert={(value) => setEmail(value)} inputSecure={false} autoCapitalize="words" />
+                    <View style={[styles.inputUser, styles.flexDirectionRow, styles.borderRadius2, { height: 56 }]}>
+                        <Image style={styles.inputIcons} source={require("../images/ic_outline-email_blocked.png")} />
+                        <TextInput editable={false} style={{ flex: 1, color:'#7B8499' }} placeholderTextColor={'#20202A'} value={getUserEmail()}/>
+                    </View>
                     <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { }} isDisabled={false} />
                 </View>
             </View>
@@ -99,9 +121,9 @@ const AdditionalInfoOptions = () => {
     return (
         <View style={[styles.root]}>
             <View style={[styles.container, styles.alignItemsCenter, styles.mB5, styles.gap3]}>
-                <Image source={require("../images/Profile_avatar_placeholder_large.png")} style={{width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4"}}/>
-                <TouchableOpacity style={[styles.pH5, styles.pV1, {backgroundColor: "#20202A", borderRadius: 10}]}>
-                    <Text style={{fontSize:16, color: "#EEF2F9"}}>Editar</Text>
+                <Image source={require("../images/Profile_avatar_placeholder_large.png")} style={{ width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4" }} />
+                <TouchableOpacity style={[styles.pH5, styles.pV1, { backgroundColor: "#20202A", borderRadius: 10 }]}>
+                    <Text style={{ fontSize: 16, color: "#EEF2F9" }}>Editar</Text>
                 </TouchableOpacity>
             </View>
             <View style={[styles.container]}>
