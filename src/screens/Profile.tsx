@@ -7,7 +7,7 @@ import { ButtonDark } from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
 import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 import PostHome from "../hooks/Posts";
+import { auth } from "../firebase/connectionFirebase";
 
 export const Home:React.FC = () => {
     const { WhichReacting } = VerifyLikeDeslike();
@@ -26,7 +27,7 @@ export const Home:React.FC = () => {
                     </TouchableOpacity>
                 
             <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
-            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, item?.UIDUser)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, item?.UIDUser)}/> }/>
+            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/> }/>
             </View>
         </View>
     );
