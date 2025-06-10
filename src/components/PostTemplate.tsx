@@ -4,10 +4,12 @@ import { styles } from "../styles/GlobalStyles";
 import { Post } from "../types/Post";
 import { auth, db } from "../firebase/connectionFirebase";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
-
+import { useNavigation } from "@react-navigation/native";
+import { NavigationPropStack } from "../routes/Stack";
 
 export const PostTemplate:React.FC<Post> = (props) => {
     const { IsLiked, isDesliked ,setPostId, setUserId, countLike, countDeslike } = VerifyLikeDeslike();
+    const navigation = useNavigation<NavigationPropStack>();
 
     useEffect(() => {
         setPostId(props.IdPost);
@@ -15,7 +17,9 @@ export const PostTemplate:React.FC<Post> = (props) => {
     },[])
     
     return(
-        <View style={[styles.alignItemsCenter, {backgroundColor:'#F4F7FD', width:350, borderRadius:15}]}>
+        <TouchableOpacity style={[styles.alignItemsCenter, {backgroundColor:'#F4F7FD', width:350, borderRadius:15}]} onPress={(value) => navigation.navigate('FullPost', {
+            postId:String(props.IdPost)
+        })}>
             <View style={{alignSelf:'flex-start', margin:15, flexDirection:'row', alignItems:'center'}}>
                 <Image width={45} height={45} source={require('../images/userIcon.png')} />
                 <View style={{margin:10}}>
@@ -31,7 +35,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
             {props.ImagePost == null ? (
                 <View></View>
             ) :
-                <View>
+            <View>
                     <Image width={310} height={327} borderRadius={5} source={{uri: props.ImagePost}} />
                 </View>
             }
@@ -51,8 +55,8 @@ export const PostTemplate:React.FC<Post> = (props) => {
                             <Image source={require('../images/thumbs-up.png')} />
                         </TouchableOpacity>
 
-                    ) : 
-                         <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderTopLeftRadius:15, borderBottomLeftRadius:15, backgroundColor:'#4781EE'}]} onPress={props.LikeFunction}>
+) : 
+<TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderTopLeftRadius:15, borderBottomLeftRadius:15, backgroundColor:'#4781EE'}]} onPress={props.LikeFunction}>
                             <Text style={[styles.fontWeightSemiBold, {color:'#FFFFFF'}]}>{countLike}</Text>
                             <Image source={require('../images/thumbs-up-liked.png')} />
                         </TouchableOpacity>
@@ -63,13 +67,14 @@ export const PostTemplate:React.FC<Post> = (props) => {
                             <Image source={require('../images/thumbs-down.png')} />
                         </TouchableOpacity>
                     ) : 
-                         <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderEndStartRadius:15, borderEndEndRadius:15, backgroundColor:'#4781EE'}]} onPress={props.DeslikeFunction}>
+                    <TouchableOpacity style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.m1, {borderEndStartRadius:15, borderEndEndRadius:15, backgroundColor:'#4781EE'}]} onPress={props.DeslikeFunction}>
                             <Text style={[styles.fontWeightSemiBold, {color:'#FFFFFF'}]}>{countDeslike}</Text>
                             <Image source={require('../images/thumbs-down-desliked.png')} />
                         </TouchableOpacity>
                     }
                     </View>
+                    
                 </View>
-            </View>
+            </TouchableOpacity>
     );
 }

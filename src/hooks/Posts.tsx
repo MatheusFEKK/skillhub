@@ -3,8 +3,10 @@ import { Post, PostArray } from "../types/Post";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/connectionFirebase";
 
+
 const PostHome = () => {
     const [ posts, refreshPosts ] = useState<PostArray>([]);
+    const [ post, refreshPost ]   = useState<PostArray>([]);
 
     const getUserInfo = async (UIDUser:string) => {
         const userRef = doc(db, "users/" + UIDUser);
@@ -49,11 +51,45 @@ const PostHome = () => {
         });
     }
 
+    const getSpecficPost = async (postId:string) => {
+        if (postId)
+        {
+            const postRef = doc(db, 'posts', postId)
+            const query   = await getDoc(postRef)
+            const userInfo = await getUserInfo(query.data()?.UIDUser)
+            
+            const PostData:Post[] = [];
+            
+            if (query.exists())
+            {
+    
+                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${query.data()?.ImagePost}`).then((response) => {
+                        return response.url
+                    });
+    
+                PostData.push({
+                    Realname: userInfo.data()?.name,
+                    IdPost: query.data()?.IdPost,
+                    UIDUser: query.data()?.UIDUser,
+                    Username: userInfo.data()?.username,
+                    DescriptionPost: query.data()?.DescriptionPost,
+                    ImagePost: query.data().ImagePost == null ? null : fetchImage,
+                    Likes: query.data()?.Likes,
+                    Deslikes: query.data()?.Deslikes,
+                    ViewCount: 0,
+                    CommentsPost: null,
+                });
+                
+                refreshPost(PostData);
+            }
+        }
+    }
+
     useEffect(() => {
         getAllPosts();
     },[])
     
-    return { getAllPosts, posts }
+    return { getAllPosts, getSpecficPost, posts, post }
 }
 export default PostHome;
 

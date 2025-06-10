@@ -1,12 +1,14 @@
 import { BottomBarTypes } from "../types/BottomBarTypes";
-import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabNavigationProp, BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Button, Text, getHeaderTitle } from "@react-navigation/elements";
 import { Home } from "../screens/Home";
 import { ProfileUser } from "../screens/Profile";
 import { Achievements } from "../screens/Achievements";
 import { UserOptions } from "../screens/UserOptions";
+import { FullPost } from "../screens/FullPost";
 
-export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes>;
+export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes, 'Home', 'FullPost'>;
+
 
 const BottomBarNav = createBottomTabNavigator<BottomBarTypes>();
 
