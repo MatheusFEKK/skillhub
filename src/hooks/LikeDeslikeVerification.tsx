@@ -83,7 +83,6 @@ const VerifyLikeDeslike = () =>
                 const postData = postSnapshot.data();
                 const userDesliked = postData.Deslikes?.includes(userId);
                 setDeslike(userDesliked);
-                console.log("User desliked: " + userDesliked);
             }
             else{
                 setDeslike(false);

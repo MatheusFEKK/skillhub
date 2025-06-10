@@ -1,16 +1,6 @@
 import { Text, View, ScrollView, Pressable, Image, TouchableOpacity } from "react-native";
 import { styles } from "../styles/GlobalStyles";
-import { useState, useEffect } from "react";
-import { signOut, User } from "firebase/auth";
-import { auth } from "../firebase/connectionFirebase";
-import { ButtonDark } from "../components/ButtonDark";
-import { useNavigation } from "@react-navigation/native";
-import { BottomBarProps } from "../routes/BottomBar";
-import { db } from "../firebase/connectionFirebase";
-import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
-import { PseudoHeader } from "../components/PseudoHeader";
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Header } from "@react-navigation/elements";
+import { useState } from "react";
 import InputUser from "../components/InputUser";
 import { ButtonDefault } from "../components/ButtonDefault";
 

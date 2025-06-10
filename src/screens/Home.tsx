@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { PostTemplate } from "../components/PostTemplate";
