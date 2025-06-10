@@ -12,7 +12,7 @@ const VerifyLikeDeslike = () =>
     const [ countLike, setCountLike ]       = useState(0);
     const [ countDeslike, setCountDeslike ] = useState(0);
 
-    const WhichReacting = async (reaction:string, postId:string, userId:string | undefined) => {
+    const WhichReacting = async (reaction:string, postId:string | undefined, userId:string | undefined) => {
         console.log('Chamou a função WhichReacting ' + "reação: "+ reaction +" "+ "postID: " + postId +"userID: "+ userId)
         if (reaction == 'like')
         {   
@@ -39,7 +39,7 @@ const VerifyLikeDeslike = () =>
         }
     }
 
-    const deleteField = async (_field:string, postId:string) => {
+    const deleteField = async (_field:string, postId:string | undefined) => {
         if (postId)
         {
             const ref = doc(db, 'posts', postId);
@@ -121,7 +121,7 @@ const VerifyLikeDeslike = () =>
         }
     }
 
-    const likePost = async (postId:string, userId:string | undefined) => {
+    const likePost = async (postId:string | undefined, userId:string | undefined) => {
         const postRef = doc(db, 'posts/'+postId);
         
         try {
@@ -135,7 +135,7 @@ const VerifyLikeDeslike = () =>
         }
     }
 
-    const deslikePost = async (postId:string, userId:string | undefined) => {
+    const deslikePost = async (postId:string | undefined, userId:string | undefined) => {
         const postRef = doc(db, 'posts/'+postId);
 
         try {
@@ -173,7 +173,7 @@ const VerifyLikeDeslike = () =>
     },[postId])
                
 
-    return { IsLiked, isDesliked, setPostId, setUserId, countLike, countDeslike, WhichReacting }
+    return { IsLiked, isDesliked, setPostId, setUserId, countLike, countDeslike, WhichReacting, verifyLike }
 }
 
 export default VerifyLikeDeslike;

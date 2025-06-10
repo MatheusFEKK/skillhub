@@ -43,20 +43,6 @@ export const AuthScreen: React.FC = () => {
         console.log("All inputs has been clean!");
     }, [buttonActivated])
 
-    /* const getDataInfo = async (uid:string) =>
-     {
-         const dataRef = doc(db, "users/", uid);
-         const userInfo = await getDoc(dataRef);
- 
-         if (userInfo.exists())
-         {
-             console.log("Trying to get the data of the user " + user +userInfo.data().username);
-             setUserInfo(userInfo.data().username);
-         }
-     }
-         Function to get user information.
-     */
-
     const signUpUser = async () => {
         if (name != '' && email != '' && password != '') {
             if (password == passwordConfirm) {
