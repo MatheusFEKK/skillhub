@@ -7,70 +7,93 @@ import { ButtonDark } from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
 import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface UserInterface {
-    Username:string;
-    Nickname:string;
-    Description?:string;
+    Username: string;
+    Nickname: string;
+    Description?: string;
+    profileImage?: string;
 }
 
+
+
 export const ProfileUser: React.FC = () => {
- 
-    const [user, setUser] = useState<UserInterface | null>();
+
     const [userStored, setUserStored] = useState<UserInterface | null>();
     const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
+    const [ image, setimage ] = useState('');
 
-    function switcherActive(key:string){
-        if(key === "Visão geral"){
+    async function fetchImage(query:string){
+        const response = await fetch(`http://10.75.45.26/storageSkillHub/imageProfile/${query}`)
+        setimage(response.url);
+    }
+
+    function switcherActive(key: string) {
+        if (key === "Visão geral") {
             setPostViewSwitcher("Visão geral")
         }
-        if(key === "Posts"){
+        if (key === "Posts") {
             setPostViewSwitcher("Posts")
         }
-        if(key === "Respostas"){
+        if (key === "Respostas") {
             setPostViewSwitcher("Respostas")
         }
     }
 
-    async function getUserInfo(){
+    
+    
+
+    async function getUserInfo() {
         const usuario = auth.currentUser;
         const idUser = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUser);
-        const docSnap = await getDoc(docRef);
 
-        if(docSnap.exists()){
-            const UserObject = {
-                Username : docSnap.data()?.name,
-                Nickname : docSnap.data()?.username
+        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const UserObject = {
+                    Username: docSnap.data()?.name,
+                    Nickname: docSnap.data()?.username,
+                    Description: docSnap.data()?.description,
+                    profileImage: image,
+                }
+                fetchImage(docSnap.data()?.profileImage)
+               console.log("this is the uri of the image" + image);
+                storeUser('UsuarioSalvo', UserObject);
+                changePreviousUser();
+                
+
             }
-            storeUser('UsuarioSalvo', UserObject);
-            changePreviousUser();
-            
-        }
+
+        });
+
+        return unsubscribe;
     }
-    const storeUser = async(key:string, data:any)=>{
-        try{
+    const storeUser = async (key: string, data: any) => {
+        try {
             const jsonObject = JSON.stringify(data);
             await AsyncStorage.setItem(key, jsonObject);
             console.log("The user has been stored in the AsyncStorage");
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
 
     }
-    const changePreviousUser = async() =>{
-        try{
+
+
+
+    const changePreviousUser = async () => {
+        try {
             const savedValue = await AsyncStorage.getItem('UsuarioSalvo');
             console.log(savedValue)
-            if(savedValue!=null){
+            if (savedValue != null) {
                 const objectValue = JSON.parse(savedValue);
                 setUserStored(objectValue);
                 console.log("The user has been changed!")
             }
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
     }
@@ -78,10 +101,6 @@ export const ProfileUser: React.FC = () => {
     useEffect(() => {
         getUserInfo();
     }, [])
-    
-    useEffect(()=>{
-        console.log(userStored);
-        },[user])
 
 
 
@@ -100,10 +119,10 @@ export const ProfileUser: React.FC = () => {
         <View style={[styles.root, styles.defaultRootBackground]}>
             <PseudoHeader navigate="Home" headerTitle={userStored?.Nickname} />
             <ScrollView style={styles.container}>
-                <View style={[ styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
+                <View style={[styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
                     <View style={[styles.flexDirectionRow, styles.justifyContentBetween, styles.mV2]}>
                         <View style={[styles.flexDirectionRow, styles.gap2, styles.alignItemsCenter]}>
-                            <Image source={require("../images/Profile_avatar_placeholder_large.png")}
+                            <Image source={{ uri: image }}
                                 style={{ borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
                             <View style={[styles.gap1]}>
                                 <Text style={{ fontWeight: "800", fontSize: 14 }}>@{userStored?.Nickname}</Text>
@@ -111,32 +130,32 @@ export const ProfileUser: React.FC = () => {
                             </View>
                         </View>
                         <View style={styles.justifyContentCenter}>
-                            <TouchableOpacity onPress={()=>{navigation.navigate("Options")}} style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#20202A", borderRadius: 10 }]}>
+                            <TouchableOpacity onPress={() => { navigation.navigate("Options") }} style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#20202A", borderRadius: 10 }]}>
                                 <Text style={{ color: "#EEF2F9", fontWeight: 600 }}>Editar</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={[styles.justifyContentBetween, styles.flexDirectionRow]}>
                         <View style={styles.gap2}>
-                            <Text style={{ fontWeight: "700", fontSize: 14 }}>Descrição placeholder</Text>
+                            <Text style={{ fontWeight: "700", fontSize: 14 }}>{userStored?.Description ? userStored?.Description : "Nada informado."}</Text>
                             <View style={[styles.flexDirectionRow, styles.gap2]}>
                                 <Text style={{ fontSize: 12, fontWeight: 700 }}>14 <Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguindo</Text></Text>
                                 <Text style={{ fontSize: 12, fontWeight: 700 }}>140<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguidores</Text></Text>
                             </View>
                         </View>
-                         <View>
-                            <Text style={{fontSize:12, fontWeight: 600, color:"#54A7F4"}}>Conquistas</Text>
-                         </View>
+                        <View>
+                            <Text style={{ fontSize: 12, fontWeight: 600, color: "#54A7F4" }}>Conquistas</Text>
+                        </View>
                     </View>
                 </View>
-                <View style={[ styles.flexDirectionRow, styles.mV5, styles.justifyContentCenter]}>
-                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter,{flex:1,backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF" , borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]} >
+                <View style={[styles.flexDirectionRow, styles.mV5, styles.justifyContentCenter]}>
+                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF", borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }]} >
                         <Text>Visão geral</Text>
                     </Pressable>
-                    <Pressable onPress={() => switcherActive("Posts")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter,{flex:1,backgroundColor: postViewSwitcher === "Posts" ? "#54A7F4" : "#E5E7EF",}]} >
+                    <Pressable onPress={() => switcherActive("Posts")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Posts" ? "#54A7F4" : "#E5E7EF", }]} >
                         <Text>Posts</Text>
                     </Pressable>
-                    <Pressable onPress={() => switcherActive("Respostas")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter,{flex:1,backgroundColor: postViewSwitcher === "Respostas" ? "#54A7F4" : "#E5E7EF", borderTopRightRadius: 10, borderBottomRightRadius: 10}]} >
+                    <Pressable onPress={() => switcherActive("Respostas")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Respostas" ? "#54A7F4" : "#E5E7EF", borderTopRightRadius: 10, borderBottomRightRadius: 10 }]} >
                         <Text>Respostas</Text>
                     </Pressable>
                 </View>

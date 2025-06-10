@@ -1,7 +1,7 @@
 import { Text, View, ScrollView, Pressable, Image, TouchableOpacity, TextInput } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { useState, useEffect } from "react";
-import { signOut, User } from "firebase/auth";
+import { EmailAuthProvider, getAuth, signOut, User } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import { ButtonDark } from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
@@ -10,10 +10,15 @@ import { db } from "../firebase/connectionFirebase";
 import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Header } from "@react-navigation/elements";
+import { Assets, Header } from "@react-navigation/elements";
 import InputUser from "../components/InputUser";
 import { ButtonDefault } from "../components/ButtonDefault";
-
+import { reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
+import { ImagePickerSuccessResult } from "expo-image-picker";
+import { ImagePickerComponent } from "../components/GalleryAccess";
+import * as ImagePicker from 'expo-image-picker';
+import { UploadProfileImage } from "../storage/uploadProfileImage";
+import { v4 as uuid } from 'uuid'
 interface childComponentFunction {
     updateHeaderType: (key: number) => void,
     title: string,
@@ -34,7 +39,6 @@ const HeaderDefault = () => {
 }
 
 const HeaderUserInfoOptions: React.FC<childComponentFunction> = ({ updateHeaderType, title, page }) => {
-
 
     const changeHeaderParent = () => {
         updateHeaderType(page);
@@ -67,9 +71,7 @@ const UserInfoOptions = () => {
         const usuario = auth.currentUser;
         const idUser = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUser);
-        
-
-        
+        updateDoc(docRef, {...userName && {name:userName} })
     }
    
 
@@ -89,7 +91,7 @@ const UserInfoOptions = () => {
                         <Image style={styles.inputIcons} source={require("../images/ic_outline-email_blocked.png")} />
                         <TextInput editable={false} style={{ flex: 1, color:'#7B8499' }} placeholderTextColor={'#20202A'} value={getUserEmail()}/>
                     </View>
-                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { }} isDisabled={false} />
+                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { changeUsername() }} isDisabled={false} />
                 </View>
             </View>
         </View>
@@ -98,15 +100,20 @@ const UserInfoOptions = () => {
 
 const UserPasswordOptions = () => {
     const [userName, setName] = useState<string>('');
-    const [userEmail, setEmail] = useState<string>('');
+    const [passwordVerify, setPasswordVerify] = useState<string>('');
+
+    
+
+   
+
 
     return (
         <View style={[styles.root]}>
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
                     <InputUser valueInput={userName} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Digite sua senha antiga" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={userName} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Alterar senha" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={userEmail} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setEmail(value)} inputSecure={false} autoCapitalize="words" />
+                    <InputUser valueInput={passwordVerify} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Alterar senha" textInsert={(value) => setPasswordVerify(value)} inputSecure={false} autoCapitalize="words" />
+                    <InputUser valueInput={userName} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
                     <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { }} isDisabled={false} />
                 </View>
             </View>
@@ -115,22 +122,53 @@ const UserPasswordOptions = () => {
 }
 
 const AdditionalInfoOptions = () => {
-    const [userName, setName] = useState<string>('');
-    const [userEmail, setEmail] = useState<string>('');
+    const [userNick, setNick] = useState<string>('');
+    const [userDescription, setDescription] = useState<string>('');
+    const [image, setImage] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes:['images'],
+            allowsEditing:false,
+            aspect: [4, 3],
+            quality:1,
+        });
+        if (!result.canceled)
+        {
+            setImage(result);
+        }
+    }
+
+    
+
+    async function changeAdditionalInfo(){
+        const idImage = uuid() + '.jpeg';
+        const usuario = auth.currentUser;
+        const idUser = String(usuario?.uid);
+        const docRef = doc(db, "users/" + idUser);
+        updateDoc(docRef, {
+            ...userNick && {name:userNick},
+            ...userDescription && {description:userDescription},
+            ...image?.assets[0].assetId && {profileImage: idImage}
+        })
+        UploadProfileImage(image?.assets[0].uri, idImage)
+    }
+
+
 
     return (
         <View style={[styles.root]}>
             <View style={[styles.container, styles.alignItemsCenter, styles.mB5, styles.gap3]}>
                 <Image source={require("../images/Profile_avatar_placeholder_large.png")} style={{ width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4" }} />
-                <TouchableOpacity style={[styles.pH5, styles.pV1, { backgroundColor: "#20202A", borderRadius: 10 }]}>
+                <TouchableOpacity style={[styles.pH5, styles.pV1, { backgroundColor: "#20202A", borderRadius: 10 }]} onPress={() => pickImage()}>
                     <Text style={{ fontSize: 16, color: "#EEF2F9" }}>Editar</Text>
                 </TouchableOpacity>
             </View>
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
-                    <InputUser valueInput={userName} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Alterar apelido de usuário" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={userName} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Criar descrição(max 20 letras)" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { }} isDisabled={false} />
+                    <InputUser valueInput={userNick} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Alterar apelido de usuário" textInsert={(value) => setNick(value)} inputSecure={false} autoCapitalize="words" />
+                    <InputUser valueInput={userDescription} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Criar descrição(max 30 letras)" textInsert={(value) => setDescription(value)} inputSecure={false} autoCapitalize="words" />
+                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { changeAdditionalInfo()}} isDisabled={false} />
                 </View>
             </View>
         </View>

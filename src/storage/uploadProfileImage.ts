@@ -1,4 +1,4 @@
-export const UploadProfileImage = async (fileURI:string, fileName:string) => {
+export const UploadProfileImage = async (fileURI:string | undefined, fileName:string | null | undefined) => {
         
         const formData = new FormData();
         
@@ -14,7 +14,6 @@ export const UploadProfileImage = async (fileURI:string, fileName:string) => {
                     method:'POST',
                     body:formData,
                     headers:{
-
                     },
                 },
             );
