@@ -1,4 +1,4 @@
-import { doc, getDoc, getDocs, query, collection } from "firebase/firestore";
+import { doc, getDoc, getDocs, query, collection, DocumentData } from "firebase/firestore";
 import { Post, PostArray } from "../types/Post";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/connectionFirebase";
@@ -6,9 +6,9 @@ import { db } from "../firebase/connectionFirebase";
 
 const PostHome = () => {
     const [ posts, refreshPosts ] = useState<PostArray>([]);
-    const [ post, refreshPost ]   = useState<PostArray>([]);
+    const [ post, refreshPost ]   = useState<Post>();
 
-    const getUserInfo = async (UIDUser:string) => {
+    const getUserInfo = async (UIDUser:string | undefined) => {
         const userRef = doc(db, "users/" + UIDUser);
         const userInfo = await getDoc(userRef);
 
@@ -29,7 +29,7 @@ const PostHome = () => {
             console.log(response.data()?.username);
             console.log(doc.data()?.IdPost);
 
-                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
+                const fetchImage = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
                     return response.url
                 });
             
@@ -58,29 +58,26 @@ const PostHome = () => {
             const query   = await getDoc(postRef)
             const userInfo = await getUserInfo(query.data()?.UIDUser)
             
-            const PostData:Post[] = [];
+            const usersArrays:Post[] = [];
             
             if (query.exists())
             {
-    
-                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${query.data()?.ImagePost}`).then((response) => {
+                const fetchImage = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${query.data()?.ImagePost}`).then((response) => {
                         return response.url
                     });
-    
-                PostData.push({
-                    Realname: userInfo.data()?.name,
-                    IdPost: query.data()?.IdPost,
-                    UIDUser: query.data()?.UIDUser,
-                    Username: userInfo.data()?.username,
-                    DescriptionPost: query.data()?.DescriptionPost,
-                    ImagePost: query.data().ImagePost == null ? null : fetchImage,
-                    Likes: query.data()?.Likes,
-                    Deslikes: query.data()?.Deslikes,
-                    ViewCount: 0,
-                    CommentsPost: null,
-                });
-                
-                refreshPost(PostData);
+
+            refreshPost({
+                Realname: userInfo.data()?.name,
+                IdPost: query.data()?.IdPost,
+                UIDUser: query.data()?.UIDUser,
+                Username: userInfo.data()?.username,
+                DescriptionPost: query.data()?.DescriptionPost,
+                ImagePost: query.data().ImagePost == null ? null : fetchImage,
+                Likes: query.data()?.Likes,
+                Deslikes: query.data()?.Deslikes,
+                ViewCount: 0,
+                CommentsPost: null,
+            })
             }
         }
     }
@@ -89,7 +86,7 @@ const PostHome = () => {
         getAllPosts();
     },[])
     
-    return { getAllPosts, getSpecficPost, posts, post }
+    return { getAllPosts, getSpecficPost, posts, post, getUserInfo }
 }
 export default PostHome;
 
