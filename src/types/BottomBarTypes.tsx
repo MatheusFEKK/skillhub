@@ -3,4 +3,6 @@ export type BottomBarTypes = {
     Home: undefined;
     Profile: undefined;
     Options: undefined;
+    Search: undefined;
+    CreatePost: undefined;
 }

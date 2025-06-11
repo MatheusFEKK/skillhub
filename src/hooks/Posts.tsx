@@ -29,7 +29,7 @@ const PostHome = () => {
             console.log(response.data()?.username);
             console.log(doc.data()?.IdPost);
 
-                const fetchImage = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
+                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
                     return response.url
                 });
             
@@ -58,11 +58,9 @@ const PostHome = () => {
             const query   = await getDoc(postRef)
             const userInfo = await getUserInfo(query.data()?.UIDUser)
             
-            const usersArrays:Post[] = [];
-            
             if (query.exists())
             {
-                const fetchImage = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${query.data()?.ImagePost}`).then((response) => {
+                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${query.data()?.ImagePost}`).then((response) => {
                         return response.url
                     });
 

@@ -1,12 +1,12 @@
 import { BottomBarTypes } from "../types/BottomBarTypes";
-import { BottomTabNavigationProp, BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Button, Text, getHeaderTitle } from "@react-navigation/elements";
+import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home } from "../screens/Home";
 import { ProfileUser } from "../screens/Profile";
 import { Achievements } from "../screens/Achievements";
 import { UserOptions } from "../screens/UserOptions";
-import { FullPost } from "../screens/FullPost";
 import { Image, View } from "react-native";
+import { SearchScreen } from "../screens/Search";
+import { CreatePost } from "../screens/CreatePost";
 
 export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes, 'Home', 'FullPost'>;
 
@@ -15,10 +15,7 @@ const BottomBarNav = createBottomTabNavigator<BottomBarTypes>();
 
 export const BottomBar: React.FC = () => {
     return (
-        <BottomBarNav.Navigator 
-            initialRouteName={"Home"} 
-            screenOptions={{ headerShown: false, tabBarShowLabel:false}}
-        >
+        <BottomBarNav.Navigator initialRouteName={"Home"} screenOptions={{ headerShown: false, tabBarShowLabel:false}}>
             <BottomBarNav.Screen name={"Home"} component={Home} options={{tabBarIcon: ({size, focused}) => {
                 const IconSize = size * 1.2;
                 return (
@@ -37,7 +34,41 @@ export const BottomBar: React.FC = () => {
                     </View>
                 );
             }}}/>
-            <BottomBarNav.Screen name={"Achievements"} component={Achievements} />
+            <BottomBarNav.Screen name={"Search"} component={SearchScreen} options={{tabBarIcon: ({size, focused}) => {
+                 const IconSize = size * 1.2;
+
+                return (
+                    <View style={{alignItems:'center',width:IconSize, height:IconSize, margin:'auto', gap:5}}>
+                       {focused == true ?
+                       <View style={{alignItems:'center', width:IconSize, height:IconSize, margin:'auto', gap:5}}>
+                            <Image style={{width:IconSize, height:IconSize}} source={require('../images/BottomBarImages/search-focused.png')} />
+                            
+                            <Image source={require('../images/BottomBarImages/focused.png')} />
+                        </View>
+                        : 
+                        <View>
+                            <Image style={{width:IconSize, height:IconSize}} source={require('../images/BottomBarImages/search-unfocused.png')} />
+                        </View>
+                    }
+                    </View>
+                );
+            }}}/>
+            <BottomBarNav.Screen name={"CreatePost"} component={CreatePost} options={{tabBarIcon: ({size, focused}) => {
+                const IconSize = size * 2;
+
+                return (
+                    <View style={{justifyContent:'center',alignItems:'center',width:IconSize, height:IconSize, gap:5}}>
+                      
+                       <View style={{alignItems:'center', width:IconSize, height:IconSize, margin:'auto', gap:5}}>
+                            <Image style={{width:IconSize, height:IconSize}} source={require('../images/BottomBarImages/createpost-icon.png')} />
+                            
+                            
+                        </View>
+                         
+                    
+                    </View>
+                );
+            }}} />
             <BottomBarNav.Screen name={"Profile"} component={ProfileUser} options={{tabBarIcon: ({size, focused}) => {
                 const IconSize = size * 1.2;
 
@@ -57,7 +88,25 @@ export const BottomBar: React.FC = () => {
                     </View>
                 );
             }}}/>
-            <BottomBarNav.Screen name={"Options"} component={UserOptions} />
+            <BottomBarNav.Screen name={"Options"} component={UserOptions} options={{tabBarIcon: ({size, focused}) => {
+                const IconSize = size * 1.2;
+                
+                return (
+                    <View style={{alignItems:'center',width:IconSize, height:IconSize, margin:'auto', gap:5}}>
+                       {focused == true ?
+                       <View style={{alignItems:'center', width:IconSize, height:IconSize, margin:'auto', gap:5}}>
+                            <Image style={{width:IconSize, height:IconSize}} source={require('../images/BottomBarImages/menu-focused.png')} />
+                            
+                            <Image source={require('../images/BottomBarImages/focused.png')} />
+                        </View>
+                        : 
+                        <View>
+                            <Image style={{width:IconSize, height:IconSize}} source={require('../images/BottomBarImages/menu-unfocused.png')} />
+                        </View>
+                    }
+                    </View>
+                );
+            }}}/>
         </BottomBarNav.Navigator>
     );
 };
