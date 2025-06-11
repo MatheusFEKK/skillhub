@@ -13,12 +13,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Assets, Header } from "@react-navigation/elements";
 import InputUser from "../components/InputUser";
 import { ButtonDefault } from "../components/ButtonDefault";
-import { reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
+import { confirmPasswordReset, reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
 import { ImagePickerSuccessResult } from "expo-image-picker";
 import { ImagePickerComponent } from "../components/GalleryAccess";
 import * as ImagePicker from 'expo-image-picker';
 import { UploadProfileImage } from "../storage/uploadProfileImage";
 import { v4 as uuid } from 'uuid'
+import ValidatePassword from "../hooks/PasswordValidation";
+import { UserConditions } from "../components/CheckBoxUser";
 interface childComponentFunction {
     updateHeaderType: (key: number) => void,
     title: string,
@@ -100,28 +102,37 @@ const UserInfoOptions = () => {
 
 const UserPasswordOptions = () => {
     const [currentPassword, setCurrentPassword] = useState<string>('');
+    const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+    const [errorCode, setErrorCode] = useState<string>('');
     const [userName, setName] = useState<string>('');
-    const [passwordVerify, setPasswordVerify] = useState<string>('');
     const user = auth.currentUser;
+    const { setPassword,password, passwordHaveNumber, passwordHaveSpecialCaptalize, passwordLengthRequirement } = ValidatePassword()
 
 
-    const mudarSenha =  async ()=>{
 
-        try{
+
+    const mudarSenha = async () => {
+        if(passwordConfirm !== password){
+            return setErrorCode("As senhas não coincidem!");
+        }
+        try {
             if (user && user.email) {
                 const cred = EmailAuthProvider.credential(
                     user.email,
                     currentPassword
                 );
-                 await reauthenticateWithCredential(user, cred);
-                 await updatePassword(user, passwordVerify);
-                 console.log("Senha alterada")
+                await reauthenticateWithCredential(user, cred);
+                await updatePassword(user, password);
+                setErrorCode("");
+                setCurrentPassword("");
+                setPasswordConfirm("");
+                console.log("Senha alterada")
             }
 
-        }catch(error){
-            console.log(error)
+        } catch (error) {
+            setErrorCode("Por favor digite sua senha atual!")
         }
-    } 
+    }
 
 
     return (
@@ -129,9 +140,18 @@ const UserPasswordOptions = () => {
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
                     <InputUser valueInput={currentPassword} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Digite sua senha antiga" textInsert={(value) => setCurrentPassword(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={passwordVerify} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Alterar senha" textInsert={(value) => setPasswordVerify(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={userName} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { mudarSenha()}} isDisabled={false} />
+                    <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Alterar senha" textInsert={(value) => setPassword(value)} inputSecure={false} autoCapitalize="words" />
+                    <InputUser valueInput={passwordConfirm} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setPasswordConfirm(value)} inputSecure={false} autoCapitalize="words" />
+                    {errorCode === "As senhas não coincidem!" && <View><Text style={{color: "#f45454"}}>As senhas não coincidem!</Text></View>}
+                    {errorCode === "Por favor insira a sua senha atual!" && <View><Text style={{color: "#f45454"}}>As senhas não coincidem!</Text></View>}
+                    {errorCode === "Por favor digite sua senha atual!" && <View><Text style={{color: "#f45454"}}>Por favor digite sua senha atual!</Text></View>}
+                    <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos 8 caracteres"} isChecked={passwordLengthRequirement} />
+
+                    <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos um número"} isChecked={passwordHaveNumber} />
+
+                    <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos uma letra maiúsculo ou um caracter especial"} isChecked={passwordHaveSpecialCaptalize} />
+
+                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { mudarSenha() }} isDisabled={false} />
                 </View>
             </View>
         </View>

@@ -60,11 +60,9 @@ export const ProfileUser: React.FC = () => {
                     profileImage: image,
                 }
                 fetchImage(docSnap.data()?.profileImage)
-               console.log("this is the uri of the image" + image);
+                console.log("this is the uri of the image" + image);
                 storeUser('UsuarioSalvo', UserObject);
                 changePreviousUser();
-                
-
             }
 
         });
@@ -122,7 +120,7 @@ export const ProfileUser: React.FC = () => {
                 <View style={[styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
                     <View style={[styles.flexDirectionRow, styles.justifyContentBetween, styles.mV2]}>
                         <View style={[styles.flexDirectionRow, styles.gap2, styles.alignItemsCenter]}>
-                            <Image source={{ uri: image }}
+                            <Image source={ image ? { uri: image} : require("../images/Profile_avatar_placeholder_large.png")}
                                 style={{ borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
                             <View style={[styles.gap1]}>
                                 <Text style={{ fontWeight: "800", fontSize: 14 }}>@{userStored?.Nickname}</Text>
