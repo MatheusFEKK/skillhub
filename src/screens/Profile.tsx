@@ -27,7 +27,7 @@ export const ProfileUser: React.FC = () => {
     const [ image, setimage ] = useState('');
 
     async function fetchImage(query:string){
-        const response = await fetch(`http://10.75.45.26/storageSkillHub/imageProfile/${query}`)
+        const response = await fetch(`http://192.168.1.109/storageSkillHub/imageProfile/${query}`)
         setimage(response.url);
     }
 

@@ -67,16 +67,16 @@ const UserInfoOptions = () => {
 
     }, [])
 
-    async function changeUsername(){
+    async function changeUsername() {
         const usuario = auth.currentUser;
         const idUser = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUser);
-        updateDoc(docRef, {...userName && {name:userName} })
+        updateDoc(docRef, { ...userName && { name: userName } })
     }
-   
 
-    function getUserEmail(){
-         const usuario = auth.currentUser;
+
+    function getUserEmail() {
+        const usuario = auth.currentUser;
         if (usuario !== null) {
             return String(usuario.email)
         }
@@ -89,7 +89,7 @@ const UserInfoOptions = () => {
                     <InputUser valueInput={userName} ImageInputUser={require('../images/userInputIcon.png')} PlaceHolderInputUser="Alterar seu nome" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
                     <View style={[styles.inputUser, styles.flexDirectionRow, styles.borderRadius2, { height: 56 }]}>
                         <Image style={styles.inputIcons} source={require("../images/ic_outline-email_blocked.png")} />
-                        <TextInput editable={false} style={{ flex: 1, color:'#7B8499' }} placeholderTextColor={'#20202A'} value={getUserEmail()}/>
+                        <TextInput editable={false} style={{ flex: 1, color: '#7B8499' }} placeholderTextColor={'#20202A'} value={getUserEmail()} />
                     </View>
                     <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { changeUsername() }} isDisabled={false} />
                 </View>
@@ -99,22 +99,39 @@ const UserInfoOptions = () => {
 }
 
 const UserPasswordOptions = () => {
+    const [currentPassword, setCurrentPassword] = useState<string>('');
     const [userName, setName] = useState<string>('');
     const [passwordVerify, setPasswordVerify] = useState<string>('');
+    const user = auth.currentUser;
 
-    
 
-   
+    const mudarSenha =  async ()=>{
+
+        try{
+            if (user && user.email) {
+                const cred = EmailAuthProvider.credential(
+                    user.email,
+                    currentPassword
+                );
+                 await reauthenticateWithCredential(user, cred);
+                 await updatePassword(user, passwordVerify);
+                 console.log("Senha alterada")
+            }
+
+        }catch(error){
+            console.log(error)
+        }
+    } 
 
 
     return (
         <View style={[styles.root]}>
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
-                    <InputUser valueInput={userName} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Digite sua senha antiga" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
+                    <InputUser valueInput={currentPassword} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Digite sua senha antiga" textInsert={(value) => setCurrentPassword(value)} inputSecure={false} autoCapitalize="words" />
                     <InputUser valueInput={passwordVerify} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Alterar senha" textInsert={(value) => setPasswordVerify(value)} inputSecure={false} autoCapitalize="words" />
                     <InputUser valueInput={userName} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setName(value)} inputSecure={false} autoCapitalize="words" />
-                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { }} isDisabled={false} />
+                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { mudarSenha()}} isDisabled={false} />
                 </View>
             </View>
         </View>
@@ -126,30 +143,30 @@ const AdditionalInfoOptions = () => {
     const [userDescription, setDescription] = useState<string>('');
     const [image, setImage] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
 
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes:['images'],
-            allowsEditing:false,
+            mediaTypes: ['images'],
+            allowsEditing: false,
             aspect: [4, 3],
-            quality:1,
+            quality: 1,
         });
-        if (!result.canceled)
-        {
+        if (!result.canceled) {
             setImage(result);
         }
     }
 
-    
 
-    async function changeAdditionalInfo(){
+
+    async function changeAdditionalInfo() {
         const idImage = uuid() + '.jpeg';
         const usuario = auth.currentUser;
         const idUser = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUser);
         updateDoc(docRef, {
-            ...userNick && {name:userNick},
-            ...userDescription && {description:userDescription},
-            ...image?.assets[0].assetId && {profileImage: idImage}
+            ...userNick && { name: userNick },
+            ...userDescription && { description: userDescription },
+            ...image?.assets[0].assetId && { profileImage: idImage }
         })
         UploadProfileImage(image?.assets[0].uri, idImage)
     }
@@ -168,7 +185,7 @@ const AdditionalInfoOptions = () => {
                 <View style={[styles.gap3]}>
                     <InputUser valueInput={userNick} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Alterar apelido de usuário" textInsert={(value) => setNick(value)} inputSecure={false} autoCapitalize="words" />
                     <InputUser valueInput={userDescription} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Criar descrição(max 30 letras)" textInsert={(value) => setDescription(value)} inputSecure={false} autoCapitalize="words" />
-                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { changeAdditionalInfo()}} isDisabled={false} />
+                    <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { changeAdditionalInfo() }} isDisabled={false} />
                 </View>
             </View>
         </View>
