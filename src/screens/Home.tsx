@@ -7,7 +7,6 @@ import { NavigationPropStack } from "../routes/Stack";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 import PostHome from "../hooks/Posts";
 import { auth } from "../firebase/connectionFirebase";
-import { BottomBarProps } from "../routes/BottomBar";
 
 export const Home:React.FC = () => {
     const { WhichReacting } = VerifyLikeDeslike();
