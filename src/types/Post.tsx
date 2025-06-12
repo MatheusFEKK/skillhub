@@ -3,6 +3,7 @@ import { CommentObj } from "./CommentObject";
 export interface Post{
     Username:string;
     Realname:string;
+    profileImage?:string;
     IdPost:string;
     UIDUser?:string;
     ImagePost?:string | null;

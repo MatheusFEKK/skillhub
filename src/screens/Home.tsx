@@ -12,7 +12,7 @@ import { BottomBarProps } from "../routes/BottomBar";
 export const Home:React.FC = () => {
     const { WhichReacting } = VerifyLikeDeslike();
     const { posts } = PostHome();
-    const navigationStack = useNavigation<NavigationPropStack>();
+    const navigationStack = useNavigation<NavigationPropStack>() 
 
     return(
         <View style={[styles.root]}>
@@ -28,7 +28,7 @@ export const Home:React.FC = () => {
                     </TouchableOpacity>
                 
             <FlatList contentContainerStyle={[styles.mT5, styles.gap3]} data={posts} renderItem={({item}
-            ) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/> }/>
+            ) => <PostTemplate profileImage={item?.profileImage} IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/> }/>
             </View>
         </View>
     );

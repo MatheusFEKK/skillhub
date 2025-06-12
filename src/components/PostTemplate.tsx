@@ -21,7 +21,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
             postId:String(props.IdPost)
         })}>
             <View style={{alignSelf:'flex-start', margin:15, flexDirection:'row', alignItems:'center'}}>
-                <Image width={45} height={45} source={require('../images/userIcon.png')} />
+                <Image style={{width: 45, height:45, borderRadius: 100}} source={props.profileImage ? {uri: props.profileImage}  : require('../images/Profile_avatar_placeholder_large.png')} />
                 <View style={{margin:10}}>
                     <Text style={{fontWeight:'bold'}}>{props.Username}</Text>
                     <Text style={{opacity:0.5}}>{props.Realname}{'\n'}Post N: {props.IdPost}</Text>
