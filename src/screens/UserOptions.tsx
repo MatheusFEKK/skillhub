@@ -210,7 +210,7 @@ const AdditionalInfoOptions = () => {
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
                     <InputUser valueInput={userNick} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Alterar apelido de usuário" textInsert={(value) => setNick(value)} inputSecure={false} autoCapitalize="words" />
-                    <InputUser valueInput={userDescription} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Criar descrição(max 30 letras)" textInsert={(value) => setDescription(value)} inputSecure={false} autoCapitalize="words" />
+                    <InputUser valueInput={userDescription} ImageInputUser={require('../images/penIcon.png')} PlaceHolderInputUser="Criar descrição(max 30 letras)" textInsert={(value) => setDescription(value)} inputSecure={false} autoCapitalize="words"  maxLength={30}/>
                     <ButtonDefault PlaceHolderButtonDefault="Confirmar" functionButtonDefault={() => { changeAdditionalInfo() }} isDisabled={false} />
                 </View>
             </View>

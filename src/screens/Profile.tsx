@@ -27,7 +27,7 @@ export const ProfileUser: React.FC = () => {
     const [ image, setimage ] = useState('');
 
     async function fetchImage(query:string){
-        const response = await fetch(`http://192.168.1.109/storageSkillHub/imageProfile/${query}`)
+        const response = await fetch(`http://10.75.45.26/storageSkillHub/imageProfile/${query}`)
         setimage(response.url);
     }
 
@@ -135,7 +135,9 @@ export const ProfileUser: React.FC = () => {
                     </View>
                     <View style={[styles.justifyContentBetween, styles.flexDirectionRow]}>
                         <View style={styles.gap2}>
-                            <Text style={{ fontWeight: "700", fontSize: 14 }}>{userStored?.Description ? userStored?.Description : "Nada informado."}</Text>
+                            <View style={{maxWidth:140}}>
+                                <Text style={{ fontWeight: "700", fontSize: 14 }}>{userStored?.Description ? userStored?.Description : "Nada informado."}</Text>
+                            </View>
                             <View style={[styles.flexDirectionRow, styles.gap2]}>
                                 <Text style={{ fontSize: 12, fontWeight: 700 }}>14 <Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguindo</Text></Text>
                                 <Text style={{ fontSize: 12, fontWeight: 700 }}>140<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguidores</Text></Text>

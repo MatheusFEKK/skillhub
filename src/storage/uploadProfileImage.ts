@@ -9,7 +9,7 @@ export const UploadProfileImage = async (fileURI:string | undefined, fileName:st
         } as any); 
         
         try{
-            await fetch('http://192.168.1.109/storageSkillHub/endpoints/profilePhotoUpload.php', 
+            await fetch('http://10.75.45.26/storageSkillHub/endpoints/profilePhotoUpload.php', 
                 {
                     method:'POST',
                     body:formData,
