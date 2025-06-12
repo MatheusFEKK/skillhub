@@ -58,7 +58,7 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                 <View></View>
             ) :
             <View>
-                    <Image width={310} height={327} borderRadius={5} source={{uri: post.ImagePost}} />
+                    <Image width={310} height={327} borderRadius={5} source={{uri: String(post.ImagePost)}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>

@@ -2,6 +2,7 @@ import { doc, getDoc, getDocs, query, collection, DocumentData } from "firebase/
 import { Post, PostArray } from "../types/Post";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/connectionFirebase";
+import fetchImage from "../storage/fetchImage";
 
 
 const PostHome = () => {
@@ -29,17 +30,16 @@ const PostHome = () => {
             console.log(response.data()?.username);
             console.log(doc.data()?.IdPost);
 
-                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
-                    return response.url
-                });
-            
+                const ImageURL = await fetchImage(doc.data()?.ImagePost)
+                console.log("The image url is " +ImageURL)
+                
             usersArrays.push({
                 Realname: response.data()?.name,
                 IdPost: doc.data()?.IdPost,
                 UIDUser: doc.data()?.UIDUser,
                 Username: response.data()?.username,
                 DescriptionPost: doc.data()?.DescriptionPost,
-                ImagePost: doc.data().ImagePost == null ? null : fetchImage,
+                ImagePost: doc.data().ImagePost == null ? null : ImageURL,
                 Likes: doc.data()?.Likes,
                 Deslikes: doc.data()?.Deslikes,
                 ViewCount: 0,
@@ -60,9 +60,7 @@ const PostHome = () => {
             
             if (query.exists())
             {
-                const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${query.data()?.ImagePost}`).then((response) => {
-                        return response.url
-                    });
+                const ImageURL = await fetchImage(query.data()?.ImagePost)
 
             refreshPost({
                 Realname: userInfo.data()?.name,
@@ -70,7 +68,7 @@ const PostHome = () => {
                 UIDUser: query.data()?.UIDUser,
                 Username: userInfo.data()?.username,
                 DescriptionPost: query.data()?.DescriptionPost,
-                ImagePost: query.data().ImagePost == null ? null : fetchImage,
+                ImagePost: query.data().ImagePost == null ? null : ImageURL,
                 Likes: query.data()?.Likes,
                 Deslikes: query.data()?.Deslikes,
                 ViewCount: 0,

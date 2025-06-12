@@ -5,6 +5,7 @@ import { auth, db } from "../firebase/connectionFirebase";
 import { useEffect, useRef, useState } from "react";
 import { Post } from "../types/Post";
 import PostHome from "../hooks/Posts";
+import fetchImage from "../storage/fetchImage";
 
 export const SearchScreen:React.FC = () => {
     const [ search, setSearch ] = useState<string>('');
@@ -37,14 +38,17 @@ export const SearchScreen:React.FC = () => {
 
     const Search = async () => {
         const queryPost = collection(db, 'posts');
-
             const querySnapshot = await getDocs(queryPost);
-
-            const fetchImage = await fetch(`http://10.75.45.30/storageSkillHub/imageFiles/${doc.data()?.ImagePost}`).then((response) => {
-                return response.url
-            });
-    
+        
+            if (!querySnapshot.empty)
+            {
+                console.log("Information acquired");
+            }else{
+                console.log("Information not acquired");
+            }
+            
             const posts = querySnapshot.docs.map(async (doc) => {
+                const ImageURL = await fetchImage(doc.data()?.ImagePost)
                 const userInfo = await getUserInfo(doc.data()?.UIDUser);
                 refreshPosts({
                     Realname: userInfo.data()?.name,
@@ -52,13 +56,15 @@ export const SearchScreen:React.FC = () => {
                     UIDUser: doc.data()?.UIDUser,
                     Username: userInfo.data()?.username,
                     DescriptionPost: doc.data()?.DescriptionPost,
-                    ImagePost: doc.data().ImagePost == null ? null : fetchImage,
+                    ImagePost: doc.data().ImagePost == null ? null : ImageURL,
                     Likes: doc.data()?.Likes,
                     Deslikes: doc.data()?.Deslikes,
                     ViewCount: 0,
                     CommentsPost: null,
                 })
             })
+
+            
         
     }
 

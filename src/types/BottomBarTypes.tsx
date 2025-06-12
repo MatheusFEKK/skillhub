@@ -5,4 +5,5 @@ export type BottomBarTypes = {
     Options: undefined;
     Search: undefined;
     CreatePost: undefined;
+    Stack:undefined;
 }

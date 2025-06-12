@@ -1,10 +1,10 @@
 import { TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, Platform, Alert, Text } from "react-native";
 import { NavigationPropStack } from "../routes/Stack";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { styles } from "../styles/GlobalStyles";
 import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 import { AccessDataImage } from "../components/ButtonAccessDataImage";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { auth } from "../firebase/connectionFirebase";
 import { db } from "../firebase/connectionFirebase";
@@ -28,9 +28,9 @@ export const CreatePost:React.FC = () => {
     const [ image, setImage ] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
     const [ imageType, setImageType ] = useState<string | undefined>(undefined);
     const [ textPost, textingThePost ] = useState<string>('');
-    const navigationStack = useNavigation<NavigationPropStack>();
     const [ GalleryVisible, setGallery ] = useState(false);
     const { getAllPosts } = PostHome();
+    const navigationStack = useNavigation<NavigationPropStack>();
 
     const getTime = () => {
         return new Date().getTime().toString();

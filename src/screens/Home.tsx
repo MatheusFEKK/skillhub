@@ -7,16 +7,17 @@ import { NavigationPropStack } from "../routes/Stack";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 import PostHome from "../hooks/Posts";
 import { auth } from "../firebase/connectionFirebase";
+import { BottomBarProps } from "../routes/BottomBar";
 
 export const Home:React.FC = () => {
     const { WhichReacting } = VerifyLikeDeslike();
     const { posts } = PostHome();
+    const navigationStack = useNavigation<NavigationPropStack>();
 
-    const navigation = useNavigation<NavigationPropStack>();
     return(
         <View style={[styles.root]}>
             <View style={[styles.container]}>
-                    <TouchableOpacity style={[styles.containerToPost, styles.alignItemsCenter, styles.justifyContentCenter, styles.p2, styles.gap2]} onPress={() => navigation.navigate("CreatePost")}>
+                    <TouchableOpacity style={[styles.containerToPost, styles.alignItemsCenter, styles.justifyContentCenter, styles.p2, styles.gap2]} onPress={() => navigationStack.navigate("CreatePost")}>
                         <View style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.alignSelfStart]}>
                             <Image source={require('../images/userIcon.png')} />
                             <Text style={[styles.fontSize3, styles.colorTextLightGrey, styles.mL1]}>Compartilhe sua ideia...</Text>

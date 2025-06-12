@@ -36,7 +36,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
                 <View></View>
             ) :
             <View>
-                    <Image width={310} height={327} borderRadius={5} source={{uri: props.ImagePost}} />
+                    <Image width={310} height={327} borderRadius={5} source={{uri: String(props.ImagePost)}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>
