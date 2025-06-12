@@ -7,4 +7,5 @@ export type StackTypes = {
     Auth   : undefined;
     Post   : undefined;
     CreatePost: undefined;
+    FullPost: { postId:string };
 }

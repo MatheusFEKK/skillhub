@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../types/StackTypes";
-import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthScreen } from "../screens/AuthScreen";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
@@ -11,9 +11,11 @@ import { CreatePost } from "../screens/CreatePost";
 import { Achievements } from "../screens/Achievements";
 import { UserOptions } from "../screens/UserOptions";
 import { ProfileUser } from "../screens/Profile";
-
+import { FullPost } from "../screens/FullPost";
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
+
+export type NavigationScreenProp = NativeStackScreenProps<StackTypes, 'FullPost'>;
 
 const RootStack = createNativeStackNavigator<StackTypes>();
 
@@ -51,6 +53,7 @@ export const Stack:React.FC = () => {
                 )
             }
             <RootStack.Screen name={"CreatePost"} component={CreatePost} />
+            <RootStack.Screen name={"FullPost"} component={FullPost} />
             </RootStack.Navigator>
         </NavigationContainer>
     );
