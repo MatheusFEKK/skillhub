@@ -106,13 +106,14 @@ const UserPasswordOptions = () => {
     const [errorCode, setErrorCode] = useState<string>('');
     const [userName, setName] = useState<string>('');
     const user = auth.currentUser;
-    const { setPassword,password, passwordHaveNumber, passwordHaveSpecialCaptalize, passwordLengthRequirement } = ValidatePassword()
+    const { setPassword, password, passwordHaveNumber, passwordHaveSpecialCaptalize, passwordLengthRequirement } = ValidatePassword()
 
 
 
 
     const mudarSenha = async () => {
-        if(passwordConfirm !== password){
+        setErrorCode("");
+        if (passwordConfirm !== password) {
             return setErrorCode("As senhas não coincidem!");
         }
         try {
@@ -129,8 +130,14 @@ const UserPasswordOptions = () => {
                 console.log("Senha alterada")
             }
 
-        } catch (error) {
-            setErrorCode("Por favor digite sua senha atual!")
+        } catch (error: any) {
+            if (error.code === 'auth/wrong-password') {
+                setErrorCode("Por favor digite sua senha atual!");
+            } else if (error.code === 'auth/missing-password') {
+                setErrorCode("Por favor digite sua senha atual!");
+            } else {
+                setErrorCode("Ocorreu um erro ao alterar a senha: " + error.message);
+            }
         }
     }
 
@@ -139,12 +146,11 @@ const UserPasswordOptions = () => {
         <View style={[styles.root]}>
             <View style={[styles.container]}>
                 <View style={[styles.gap3]}>
+                    {errorCode === "Por favor digite sua senha atual!" && <View><Text style={{ color: "#f45454" }}>Por favor digite sua senha atual!</Text></View>}
                     <InputUser valueInput={currentPassword} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Digite sua senha antiga" textInsert={(value) => setCurrentPassword(value)} inputSecure={false} autoCapitalize="words" />
                     <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Alterar senha" textInsert={(value) => setPassword(value)} inputSecure={false} autoCapitalize="words" />
                     <InputUser valueInput={passwordConfirm} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Confirmar senha" textInsert={(value) => setPasswordConfirm(value)} inputSecure={false} autoCapitalize="words" />
-                    {errorCode === "As senhas não coincidem!" && <View><Text style={{color: "#f45454"}}>As senhas não coincidem!</Text></View>}
-                    {errorCode === "Por favor insira a sua senha atual!" && <View><Text style={{color: "#f45454"}}>As senhas não coincidem!</Text></View>}
-                    {errorCode === "Por favor digite sua senha atual!" && <View><Text style={{color: "#f45454"}}>Por favor digite sua senha atual!</Text></View>}
+                    {errorCode === "As senhas não coincidem!" && <View><Text style={{ color: "#f45454" }}>As senhas não coincidem!</Text></View>}
                     <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos 8 caracteres"} isChecked={passwordLengthRequirement} />
 
                     <UserConditions CheckIsDisabled={false} TextCondition={"Pelo menos um número"} isChecked={passwordHaveNumber} />
