@@ -3,7 +3,7 @@ import { styles } from "../styles/GlobalStyles";
 import { collection, doc, endAt, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase/connectionFirebase";
 import { useEffect, useRef, useState } from "react";
-import { Post } from "../types/Post";
+import { Post, PostArray } from "../types/Post";
 import PostHome from "../hooks/Posts";
 import fetchImage from "../storage/fetchImage";
 import { PostTemplate } from "../components/PostTemplate";
@@ -13,7 +13,7 @@ export const SearchScreen:React.FC = () => {
     const { WhichReacting } = VerifyLikeDeslike();
     const [ search, setSearch ] = useState<string>('');
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const [ posts, refreshPosts ] = useState<Post>();
+    const [ posts, refreshPosts ] = useState<PostArray>([]);
     const { getUserInfo } = PostHome();
 
     useEffect(() => {
@@ -35,10 +35,6 @@ export const SearchScreen:React.FC = () => {
         }
     },[search])
 
-    useEffect(() => {
-        console.log(timeoutRef);
-    },[timeoutRef])
-
     const Search = async () => {
         const queryPosts = collection(db, 'posts');
         const querySnapshot = await getDocs(queryPosts);
@@ -53,11 +49,14 @@ export const SearchScreen:React.FC = () => {
             }else{
                 console.log("Information not acquired");
             }
+            const data:Post[] = []
             
-            const posts = filtered.map(async (doc) => {
+            filtered.map(async (doc) => {
                 const ImageURL = await fetchImage(doc.data()?.ImagePost)
                 const userInfo = await getUserInfo(doc.data()?.UIDUser);
-                refreshPosts({
+
+
+                data.push({
                     Realname: userInfo.data()?.name,
                     IdPost: doc.data()?.IdPost,
                     UIDUser: doc.data()?.UIDUser,
@@ -69,6 +68,8 @@ export const SearchScreen:React.FC = () => {
                     ViewCount: 0,
                     CommentsPost: null,
                 })
+
+                refreshPosts(data);
                 console.log("This is the posts on the search screen: " + doc.data()?.DescriptionPost);
             })
 
@@ -76,12 +77,9 @@ export const SearchScreen:React.FC = () => {
         
     }
 
-    useEffect(() => {
-    },[posts])
-
     return(
         <View style={styles.root}>
-            <View style={styles.container}>
+            <View style={[styles.container, styles.gap2]}>
                 <TextInput placeholder="Pesquisar" onChangeText={(value) => setSearch(value)}/>
                 <FlatList data={posts} renderItem={({item}) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/>} />
             </View>

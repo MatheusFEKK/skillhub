@@ -10,8 +10,10 @@ import { auth } from "../firebase/connectionFirebase";
 
 export const Home:React.FC = () => {
     const { WhichReacting } = VerifyLikeDeslike();
-    const { posts } = PostHome();
+    const { posts, getUserInfo } = PostHome();
     const navigationStack = useNavigation<NavigationPropStack>();
+
+
 
     return(
         <View style={[styles.root]}>

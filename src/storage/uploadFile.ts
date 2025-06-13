@@ -9,7 +9,7 @@ export const UploadFile = async (fileURI:string, fileName:string) => {
         } as any); 
         
         try{
-            await fetch('http://192.168.67.22/storageSkillHub/endpoints/uploadFile.php', 
+            await fetch('http://192.168.0.107/storageSkillHub/endpoints/uploadFile.php', 
                 {
                     method:'POST',
                     body:formData,

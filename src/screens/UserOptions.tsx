@@ -1,21 +1,13 @@
-import { Text, View, ScrollView, Pressable, Image, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, Pressable, Image, TouchableOpacity, TextInput } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { useState, useEffect } from "react";
 import { EmailAuthProvider, getAuth, signOut, User } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
-import { ButtonDark } from "../components/ButtonDark";
-import { useNavigation } from "@react-navigation/native";
-import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
-import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
-import { PseudoHeader } from "../components/PseudoHeader";
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Assets, Header } from "@react-navigation/elements";
+import { doc, updateDoc } from "firebase/firestore";
 import InputUser from "../components/InputUser";
 import { ButtonDefault } from "../components/ButtonDefault";
-import { confirmPasswordReset, reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
-import { ImagePickerSuccessResult } from "expo-image-picker";
-import { ImagePickerComponent } from "../components/GalleryAccess";
+import { reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
 import * as ImagePicker from 'expo-image-picker';
 import { UploadProfileImage } from "../storage/uploadProfileImage";
 import { v4 as uuid } from 'uuid'
