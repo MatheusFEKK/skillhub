@@ -7,9 +7,10 @@ import { ButtonDark } from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
 import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PostHome from "../hooks/Posts";
 
 interface UserInterface {
     Username: string;
@@ -18,18 +19,11 @@ interface UserInterface {
     profileImage?: string;
 }
 
-
-
 export const ProfileUser: React.FC = () => {
 
     const [userStored, setUserStored] = useState<UserInterface | null>();
     const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
-    const [ image, setimage ] = useState('');
-
-    async function fetchImage(query:string){
-        const response = await fetch(`http://10.75.45.26/storageSkillHub/imageProfile/${query}`)
-        setimage(response.url);
-    }
+    const { imageUser } = PostHome();
 
     function switcherActive(key: string) {
         if (key === "Visão geral") {
@@ -42,25 +36,19 @@ export const ProfileUser: React.FC = () => {
             setPostViewSwitcher("Respostas")
         }
     }
-
     
-    
-
     async function getUserInfo() {
         const usuario = auth.currentUser;
         const idUser = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUser);
 
-        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        const unsubscribe = onSnapshot(docRef, async (docSnap) => {
             if (docSnap.exists()) {
                 const UserObject = {
                     Username: docSnap.data()?.name,
                     Nickname: docSnap.data()?.username,
                     Description: docSnap.data()?.description,
-                    profileImage: image,
                 }
-                fetchImage(docSnap.data()?.profileImage)
-                console.log("this is the uri of the image" + image);
                 storeUser('UsuarioSalvo', UserObject);
                 changePreviousUser();
             }
@@ -69,6 +57,7 @@ export const ProfileUser: React.FC = () => {
 
         return unsubscribe;
     }
+
     const storeUser = async (key: string, data: any) => {
         try {
             const jsonObject = JSON.stringify(data);
@@ -79,8 +68,6 @@ export const ProfileUser: React.FC = () => {
         }
 
     }
-
-
 
     const changePreviousUser = async () => {
         try {
@@ -120,8 +107,8 @@ export const ProfileUser: React.FC = () => {
                 <View style={[styles.mT3, styles.pB3, { borderColor: "#C3C8D7", borderBottomWidth: 3 }]}>
                     <View style={[styles.flexDirectionRow, styles.justifyContentBetween, styles.mV2]}>
                         <View style={[styles.flexDirectionRow, styles.gap2, styles.alignItemsCenter]}>
-                            <Image source={ image ? { uri: image} : require("../images/Profile_avatar_placeholder_large.png")}
-                                style={{ borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
+                            <Image source={ imageUser ? { uri: imageUser} : require("../images/Profile_avatar_placeholder_large.png")}
+                                style={{ objectFit:'contain', borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
                             <View style={[styles.gap1]}>
                                 <Text style={{ fontWeight: "800", fontSize: 14 }}>@{userStored?.Nickname}</Text>
                                 <Text style={{ color: "#7B8499", fontSize: 12 }}>{userStored?.Username}</Text>

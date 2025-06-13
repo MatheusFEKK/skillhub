@@ -1,26 +1,19 @@
-import { Text, View, ScrollView, Pressable, Image, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, Pressable, Image, TouchableOpacity, TextInput } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import { useState, useEffect } from "react";
 import { EmailAuthProvider, getAuth, signOut, User } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
-import { ButtonDark } from "../components/ButtonDark";
-import { useNavigation } from "@react-navigation/native";
-import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
-import { arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
-import { PseudoHeader } from "../components/PseudoHeader";
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Assets, Header } from "@react-navigation/elements";
+import { doc, updateDoc } from "firebase/firestore";
 import InputUser from "../components/InputUser";
 import { ButtonDefault } from "../components/ButtonDefault";
-import { confirmPasswordReset, reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
-import { ImagePickerSuccessResult } from "expo-image-picker";
-import { ImagePickerComponent } from "../components/GalleryAccess";
+import { reauthenticateWithCredential, updatePassword } from "firebase/auth/cordova";
 import * as ImagePicker from 'expo-image-picker';
 import { UploadProfileImage } from "../storage/uploadProfileImage";
 import { v4 as uuid } from 'uuid'
 import ValidatePassword from "../hooks/PasswordValidation";
 import { UserConditions } from "../components/CheckBoxUser";
+import PostHome from "../hooks/Posts";
 interface childComponentFunction {
     updateHeaderType: (key: number) => void,
     title: string,
@@ -168,6 +161,7 @@ const AdditionalInfoOptions = () => {
     const [userNick, setNick] = useState<string>('');
     const [userDescription, setDescription] = useState<string>('');
     const [image, setImage] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
+    const { imageUser } = PostHome();
 
 
     const pickImage = async () => {
@@ -202,7 +196,7 @@ const AdditionalInfoOptions = () => {
     return (
         <View style={[styles.root]}>
             <View style={[styles.container, styles.alignItemsCenter, styles.mB5, styles.gap3]}>
-                <Image source={require("../images/Profile_avatar_placeholder_large.png")} style={{ width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4" }} />
+                <Image source={imageUser ? {uri:imageUser} : require("../images/Profile_avatar_placeholder_large.png")} style={{ width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4", objectFit:'contain' }} />
                 <TouchableOpacity style={[styles.pH5, styles.pV1, { backgroundColor: "#20202A", borderRadius: 10 }]} onPress={() => pickImage()}>
                     <Text style={{ fontSize: 16, color: "#EEF2F9" }}>Editar</Text>
                 </TouchableOpacity>

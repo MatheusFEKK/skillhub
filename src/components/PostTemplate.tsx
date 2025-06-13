@@ -6,9 +6,11 @@ import { auth, db } from "../firebase/connectionFirebase";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
+import PostHome from "../hooks/Posts";
 
 export const PostTemplate:React.FC<Post> = (props) => {
     const { IsLiked, isDesliked ,setPostId, setUserId, countLike, countDeslike } = VerifyLikeDeslike();
+    const { imageUser } = PostHome();
     const navigation = useNavigation<NavigationPropStack>();
 
     useEffect(() => {
@@ -21,10 +23,10 @@ export const PostTemplate:React.FC<Post> = (props) => {
             postId:String(props.IdPost)
         })}>
             <View style={{alignSelf:'flex-start', margin:15, flexDirection:'row', alignItems:'center'}}>
-                <Image style={{width: 45, height:45, borderRadius: 100}} source={props.profileImage ? {uri: props.profileImage}  : require('../images/Profile_avatar_placeholder_large.png')} />
+                <Image style={{width:45, height:45, borderRadius:100, objectFit:'contain'}} source={imageUser ? {uri:imageUser} : require('../images/userIcon.png')} />
                 <View style={{margin:10}}>
                     <Text style={{fontWeight:'bold'}}>{props.Username}</Text>
-                    <Text style={{opacity:0.5}}>{props.Realname}{'\n'}Post N: {props.IdPost}</Text>
+                    <Text style={{opacity:0.5}}>{props.Realname}</Text>
                 </View>
             </View>
                     <View style={[styles.container, {position:'relative', bottom:10}]}>
@@ -36,7 +38,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
                 <View></View>
             ) :
             <View>
-                    <Image width={310} height={327} borderRadius={5} source={{uri: String(props.ImagePost)}} />
+                    <Image style={{width:310, height:327, borderRadius:5 ,objectFit: "contain"}} borderRadius={5} source={{uri: String(props.ImagePost)}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>
