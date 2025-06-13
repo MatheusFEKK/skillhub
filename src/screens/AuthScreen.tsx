@@ -95,8 +95,8 @@ export const AuthScreen: React.FC = () => {
         <View style={styles.root}>
             <View style={[styles.container, styles.alignItemsCenter]}>
                 <Image
-                    style={{ width: 75, height: 68 }}
-                    source={require('../images/IconPlaceHolder.png')}
+                    style={[{ width: 87, height: 80 }]}
+                    source={require('../images/SkillHub_Logo_Transparent.png')}
                 />
                 <Text style={[styles.fontSize7, styles.fontWeightBold]}>
                     Bem vindo de volta!
@@ -143,9 +143,6 @@ export const AuthScreen: React.FC = () => {
 
                         </View>
                         <ButtonDefault PlaceHolderButtonDefault="Inscrever-se" functionButtonDefault={() => signUpUser()} isDisabled={canProceed} />
-                        <ButtonDefault PlaceHolderButtonDefault="Ir para Conquistas" functionButtonDefault={() => navigation.navigate("Achievements")}
-                />
-
                     </View>
                 }
             </View>

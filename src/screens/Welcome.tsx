@@ -15,8 +15,8 @@ const Welcome: React.FC = () => {
             <View style={[styles.containerAccessOption]}>
                 <View style={[styles.container, styles.alignItemsCenter]}>
                     <Image 
-                    style={[styles.absolute, {top:-50}]}
-                    source={require('../images/IconPlaceHolderMaxHeightWidth.png')}
+                    style={[styles.absolute, {top:-80}]}
+                    source={require('../images/SkillHubLOGO_B.png')}
                     
                     />
                 </View>
