@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, Text } from "react-native";
+import { View, Image, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from "react-native";
 import PostHome from "../hooks/Posts";
 import { useEffect } from "react";
 import { NavigationScreenProp } from "../routes/Stack";
@@ -7,11 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 import { auth } from "../firebase/connectionFirebase";
+import { AccessDataImage } from "../components/ButtonAccessDataImage";
+import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 
 export const FullPost = ({route} :NavigationScreenProp) => {
-    const { getSpecficPost, post, getUserInfo } = PostHome();
+    const { getSpecficPost, post, getUserInfo, imageUser } = PostHome();
     const {IsLiked, isDesliked, countDeslike, countLike, WhichReacting, setPostId, setUserId} = VerifyLikeDeslike();
     const navigation = useNavigation<NavigationPropStack>();
+    
 
     useEffect(() => {
         getSpecficPost(String(route.params.postId))
@@ -58,7 +61,7 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                 <View></View>
             ) :
             <View>
-                    <Image width={310} height={327} borderRadius={5} source={{uri: String(post.ImagePost)}} />
+                    <Image style={{width:310, height:327, borderRadius:2 ,objectFit: "contain"}} source={{uri: String(post.ImagePost)}} />
                 </View>
             }
                 <View style={[styles.flexDirectionRow, styles.m3,{gap:160}]}>
@@ -97,6 +100,10 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                     </View>
             </View>
         </View>
+            <View style={[styles.flexDirectionRow, styles.container, styles.justifyContentBetween]}>
+                <TextInput placeholder={"Comentar"}/>
+                <SmallerButtonDark PlaceHolderButtonSmallerDark="Postar" />
+            </View>           
         </View>
     );
     

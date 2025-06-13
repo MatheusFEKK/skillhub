@@ -1,19 +1,33 @@
-import { doc, getDoc, getDocs, query, collection, DocumentData } from "firebase/firestore";
+import { doc, getDoc, getDocs, query, collection, DocumentData, updateDoc, arrayUnion } from "firebase/firestore";
 import { Post, PostArray } from "../types/Post";
 import { useEffect, useState } from "react";
-import { db } from "../firebase/connectionFirebase";
+import { auth, db } from "../firebase/connectionFirebase";
 import fetchImage from "../storage/fetchImage";
+import fetchImageProfile from "../storage/fetchImageProfile";
 
 
 const PostHome = () => {
     const [ posts, refreshPosts ] = useState<PostArray>([]);
     const [ post, refreshPost ]   = useState<Post>();
+    const [ imageUser, setImageUser ] = useState<string | undefined>(undefined);
 
     const getUserInfo = async (UIDUser:string | undefined) => {
         const userRef = doc(db, "users/" + UIDUser);
         const userInfo = await getDoc(userRef);
 
         return userInfo;
+    }
+
+    const getImageUser = async (UIDUser:string) => {
+        const userRef = doc(db, 'users/'+UIDUser);
+        const userInfo = await getDoc(userRef);
+
+        if (userInfo.exists())
+        {
+            setImageUser(await fetchImageProfile(userInfo.data()?.profileImage));
+        }else{
+            setImageUser(undefined);
+        }
     }
 
     const getAllPosts = async () => {
@@ -51,6 +65,20 @@ const PostHome = () => {
         });
     }
 
+    const CommentInAPost = async (postId:string, comment:string) => {
+        const postRef = doc(db, 'posts', postId);
+
+        try {
+            await updateDoc(postRef, {
+                Comments: arrayUnion(comment),
+            });
+        }
+        catch(error)
+        {
+            console.log("Error trying to store your comment " + error);
+        }
+    }
+
     const getSpecficPost = async (postId:string) => {
         if (postId)
         {
@@ -80,9 +108,23 @@ const PostHome = () => {
 
     useEffect(() => {
         getAllPosts();
+
+         
+            (async () => {
+                try {
+                    if (auth.currentUser)
+                    {
+                        await getImageUser(auth.currentUser?.uid);
+                        console.log("Image fetched " + imageUser)
+                    }
+                }catch(error)
+                {
+                    console.log(error);
+                }
+            })();
     },[])
     
-    return { getAllPosts, getSpecficPost, posts, post, getUserInfo }
+    return { getAllPosts, getSpecficPost, posts, post, getUserInfo, getImageUser, imageUser}
 }
 export default PostHome;
 
