@@ -6,8 +6,8 @@ import fetchImage from "../storage/fetchImage";
 import fetchImageProfile from "../storage/fetchImageProfile";
 
 
-const PostHome = () => {
-    const [ posts, refreshPosts ] = useState<PostArray>([]);
+const usePostHome = () => {
+    const [ posts, refreshPosts ] = useState<Post[]>();
     const [ post, refreshPost ]   = useState<Post>();
     const [ imageUser, setImageUser ] = useState<string | undefined>(undefined);
 
@@ -31,40 +31,47 @@ const PostHome = () => {
     }
 
     const getAllPosts = async () => {
-        const queryPosts = query(collection(db, "posts"));
         
-        const posts = await getDocs(queryPosts);
+        try {
+            console.log("getAllPosts called")
+            const queryPosts = query(collection(db, "posts"));
 
-         // Otimizar método de puxar os posts do banco (Se sobrar tempo)
-         
-        const usersArrays:Post[] = [];
+            const postsQuery = await getDocs(queryPosts);
+            console.log("Fetching the posts");
 
-        posts.docs.map(async (doc) => {
-            const response = await getUserInfo(doc.data()?.UIDUser);
-            console.log(response.data()?.username);
-            console.log(doc.data()?.IdPost);
+            const Allposts = postsQuery.docs.map(async (doc) => {
+                const response = await getUserInfo(doc.data()?.UIDUser);
+                let ImageURL = null
 
-                const ImageURL = await fetchImage(doc.data()?.ImagePost)
-                console.log("The image url is " +ImageURL)
-                
-            usersArrays.push({
-                Realname: response.data()?.name,
-                IdPost: doc.data()?.IdPost,
-                UIDUser: doc.data()?.UIDUser,
-                Username: response.data()?.username,
-                DescriptionPost: doc.data()?.DescriptionPost,
-                ImagePost: doc.data().ImagePost == null ? null : ImageURL,
-                Likes: doc.data()?.Likes,
-                Deslikes: doc.data()?.Deslikes,
-                ViewCount: 0,
-                CommentsPost: null,
+                if (doc.data().ImagePost != null)
+                {
+                    ImageURL = await fetchImage(doc.data()?.ImagePost)
+                    console.log("The image url is " +ImageURL)
+                }
+                    
+                return{
+                    Realname: response.data()?.name,
+                    IdPost: doc.data()?.IdPost,
+                    UIDUser: doc.data()?.UIDUser,
+                    Username: response.data()?.username,
+                    DescriptionPost: doc.data()?.DescriptionPost,
+                    ImagePost: ImageURL,
+                    Likes: doc.data()?.Likes,
+                    Deslikes: doc.data()?.Deslikes,
+                    ViewCount: 0,
+                    CommentsPost: null,
+                };
             });
 
+            const PostsFetch = await Promise.all(Allposts)
+            refreshPosts([...PostsFetch]);
+                
             
-            refreshPosts(usersArrays);  
-        });
+        }catch(error)
+        {
+            console.log("Something goes wrong while fetching the posts " + error);
+        }
     }
-
     const CommentInAPost = async (postId:string, comment:string) => {
         const postRef = doc(db, 'posts', postId);
 
@@ -108,8 +115,6 @@ const PostHome = () => {
 
     useEffect(() => {
         getAllPosts();
-
-         
             (async () => {
                 try {
                     if (auth.currentUser)
@@ -123,8 +128,10 @@ const PostHome = () => {
                 }
             })();
     },[])
+
+   
     
-    return { getAllPosts, getSpecficPost, posts, post, getUserInfo, getImageUser, imageUser}
+    return { getAllPosts, getSpecficPost, posts, post, getUserInfo, getImageUser, imageUser }
 }
-export default PostHome;
+export default usePostHome;
 

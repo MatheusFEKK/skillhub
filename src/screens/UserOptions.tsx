@@ -13,7 +13,7 @@ import { UploadProfileImage } from "../storage/uploadProfileImage";
 import { v4 as uuid } from 'uuid'
 import ValidatePassword from "../hooks/PasswordValidation";
 import { UserConditions } from "../components/CheckBoxUser";
-import PostHome from "../hooks/Posts";
+import usePostHome from "../hooks/Posts";
 interface childComponentFunction {
     updateHeaderType: (key: number) => void,
     title: string,
@@ -161,7 +161,7 @@ const AdditionalInfoOptions = () => {
     const [userNick, setNick] = useState<string>('');
     const [userDescription, setDescription] = useState<string>('');
     const [image, setImage] = useState<ImagePicker.ImagePickerSuccessResult | null>(null);
-    const { imageUser } = PostHome();
+    const { imageUser } = usePostHome();
 
 
     const pickImage = async () => {
@@ -196,7 +196,7 @@ const AdditionalInfoOptions = () => {
     return (
         <View style={[styles.root]}>
             <View style={[styles.container, styles.alignItemsCenter, styles.mB5, styles.gap3]}>
-                <Image source={imageUser ? {uri:imageUser} : require("../images/Profile_avatar_placeholder_large.png")} style={{ width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4", objectFit:'contain' }} />
+                <Image source={imageUser ? {uri:imageUser} : require("../images/Profile_avatar_placeholder_large.png")} style={{ width: 136, height: 136, borderRadius: 100, borderWidth: 3, borderColor: "#54A7F4", objectFit:'fill' }} />
                 <TouchableOpacity style={[styles.pH5, styles.pV1, { backgroundColor: "#20202A", borderRadius: 10 }]} onPress={() => pickImage()}>
                     <Text style={{ fontSize: 16, color: "#EEF2F9" }}>Editar</Text>
                 </TouchableOpacity>

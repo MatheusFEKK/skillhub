@@ -91,7 +91,6 @@ export const styles = StyleSheet.create({
         borderTopRightRadius:40,
         gap:54
     },
-    
     flexDirectionRow:{
         flexDirection:'row'
     },
@@ -405,8 +404,9 @@ export const styles = StyleSheet.create({
         alignSelf:'flex-end',
     },
     containerToPost:{
+        alignSelf:'center',
         backgroundColor:'#F4F7FD',
-        width:379,
+        width:'98%',
         height:143,
         borderRadius:15,
     },

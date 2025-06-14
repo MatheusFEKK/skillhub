@@ -12,7 +12,7 @@ import { ImagePickerComponent } from "../components/GalleryAccess";
 import * as ImagePicker from 'expo-image-picker';
 import { UploadFile } from "../storage/uploadFile";
 import { v4 as uuid } from 'uuid'
-import PostHome from "../hooks/Posts";
+import usePostHome from "../hooks/Posts";
 
 interface PostData{
     IdPost:string,
@@ -29,7 +29,7 @@ export const CreatePost:React.FC = () => {
     const [ imageType, setImageType ] = useState<string | undefined>(undefined);
     const [ textPost, textingThePost ] = useState<string>('');
     const [ GalleryVisible, setGallery ] = useState(false);
-    const { getAllPosts } = PostHome();
+    const { getAllPosts, imageUser } = usePostHome();
     const navigationStack = useNavigation<NavigationPropStack>();
 
     const getTime = () => {
@@ -38,10 +38,17 @@ export const CreatePost:React.FC = () => {
 
     async function CreatePost()
     {
+        console.log("Creating post")
         const randomNameFile = uuid() + '.jpg';
 
         const postID = getTime();
 
+
+        if (image != null)
+        {
+            await UploadFile(image.assets[0].uri, randomNameFile)
+            
+        }
         const PostData:PostData = {
             IdPost:postID,
             UIDUser:auth.currentUser?.uid,
@@ -55,17 +62,13 @@ export const CreatePost:React.FC = () => {
         const newPost = doc(collection(db, "posts"), postID);
 
         await setDoc(newPost, PostData)
-        .then((response) => navigationStack.goBack())
+        .then(async(response) => {
+            navigationStack.goBack();
+        })
         .catch((response) => Alert.alert("Failed on posting" + response))
+        
 
-        if (image != null)
-        {
-            await UploadFile(image.assets[0].uri, randomNameFile)
-            
-        }else
-        {
-            return;
-        }
+
     }
     
     
@@ -97,7 +100,7 @@ export const CreatePost:React.FC = () => {
                 </TouchableOpacity>
             </View>
             <View style={[styles.container, styles.flexDirectionRow]}>
-                <Image source={require('../images/userIcon.png')} />
+                <Image style={{width:45, height:45, borderRadius:100, objectFit:'fill'}} source={imageUser ? {uri:imageUser} : require('../images/userIcon.png')} />
                 <TextInput style={[styles.width6]} placeholder={"Compartilhe sua ideia..."} onChangeText={(value) => textingThePost(value)} />
             </View>
             <ImagePickerComponent VisibilityGallery={GalleryVisible} ChangeVisibility={() => setGallery(false)}/>
@@ -108,7 +111,7 @@ export const CreatePost:React.FC = () => {
                         <AccessDataImage AccessButtonImage={require('../images/GalleryIcon.png')} FunctionOnPress={() => pickImage()} />
 
                         
-            <SmallerButtonDark PlaceHolderButtonSmallerDark={"Postar"} FunctionButtonSmallerDark={() => CreatePost()} />   
+            <SmallerButtonDark PlaceHolderButtonSmallerDark={"Postar"} FunctionButtonSmallerDark={async() => await CreatePost()} />   
                     </View>
             </KeyboardAvoidingView>
 

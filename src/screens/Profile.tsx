@@ -10,7 +10,7 @@ import { db } from "../firebase/connectionFirebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import PostHome from "../hooks/Posts";
+import usePostHome from "../hooks/Posts";
 
 interface UserInterface {
     Username: string;
@@ -23,7 +23,7 @@ export const ProfileUser: React.FC = () => {
 
     const [userStored, setUserStored] = useState<UserInterface | null>();
     const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
-    const { imageUser } = PostHome();
+    const { imageUser } = usePostHome();
 
     function switcherActive(key: string) {
         if (key === "Visão geral") {
@@ -108,7 +108,7 @@ export const ProfileUser: React.FC = () => {
                     <View style={[styles.flexDirectionRow, styles.justifyContentBetween, styles.mV2]}>
                         <View style={[styles.flexDirectionRow, styles.gap2, styles.alignItemsCenter]}>
                             <Image source={ imageUser ? { uri: imageUser} : require("../images/Profile_avatar_placeholder_large.png")}
-                                style={{ objectFit:'contain', borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
+                                style={{ objectFit:'fill', borderRadius: 100, width: 72, height: 72, borderColor: "#C3C8D7", borderWidth: 3 }} />
                             <View style={[styles.gap1]}>
                                 <Text style={{ fontWeight: "800", fontSize: 14 }}>@{userStored?.Nickname}</Text>
                                 <Text style={{ color: "#7B8499", fontSize: 12 }}>{userStored?.Username}</Text>

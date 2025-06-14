@@ -19,11 +19,11 @@ export const PostTemplate:React.FC<Post> = (props) => {
     },[])
     
     return(
-        <TouchableOpacity style={[styles.alignItemsCenter, {backgroundColor:'#F4F7FD', width:350, borderRadius:15}]} onPress={(value) => navigation.navigate('FullPost', {
+        <TouchableOpacity style={[styles.container,styles.alignItemsCenter, {backgroundColor:'#F4F7FD', width:'98%', borderRadius:15}]} onPress={() => navigation.navigate('FullPost', {
             postId:String(props.IdPost)
         })}>
             <View style={{alignSelf:'flex-start', margin:15, flexDirection:'row', alignItems:'center'}}>
-                <Image style={{width:45, height:45, borderRadius:100, objectFit:'contain'}} source={imageUser ? {uri:imageUser} : require('../images/userIcon.png')} />
+                <Image style={{width:45, height:45, borderRadius:100, objectFit:'fill'}} source={imageUser ? {uri:imageUser} : require('../images/userIcon.png')} />
                 <View style={{margin:10}}>
                     <Text style={{fontWeight:'bold'}}>{props.Username}</Text>
                     <Text style={{opacity:0.5}}>{props.Realname}</Text>

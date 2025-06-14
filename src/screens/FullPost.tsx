@@ -1,5 +1,5 @@
-import { View, Image, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from "react-native";
-import PostHome from "../hooks/Posts";
+import { View, Image, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import usePostHome from "../hooks/Posts";
 import { useEffect } from "react";
 import { NavigationScreenProp } from "../routes/Stack";
 import { styles } from "../styles/GlobalStyles";
@@ -11,7 +11,7 @@ import { AccessDataImage } from "../components/ButtonAccessDataImage";
 import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 
 export const FullPost = ({route} :NavigationScreenProp) => {
-    const { getSpecficPost, post, getUserInfo, imageUser } = PostHome();
+    const { getSpecficPost, post, getUserInfo, imageUser } = usePostHome();
     const {IsLiked, isDesliked, countDeslike, countLike, WhichReacting, setPostId, setUserId} = VerifyLikeDeslike();
     const navigation = useNavigation<NavigationPropStack>();
     
@@ -35,14 +35,15 @@ export const FullPost = ({route} :NavigationScreenProp) => {
 
 
     return(
-        <View style={styles.root}>
+        <View style={[styles.root, styles.defaultRootBackground]}>
+        <ScrollView contentContainerStyle={{flexGrow:1}}>
            <View style={[styles.m3]}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image source={require('../images/back-icon.png')} />
                 </TouchableOpacity>
 
                 <View style={{alignSelf:'flex-start', margin:15, flexDirection:'row', alignItems:'center'}}>
-                    <Image width={45} height={45} source={require('../images/userIcon.png')} />
+                    <Image style={{width:45, height:45, borderRadius:100, objectFit:'fill'}} source={imageUser ? {uri:imageUser} : require('../images/userIcon.png')} />
                     <View style={{margin:10}}>
                         <Text style={{fontWeight:'bold'}}>{post?.Username}</Text>
                         <Text style={{opacity:0.5}}>{post?.Realname}</Text>
@@ -100,11 +101,14 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                     </View>
             </View>
         </View>
-            <View style={[styles.flexDirectionRow, styles.container, styles.justifyContentBetween]}>
-                <TextInput placeholder={"Comentar"}/>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'} keyboardVerticalOffset={24}>
+            <View style={[styles.flexDirectionRow, styles.container, styles.justifyContentBetween, styles.defaultRootBackground, {width:'100%'}]}>
+                <TextInput style={styles.mL2} placeholder={"Comentar"}/>
                 <SmallerButtonDark PlaceHolderButtonSmallerDark="Postar" />
-            </View>           
-        </View>
+            </View>  
+        </KeyboardAvoidingView>  
+        </ScrollView>       
+            </View>
     );
     
 }

@@ -4,7 +4,7 @@ import { collection, doc, endAt, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase/connectionFirebase";
 import { useEffect, useRef, useState } from "react";
 import { Post, PostArray } from "../types/Post";
-import PostHome from "../hooks/Posts";
+import usePostHome from "../hooks/Posts";
 import fetchImage from "../storage/fetchImage";
 import { PostTemplate } from "../components/PostTemplate";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
@@ -14,7 +14,7 @@ export const SearchScreen:React.FC = () => {
     const [ search, setSearch ] = useState<string>('');
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [ posts, refreshPosts ] = useState<PostArray>([]);
-    const { getUserInfo } = PostHome();
+    const { getUserInfo } = usePostHome();
 
     useEffect(() => {
         if (timeoutRef.current)
@@ -78,10 +78,10 @@ export const SearchScreen:React.FC = () => {
     }
 
     return(
-        <View style={styles.root}>
-            <View style={[styles.container, styles.gap2]}>
+        <View style={[styles.root, styles.defaultRootBackground]}>
+            <View style={[styles.container, styles.gap3]}>
                 <TextInput placeholder="Pesquisar" onChangeText={(value) => setSearch(value)}/>
-                <FlatList data={posts} renderItem={({item}) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/>} />
+                <FlatList contentContainerStyle={styles.gap3} data={posts} renderItem={({item}) => <PostTemplate IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/>} />
             </View>
         </View>
     );
