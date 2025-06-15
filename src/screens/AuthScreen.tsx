@@ -52,6 +52,8 @@ export const AuthScreen: React.FC = () => {
                 {
                     name: name,
                     username: username,
+                    Following: [],
+                    Followers: [],
                 }
 
                 try {

@@ -12,10 +12,12 @@ import { Achievements } from "../screens/Achievements";
 import { UserOptions } from "../screens/UserOptions";
 import { ProfileUser } from "../screens/Profile";
 import { FullPost } from "../screens/FullPost";
+import { ViewProfile } from "../screens/ViewProfile";
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
 
 export type NavigationScreenProp = NativeStackScreenProps<StackTypes, 'FullPost'>;
+export type NavigationScreenViewProfileProp = NativeStackScreenProps<StackTypes, 'ViewProfile'>;
 
 const RootStack = createNativeStackNavigator<StackTypes>();
 
@@ -46,14 +48,16 @@ export const Stack:React.FC = () => {
                     <>
                         <RootStack.Screen  name={"Welcome"} component={Welcome} />
                         <RootStack.Screen name={"Auth"} component={AuthScreen}/>
-                        <RootStack.Screen name={"Achievement"} component={Achievements}/>
-                        <RootStack.Screen name={"Options"} component={UserOptions}/>
-                        <RootStack.Screen name={"Profile"} component={ProfileUser}/>
                     </>
                 )
             }
+            <RootStack.Screen name={"Achievement"} component={Achievements}/>
+            <RootStack.Screen name={"Options"} component={UserOptions}/>
+            <RootStack.Screen name={"Profile"} component={ProfileUser}/>
             <RootStack.Screen name={"CreatePost"} component={CreatePost} />
             <RootStack.Screen name={"FullPost"} component={FullPost} />
+            <RootStack.Screen name={"ViewProfile"} component={ViewProfile} />
+            <RootStack.Screen name={"Home"} component={BottomBar} />
             </RootStack.Navigator>
         </NavigationContainer>
     );

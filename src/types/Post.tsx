@@ -8,9 +8,11 @@ export interface Post{
     UIDUser?:string;
     ImagePost?:string | null;
     DescriptionPost?: string;
+    DescriptionProfile?:string;
     Likes?:[];
     Deslikes?:[];
     ViewCount?:number;
+    ImageUser?:string | null;
     CommentsPost?:CommentObj[] | null;
     LikeFunction?: () => void;
     DeslikeFunction?: () => void;

@@ -41,12 +41,19 @@ const usePostHome = () => {
 
             const Allposts = postsQuery.docs.map(async (doc) => {
                 const response = await getUserInfo(doc.data()?.UIDUser);
-                let ImageURL = null
+
+                let ImageURL = null;
+                let ImageUser = null;
 
                 if (doc.data().ImagePost != null)
                 {
                     ImageURL = await fetchImage(doc.data()?.ImagePost)
                     console.log("The image url is " +ImageURL)
+                }
+
+                if (response.data()?.profileImage != null)
+                {
+                    ImageUser = await fetchImageProfile(response.data()?.profileImage)
                 }
                     
                 return{
@@ -56,6 +63,7 @@ const usePostHome = () => {
                     Username: response.data()?.username,
                     DescriptionPost: doc.data()?.DescriptionPost,
                     ImagePost: ImageURL,
+                    ImageUser: ImageUser,
                     Likes: doc.data()?.Likes,
                     Deslikes: doc.data()?.Deslikes,
                     ViewCount: 0,
@@ -115,18 +123,10 @@ const usePostHome = () => {
 
     useEffect(() => {
         getAllPosts();
-            (async () => {
-                try {
-                    if (auth.currentUser)
-                    {
-                        await getImageUser(auth.currentUser?.uid);
-                        console.log("Image fetched " + imageUser)
-                    }
-                }catch(error)
-                {
-                    console.log(error);
-                }
-            })();
+        if (auth.currentUser?.uid)
+        {
+            getImageUser(auth.currentUser.uid)
+        }
     },[])
 
    

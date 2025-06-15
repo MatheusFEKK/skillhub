@@ -17,6 +17,8 @@ interface UserInterface {
     Nickname: string;
     Description?: string;
     profileImage?: string;
+    Followers:[];
+    Following:[];
 }
 
 export const ProfileUser: React.FC = () => {
@@ -44,10 +46,13 @@ export const ProfileUser: React.FC = () => {
 
         const unsubscribe = onSnapshot(docRef, async (docSnap) => {
             if (docSnap.exists()) {
-                const UserObject = {
+                const UserObject:UserInterface = {
                     Username: docSnap.data()?.name,
                     Nickname: docSnap.data()?.username,
                     Description: docSnap.data()?.description,
+                    Followers: docSnap.data()?.Followers,
+                    Following: docSnap.data()?.Following,
+                    
                 }
                 storeUser('UsuarioSalvo', UserObject);
                 changePreviousUser();
@@ -126,8 +131,8 @@ export const ProfileUser: React.FC = () => {
                                 <Text style={{ fontWeight: "700", fontSize: 14 }}>{userStored?.Description ? userStored?.Description : "Nada informado."}</Text>
                             </View>
                             <View style={[styles.flexDirectionRow, styles.gap2]}>
-                                <Text style={{ fontSize: 12, fontWeight: 700 }}>14 <Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguindo</Text></Text>
-                                <Text style={{ fontSize: 12, fontWeight: 700 }}>140<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguidores</Text></Text>
+                                <Text style={{ fontSize: 12, fontWeight: 700 }}>{userStored?.Following.length}<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguindo</Text></Text>
+                                <Text style={{ fontSize: 12, fontWeight: 700 }}>{userStored?.Followers.length}<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguidores</Text></Text>
                             </View>
                         </View>
                         <View>
