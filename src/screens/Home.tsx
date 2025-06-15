@@ -25,7 +25,7 @@ export const Home:React.FC = () => {
     );
 
     return(
-        <View style={[styles.root, styles.container, styles.defaultRootBackground]}>
+        <View style={[styles.root, styles.container, styles.defaultRootBackground, {paddingBottom: '2%'}]}>
             <View style={[styles.container, styles.flexDirectionRow,styles.justifyContentBetween,styles.alignItemsCenter, styles.mT3]}>
                 <View style={[{borderWidth: 2, borderRadius: 10, padding:5, borderColor: "#3546B2"}]}>
                     <Image 
@@ -43,7 +43,7 @@ export const Home:React.FC = () => {
                 </View>
             </View>
                  
-            <FlatList contentContainerStyle={[styles.mT5, styles.gap3, {marginBottom: 100}]} data={posts} keyExtractor={(item) => item.IdPost.toString()} extraData={posts}
+            <FlatList contentContainerStyle={[styles.mT5, styles.pB4, styles.gap3, {marginBottom: 100}]} data={posts} keyExtractor={(item) => item.IdPost.toString()} extraData={posts}
                 ListHeaderComponent={() => (
                             <TouchableOpacity style={[styles.containerToPost, styles.alignItemsCenter, styles.justifyContentCenter, styles.p2, styles.gap2]} onPress={() => navigationStack.navigate("CreatePost")}>
                                 <View style={[styles.flexDirectionRow, styles.alignItemsCenter, styles.alignSelfStart]}>

@@ -1,10 +1,6 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackTypes } from './StackTypes';
 
-export type PseudoHeaderType = {
-    Home : undefined; 
-    Options : undefined
-    Profile : undefined
-    NA : undefined
-}
+export type PseudoHeaderType = StackTypes
 
 export type PseudoHeaderNavigateProps = NativeStackNavigationProp<PseudoHeaderType>

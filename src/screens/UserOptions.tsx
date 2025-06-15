@@ -25,10 +25,12 @@ const HeaderDefault = () => {
     return (
         <View style={[styles.container, styles.flexDirectionRow, styles.justifyContentBetween, styles.alignItemsCenter, { height: 45 }]}>
             <Text style={[styles.fontSize3, { fontWeight: "700" }]}>Opções</Text>
-            <Image
-                source={require("../images/IconPlaceHolderMaxHeightWidth.png")}
-                style={{ width: 40, height: 40 }}
-            />
+            <View style={[{borderWidth: 2, borderRadius: 10, padding:5, borderColor: "#3546B2"}]}>
+                    <Image 
+                        source={require("../images/SkillHub_Logo_Transparent.png")}
+                        style={{width:25, height:25, objectFit: "fill"}}
+                    />
+                </View>
         </View>
     )
 }

@@ -5,12 +5,14 @@ import { signOut, User } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import { ButtonDark } from "../components/ButtonDark";
 import { useNavigation } from "@react-navigation/native";
-import { BottomBarProps } from "../routes/BottomBar";
 import { db } from "../firebase/connectionFirebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import usePostHome from "../hooks/Posts";
+import { NavigationPropStack } from "../routes/Stack";
+import AchievementCard from "../components/AchievementsCards";
+import { AchievementsDisplayProfile } from "../components/AchievementsDisplayProfile";
 
 interface UserInterface {
     Username: string;
@@ -98,7 +100,9 @@ export const ProfileUser: React.FC = () => {
             console.log("It was not possible to log out from the app! " + error);
         }
     }
-    const navigation = useNavigation<BottomBarProps>();
+    const navigation = useNavigation<NavigationPropStack>();
+
+    const AwardNavigation = useNavigation<NavigationPropStack>();
 
     return (
         <View style={[styles.root, styles.defaultRootBackground]}>
@@ -131,7 +135,10 @@ export const ProfileUser: React.FC = () => {
                             </View>
                         </View>
                         <View>
-                            <Text style={{ fontSize: 12, fontWeight: 600, color: "#54A7F4" }}>Conquistas</Text>
+                            <Pressable onPress={()=>{navigation.navigate("Achievements")}}>
+                                <Text style={{ fontSize: 12, fontWeight: 600, color: "#54A7F4" }}>Conquistas</Text>
+                                <AchievementsDisplayProfile/>
+                            </Pressable>
                         </View>
                     </View>
                 </View>

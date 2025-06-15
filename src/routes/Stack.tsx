@@ -12,6 +12,7 @@ import { Achievements } from "../screens/Achievements";
 import { UserOptions } from "../screens/UserOptions";
 import { ProfileUser } from "../screens/Profile";
 import { FullPost } from "../screens/FullPost";
+import { Home } from "../screens/Home";
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
 
@@ -19,41 +20,43 @@ export type NavigationScreenProp = NativeStackScreenProps<StackTypes, 'FullPost'
 
 const RootStack = createNativeStackNavigator<StackTypes>();
 
-export const Stack:React.FC = () => {
-    const [ userAuthenticated, setAuth] = useState<boolean | null>(null);
+export const Stack: React.FC = () => {
+    const [userAuthenticated, setAuth] = useState<boolean | null>(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
-          if (user)
-            {
-              setAuth(true);
-              console.log("Auth state changed to true");
+            if (user) {
+                setAuth(true);
+                console.log("Auth state changed to true");
             }
-            else
-            {
+            else {
                 setAuth(false);
                 console.log("Auth state changed to false");
             }
-          });
-    },[])
+        });
+    }, [])
 
-    return(
+    return (
         <NavigationContainer>
-            <RootStack.Navigator screenOptions={{headerShown:false}}>
-                {userAuthenticated ? (
-                    <RootStack.Screen name={"BottomBar"} component={BottomBar} />
-                ): (
+
+            <RootStack.Navigator screenOptions={{ headerShown: false }}>
+                {userAuthenticated ? 
+                (
                     <>
-                        <RootStack.Screen  name={"Welcome"} component={Welcome} />
-                        <RootStack.Screen name={"Auth"} component={AuthScreen}/>
-                        <RootStack.Screen name={"Achievement"} component={Achievements}/>
-                        <RootStack.Screen name={"Options"} component={UserOptions}/>
-                        <RootStack.Screen name={"Profile"} component={ProfileUser}/>
+                        <RootStack.Screen name={"BottomBar"} component={BottomBar} />
+                        <RootStack.Screen name={"Achievements"} component={Achievements} />
+                        <RootStack.Screen name={"Options"} component={UserOptions} />
+                        <RootStack.Screen name={"CreatePost"} component={CreatePost} />
+                        <RootStack.Screen name={"FullPost"} component={FullPost} />
+                        <RootStack.Screen name={"Home"} component={Home} />
+                        <RootStack.Screen name={"Profile"} component={ProfileUser} />
                     </>
-                )
-            }
-            <RootStack.Screen name={"CreatePost"} component={CreatePost} />
-            <RootStack.Screen name={"FullPost"} component={FullPost} />
+                ) : (
+                    <>
+                        <RootStack.Screen name={"Welcome"} component={Welcome} />
+                        <RootStack.Screen name={"Auth"} component={AuthScreen} />
+                    </>
+                )}
             </RootStack.Navigator>
         </NavigationContainer>
     );

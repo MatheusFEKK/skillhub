@@ -3,12 +3,14 @@ import { View, ScrollView } from "react-native";
 import { styles } from "../styles/GlobalStyles";
 import AchievementCard from "../components/AchievementsCards";
 import { useUserStats } from "../hooks/useUserStats";
+import { PseudoHeader } from "../components/PseudoHeader";
 
 export const Achievements: React.FC = () => {
   const { achievements } = useUserStats();
 
   return (
     <View style={[styles.root, { backgroundColor: "#EEF2F9", alignItems: "center" }]}>
+      <PseudoHeader headerTitle="Conquistas" navigate="Profile" />
       <ScrollView contentContainerStyle={[styles.gap3, { padding: 20 }]}>
         <AchievementCard
           title="Base da comunidade"
