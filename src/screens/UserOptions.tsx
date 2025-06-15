@@ -186,7 +186,7 @@ const AdditionalInfoOptions = () => {
         const idUser = String(usuario?.uid);
         const docRef = doc(db, "users/" + idUser);
         updateDoc(docRef, {
-            ...userNick && { name: userNick },
+            ...userNick && { username: userNick },
             ...userDescription && { description: userDescription },
             ...image?.assets[0].assetId && { profileImage: idImage }
         })
