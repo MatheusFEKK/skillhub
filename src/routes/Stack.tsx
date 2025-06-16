@@ -51,6 +51,7 @@ export const Stack: React.FC = () => {
                     </>
                 )
             }
+            <RootStack.Screen name={"ViewProfile"} component={ViewProfile} />
             <RootStack.Screen name={"Home"} component={BottomBar} />
             <RootStack.Screen name={"Profile"} component={ProfileUser}/>
             <RootStack.Screen name={"Achievement"} component={Achievements}/>
