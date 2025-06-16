@@ -36,9 +36,6 @@ export const ProfileUser: React.FC = () => {
         if (key === "Visão geral") {
             setPostViewSwitcher("Visão geral")
         }
-        if (key === "Destaques") {
-            setPostViewSwitcher("Destaques")
-        }
         
     }
     
@@ -110,16 +107,6 @@ export const ProfileUser: React.FC = () => {
         console.log("A tela está em " + postViewSwitcher)
     }, []);
 
-
-
-    const signOutUser = async () => {
-        try {
-            await signOut(auth)
-            console.log("Disconnect from the account!");
-        } catch (error) {
-            console.log("It was not possible to log out from the app! " + error);
-        }
-    }
     const navigation = useNavigation<NavigationPropStack>();
 
     const AwardNavigation = useNavigation<NavigationPropStack>();
@@ -163,11 +150,8 @@ export const ProfileUser: React.FC = () => {
                     </View>
                 </View>
                 <View style={[styles.flexDirectionRow, styles.mV5, styles.justifyContentCenter]}>
-                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF", borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }]} >
+                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF", borderRadius:10}]} >
                         <Text>Visão geral</Text>
-                    </Pressable>
-                    <Pressable onPress={() => switcherActive("Destaques")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Destaques" ? "#54A7F4" : "#E5E7EF", borderTopRightRadius:10, borderBottomRightRadius:10 }]} >
-                        <Text>Posts</Text>
                     </Pressable>
                 </View>
                 {postViewSwitcher === "Visão geral" ? 

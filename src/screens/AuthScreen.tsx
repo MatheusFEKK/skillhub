@@ -26,7 +26,7 @@ export const AuthScreen: React.FC = () => {
     const [buttonActivated, buttonActive] = useState(0);
     const [user, setUser] = useState('');
     const [userInfo, setUserInfo] = useState<userObj | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState<string>();
     const [username, setUsername] = useState<string>('')
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -89,8 +89,24 @@ export const AuthScreen: React.FC = () => {
 
     const loginUser = () => {
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredencial) => console.log(userCredencial.user.toJSON()))
-        Alert.alert("Logged with sucess!");
+            .then((userCredencial) => console.log(userCredencial))
+            .catch((response) => {
+                switch (response.code) {
+                case 'auth/invalid-email':
+                    setMessage('E-mail inválido')
+                    break;
+                case 'auth/user-not-found':
+                    setMessage('Usuário não existe')
+                    break;
+                case 'auth/missing-password':
+                    setMessage('Inserir senha');
+                    break;
+                case 'auth/invalid-credential':
+                    setMessage('Senha inválida')
+                    default:
+                        break;
+                }
+            })
     }
 
     return (
@@ -109,13 +125,14 @@ export const AuthScreen: React.FC = () => {
             </View>
 
             <View style={[styles.container, styles.gap3]}>
-                {message !== null && <Text style={{ color: 'red' }}>{message}</Text>}
                 {buttonActivated == 0 ? (
                     <View style={[styles.gap3, styles.mT5]}>
-
+                        
                         <InputUser valueInput={email} ImageInputUser={require('../images/ic_outline-email.png')} PlaceHolderInputUser="E-mail" textInsert={(value) => setEmail(value)} inputSecure={false} autoCapitalize="none" />
 
                         <InputUser valueInput={password} ImageInputUser={require('../images/passwordIcon.png')} PlaceHolderInputUser="Senha" textInsert={(value) => setPassword(value)} inputSecure={true} autoCapitalize="none" />
+                        {message ? <Text style={{ color: 'red' }}>{message}</Text> :
+                            <View></View>}
 
                         <ButtonDefault isDisabled={false} PlaceHolderButtonDefault="Login" functionButtonDefault={() => loginUser()} />
                     </View>
