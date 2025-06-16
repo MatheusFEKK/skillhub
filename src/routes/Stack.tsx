@@ -47,10 +47,10 @@ export const Stack: React.FC = () => {
                     <>
                         <RootStack.Screen  name={"Welcome"} component={Welcome} />
                         <RootStack.Screen name={"Auth"} component={AuthScreen}/>
-                        <RootStack.Screen name={"Options"} component={UserOptions}/>
                     </>
                 )
             }
+            <RootStack.Screen name={"Options"} component={UserOptions}/>
             <RootStack.Screen name={"ViewProfile"} component={ViewProfile} />
             <RootStack.Screen name={"Home"} component={BottomBar} />
             <RootStack.Screen name={"Profile"} component={ProfileUser}/>

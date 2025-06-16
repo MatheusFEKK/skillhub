@@ -140,7 +140,7 @@ export const ProfileUser: React.FC = () => {
                             </View>
                         </View>
                         <View>
-                            <Pressable onPress={()=>{navigation.navigate("Achievement")}}>
+                            <Pressable style={{alignItems:'center'}} onPress={()=>{navigation.navigate("Achievement")}}>
                                 <Text style={{ fontSize: 12, fontWeight: 600, color: "#54A7F4" }}>Conquistas</Text>
                                 <AchievementsDisplayProfile/>
                             </Pressable>
