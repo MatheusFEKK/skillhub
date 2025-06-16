@@ -1,5 +1,5 @@
 export type BottomBarTypes = {
-    Achievement: undefined;
+    Achievement : undefined;
     Home        : undefined;
     Profile     : undefined;
     Options     : undefined;

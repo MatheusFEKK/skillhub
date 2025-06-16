@@ -10,7 +10,7 @@ export const Achievements: React.FC = () => {
 
   return (
     <View style={[styles.root, { backgroundColor: "#EEF2F9", alignItems: "center" }]}>
-      <PseudoHeader headerTitle="Conquistas" navigate="Profile" />
+      <PseudoHeader headerTitle="Conquistas" navigate="Home" />
       <ScrollView contentContainerStyle={[styles.gap3, { padding: 20 }]}>
         <AchievementCard
           title="Base da comunidade"

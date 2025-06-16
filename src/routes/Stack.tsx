@@ -47,12 +47,13 @@ export const Stack: React.FC = () => {
                     <>
                         <RootStack.Screen  name={"Welcome"} component={Welcome} />
                         <RootStack.Screen name={"Auth"} component={AuthScreen}/>
-                        <RootStack.Screen name={"Achievement"} component={Achievements}/>
                         <RootStack.Screen name={"Options"} component={UserOptions}/>
-                        <RootStack.Screen name={"Profile"} component={ProfileUser}/>
                     </>
                 )
             }
+            <RootStack.Screen name={"Home"} component={BottomBar} />
+            <RootStack.Screen name={"Profile"} component={ProfileUser}/>
+            <RootStack.Screen name={"Achievement"} component={Achievements}/>
             <RootStack.Screen name={"CreatePost"} component={CreatePost} />
             <RootStack.Screen name={"FullPost"} component={FullPost} />
             </RootStack.Navigator>
