@@ -11,6 +11,7 @@ import { Text } from "@react-navigation/elements";
 
 
 type achievementKey = "post_1" | "likes_1" | "deslikes_1";
+
 const achievementImages: Record<achievementKey, any> = {
     post_1: require("../images/conquista.png"),
     likes_1: require("../images/conquista-star.png"),
@@ -20,6 +21,7 @@ const achievementImages: Record<achievementKey, any> = {
 function getAwardImage(key: achievementKey) {
     return achievementImages[key];
 }
+
 interface AchievementsData {
     post_1?: boolean;
     likes_1?: boolean;
