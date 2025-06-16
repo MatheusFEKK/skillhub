@@ -14,7 +14,7 @@ export const Home:React.FC = () => {
     const { posts, imageUser, getAllPosts } = usePostHome();
     const navigationStack = useNavigation<NavigationPropStack>() 
 
-    const toProfile = ()=>{
+    const toProfile = () => {
         navigationStack.navigate("Profile");
     }
 
@@ -56,7 +56,7 @@ export const Home:React.FC = () => {
                             </TouchableOpacity>
                 )}
             renderItem={({item}
-            ) => <PostTemplate profileImage={item?.profileImage} IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/> } />
+            ) => <PostTemplate UIDUser={item?.UIDUser} profileImage={item?.profileImage} IdPost={item?.IdPost} ImagePost={item?.ImagePost} Username={item?.Username} ImageUser={item?.ImageUser} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)}/> } />
             
         </View>
     );

@@ -12,7 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export type BottomBarProps = BottomTabNavigationProp<BottomBarTypes, 'Home', 'FullPost'>;
 
-
 const BottomBarNav = createBottomTabNavigator<BottomBarTypes>();
 
 export const BottomBar: React.FC = () => {

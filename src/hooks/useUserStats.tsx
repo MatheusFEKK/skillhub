@@ -12,7 +12,7 @@ export const useUserStats = () => {
     const userId = auth.currentUser?.uid;
     if (!userId) return;
 
-    // onsulta todos os posts do user logado
+    // Consulta todos os posts do user logado
     const postsQuery = query(collection(db, "posts"), where("UIDUser", "==", userId));
 
     // escuta os posts em temoo real

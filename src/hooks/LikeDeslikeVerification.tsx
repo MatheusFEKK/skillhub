@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { db, } from "../firebase/connectionFirebase";
 import { arrayRemove, arrayUnion, doc, FieldValue, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { auth } from "../firebase/connectionFirebase";
@@ -12,30 +12,63 @@ const VerifyLikeDeslike = () =>
     const [ countLike, setCountLike ]       = useState(0);
     const [ countDeslike, setCountDeslike ] = useState(0);
 
+    useEffect(() => {
+        console.log("Liked is " + IsLiked);
+    },[IsLiked])
+
     const WhichReacting = async (reaction:string, postId:string | undefined, userId:string | undefined) => {
         console.log('Chamou a função WhichReacting ' + "reação: "+ reaction +" "+ "postID: " + postId +"userID: "+ userId)
-        if (reaction == 'like')
+        if (reaction == 'like' && postId && userId)
         {   
-            await deleteField('Deslikes',postId)
-            .then(async (response) => {
-                await likePost(postId, userId);
-                console.log("Deleted with success the deslike and liked on the " + postId);
-            })
-            .catch((response) => {
-                console.log("Some error occured trying to delete in the function WhichReacting " + response);
-            })
+            const postRef = doc(db, 'posts', postId)
+            const query = await getDoc(postRef);
+
+            if (query.exists())
+            {
+                const postData = query.data();
+                const isLikedByUser = postData.Likes?.includes(userId);
+
+                if (isLikedByUser)
+                {
+                    await deleteField('Likes', postId);
+                }else{
+                    await deleteField('Deslikes',postId)
+                    .then(async (response) => {
+                        await likePost(postId, userId);
+                        console.log("Deleted with success the deslike and liked on the " + postId);
+                        
+                    })
+                    .catch((response) => {
+                        console.log("Some error occured trying to delete in the function WhichReacting " + response);
+                    })
+                }
+            }        
         }
 
-        if (reaction == 'deslike')
+        if (reaction == 'deslike' && postId && userId)
         {
-            await deleteField('Likes', postId)
-            .then(async (response) => {
-                await deslikePost(postId, userId);
-                console.log("Deleted with success the like and desliked on the " + postId);
-            })
-            .catch((response) => {
-                console.log("Some error on the delete function")
-            })
+            const postRef = doc(db, 'posts', postId);
+            const query = await getDoc(postRef);
+            
+            if (query.exists())
+            {
+                const postData = query.data();
+                const isLikedByUser = postData.Deslikes?.includes(userId);
+
+                if (isLikedByUser)
+                {
+                    await deleteField('Deslikes', postId);
+                }else{
+                    await deleteField('Likes', postId)
+                    .then(async (response) => {
+                        await deslikePost(postId, userId);
+                        console.log("Deleted with success the like and desliked on the " + postId);
+                    })
+                    .catch((response) => {
+                        console.log("Some error on the delete function")
+                    })
+                }
+            }
         }
     }
 
@@ -150,7 +183,7 @@ const VerifyLikeDeslike = () =>
     }
 
     useEffect(() => {
-        if (postId)
+        if (postId && userId)
         {
             const realTimeUpdate = onSnapshot(doc(db, 'posts/'+ postId), async (doc) => {
             if (doc.exists())
@@ -159,8 +192,7 @@ const VerifyLikeDeslike = () =>
                 await verifyLike();
                 await verifyDeslike();
                 await getLikes();
-                await getDeslikes();   
-
+                await getDeslikes();
             }
             else{
                 console.log("Nothing has been changed yet");
