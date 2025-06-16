@@ -14,15 +14,14 @@ export const Home:React.FC = () => {
     const { posts, imageUser, getAllPosts } = usePostHome();
     const navigationStack = useNavigation<NavigationPropStack>() 
 
-    const toProfile = ()=>{
+    const toProfile = () => {
         navigationStack.navigate("Profile");
     }
 
     useFocusEffect(
-    useCallback(() => {
-        getAllPosts();
-        console.log('testing    ')
-    }, [])
+        useCallback(() => {
+            getAllPosts();
+        }, [])
     );
 
     return(

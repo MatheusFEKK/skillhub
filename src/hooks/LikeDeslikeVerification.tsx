@@ -91,7 +91,7 @@ const VerifyLikeDeslike = () =>
         
     }
 
-    const verifyLike = async (postID:string, userID:string) => {
+    const verifyLike = async () => {
         const postRef = doc(db, 'posts', postId);
         const postSnapshot = await getDoc(postRef);
         
@@ -107,7 +107,7 @@ const VerifyLikeDeslike = () =>
         }
     }
 
-    const verifyDeslike = async (postId:string, userId:string) => {
+    const verifyDeslike = async () => {
         const postRef = doc(db, 'posts', postId);
         const postSnapshot = await getDoc(postRef);
         try{
@@ -189,8 +189,8 @@ const VerifyLikeDeslike = () =>
             if (doc.exists())
             {
                 console.log("Somethings has been acquired" + doc.data());
-                await verifyLike(postId, userId);
-                await verifyDeslike(postId, userId);
+                await verifyLike();
+                await verifyDeslike();
                 await getLikes();
                 await getDeslikes();
             }

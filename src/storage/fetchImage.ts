@@ -1,6 +1,6 @@
 async function fetchImage (nameFile:string)
 {
-    const response = await fetch(`http://192.168.22.47/storageSkillHub/imageFiles/${nameFile}`)
+    const response = await fetch(`http://192.168.0.107/storageSkillHub/imageFiles/${nameFile}`)
 
     return response.url
    

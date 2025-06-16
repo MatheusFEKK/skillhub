@@ -8,6 +8,7 @@ import { NavigationPropStack, NavigationScreenViewProfileProp } from "../routes/
 import fetchImageProfile from "../storage/fetchImageProfile";
 import { auth } from "../firebase/connectionFirebase";
 import { BottomBarProps } from "../routes/BottomBar";
+import useFollowSystem from "../hooks/Follow";
 
 interface UserInterface {
     Realname: string;
@@ -21,6 +22,7 @@ interface UserInterface {
 export const ViewProfile = ({route}: NavigationScreenViewProfileProp) => {
     const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
     const { getUserInfo } = usePostHome();
+    const { isFollowing, isFollowingUser, followUser, unfollowUser, setOtherUserId, setUserId, setFollow} = useFollowSystem();
     const [ userStored, setUserInfos ] = useState<UserInterface>();
     const navigation = useNavigation<NavigationPropStack>();
     const navigationBottom = useNavigation<BottomBarProps>();
@@ -53,12 +55,17 @@ export const ViewProfile = ({route}: NavigationScreenViewProfileProp) => {
     }
 
     useEffect(() => {
+        setOtherUserId(route.params.userId);
+        setUserId(auth.currentUser?.uid);
+        isFollowingUser(auth.currentUser?.uid, route.params.userId);
+        console.log("Esse usuário esta sendo seguido: " + isFollowing);
+        getData();
         if (route.params.userId === auth.currentUser?.uid)
         {
-            navigationBottom.navigate('Profile')
+            navigationBottom.navigate('Profile');
         }
-        getData();
-    },[route.params.userId])
+    },[route.params.userId, isFollowing])
+
 
     function switcherActive(key: string) {
         if (key === "Visão geral") {
@@ -87,9 +94,15 @@ export const ViewProfile = ({route}: NavigationScreenViewProfileProp) => {
                                     </View>
                                 </View>
                                 <View style={styles.justifyContentCenter}>
-                                    <TouchableOpacity onPress={() => { navigation.goBack() }} style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#20202A", borderRadius: 10 }]}>
+                                    {isFollowing == false ? 
+                                    <TouchableOpacity onPress={() => { followUser(auth.currentUser?.uid, route.params.userId) }} style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#20202A", borderRadius: 10 }]}>
                                         <Text style={{ color: "#EEF2F9", fontWeight: 600 }}>Seguir</Text>
+                                    </TouchableOpacity> : (
+                                        <TouchableOpacity onPress={() => { unfollowUser(auth.currentUser?.uid, route.params.userId) }} style={[styles.pH4, styles.pV1, styles.alignItemsCenter, styles.justifyContentCenter, { backgroundColor: "#EEF2F9", borderRadius: 10 }]}>
+                                        <Text style={{ color: "#20202A", fontWeight: 600 }}>Seguindo</Text>
                                     </TouchableOpacity>
+                                    )}
+                                    
                                 </View>
                             </View>
                             <View style={[styles.justifyContentBetween, styles.flexDirectionRow]}>
