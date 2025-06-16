@@ -123,7 +123,7 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                 <View> 
                     <CommentTemplate Username={item.Username} Realname={item.Username} ImageUser={ async () => await fetchImageProfile(item.ImageUser)} UIDUser={item.UIDUser} Comment={item.Comment} MakeModalVisible={() => setModalVisilibity(true)} CommentOfTheCommentsMany={item.CommentsOfThatComment.length} /> 
                         
-                        <ModalCommentReply ModalVisible={modalVisible} Comment={item.Comment} CommentsOfThatComment={item.CommentsOfThatComment} ImageUser={item.ImageUser} Realname={item.Realname} UIDUser={item.UIDUser} Username={item.Username} /> 
+                        <ModalCommentReply ModalVisible={modalVisible} Comment={item.Comment} CommentsOfThatComment={item.CommentsOfThatComment} ChangeVisibility={() => setModalVisilibity(false)} ImageUser={item.ImageUser} Realname={item.Realname} UIDUser={item.UIDUser} Username={item.Username} /> 
                         
                         </View>}
                     />

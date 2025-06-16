@@ -15,5 +15,6 @@ export type CommentObj = {
     Username:string,
     UIDUser:string,
     ModalVisible?:boolean,
+    ChangeVisibility: () => void,
 }
 

@@ -29,7 +29,7 @@ export const CommentTemplate:React.FC<CommentProps> = (props) => {
                                 </View>
                                 <Text>{props.Comment}</Text>
                             </View>
-                            <TouchableOpacity style={{alignItems:'center', justifyContent:'center',width:58, padding:7.5, outlineColor:'#A1A7B9', outlineWidth:1, borderRadius:30, flexDirection:'row'}}>
+                            <TouchableOpacity style={{alignItems:'center', justifyContent:'center',width:58, padding:7.5, outlineColor:'#A1A7B9', outlineWidth:1, borderRadius:30, flexDirection:'row'}} onPress={props.MakeModalVisible}>
                             <Image source={require('../images/message-circle.png')} />
                             <Text style={{color:"#A1A7B9"}}>{props.CommentOfTheCommentsMany}</Text>
                         </TouchableOpacity>
