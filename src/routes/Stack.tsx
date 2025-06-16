@@ -14,6 +14,7 @@ import { ProfileUser } from "../screens/Profile";
 import { FullPost } from "../screens/FullPost";
 import { Home } from "../screens/Home";
 import { ViewProfile } from "../screens/ViewProfile";
+import { Follower } from "../screens/Followers";
 
 export type NavigationPropStack = NativeStackNavigationProp<StackTypes>
 
@@ -51,6 +52,7 @@ export const Stack: React.FC = () => {
                 )
             }
             <RootStack.Screen name={"Options"} component={UserOptions}/>
+            <RootStack.Screen name={"Follower"} component={Follower}/>
             <RootStack.Screen name={"ViewProfile"} component={ViewProfile} />
             <RootStack.Screen name={"Home"} component={BottomBar} />
             <RootStack.Screen name={"Profile"} component={ProfileUser}/>

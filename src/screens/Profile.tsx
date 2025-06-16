@@ -59,7 +59,6 @@ export const ProfileUser: React.FC = () => {
                 storeUser('UsuarioSalvo', UserObject);
                 changePreviousUser();
             }
-
         });
 
         return unsubscribe;
@@ -107,8 +106,6 @@ export const ProfileUser: React.FC = () => {
     }
     const navigation = useNavigation<NavigationPropStack>();
 
-    const AwardNavigation = useNavigation<NavigationPropStack>();
-
     return (
         <View style={[styles.root, styles.defaultRootBackground]}>
             <PseudoHeader navigate="Home" headerTitle={userStored?.Nickname} />
@@ -134,9 +131,11 @@ export const ProfileUser: React.FC = () => {
                             <View style={{maxWidth:140}}>
                                 <Text style={{ fontWeight: "700", fontSize: 14 }}>{userStored?.Description ? userStored?.Description : "Nada informado."}</Text>
                             </View>
-                            <View style={[styles.flexDirectionRow, styles.gap2]}>
-                                <Text style={{ fontSize: 12, fontWeight: 700 }}>{userStored?.Following.length}<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguindo</Text></Text>
-                                <Text style={{ fontSize: 12, fontWeight: 700 }}>{userStored?.Followers.length}<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguidores</Text></Text>
+                            <View >
+                                <Pressable style={[styles.flexDirectionRow, styles.gap2]} onPress={()=>{navigation.navigate("Follower")}}>
+                                    <Text style={{ fontSize: 12, fontWeight: 700 }}>{userStored?.Following.length}<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguindo</Text></Text>
+                                    <Text style={{ fontSize: 12, fontWeight: 700 }}>{userStored?.Followers.length}<Text style={{ fontWeight: 500, color: "#7B8499" }}> Seguidores</Text></Text>
+                                </Pressable>
                             </View>
                         </View>
                         <View>
