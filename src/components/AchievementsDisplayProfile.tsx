@@ -11,6 +11,7 @@ import { Text } from "@react-navigation/elements";
 
 
 type achievementKey = "post_1" | "likes_1" | "deslikes_1";
+
 const achievementImages: Record<achievementKey, any> = {
     post_1: require("../images/conquista.png"),
     likes_1: require("../images/conquista-star.png"),
@@ -20,6 +21,7 @@ const achievementImages: Record<achievementKey, any> = {
 function getAwardImage(key: achievementKey) {
     return achievementImages[key];
 }
+
 interface AchievementsData {
     post_1?: boolean;
     likes_1?: boolean;
@@ -69,16 +71,20 @@ export const AchievementsDisplayProfile = () => {
 
     return (
         <View style={[styles.flexDirectionRow]}>
-            {activeAchievements.length > 0 ?
-
-                <View style={{ flexDirection: "row" }}>{(activeAchievements.map((key, index) =>
-                    <View style={{ marginLeft: index > 0 ? -20 : 0 }}> (<AchievementCardBody key={key} achievementKey={key} />) </View>))}</View> 
-                    : (
-                    <Image
-                        style={{ width: 36, height: 36 }}
-                        source={require("../images/conquista-off.png")}
-                    />
-                )}
+            {activeAchievements.length > 0 ? (
+                <View style={{ flexDirection: "row" }}>
+                    {activeAchievements.map((key, index) => (
+                        <View key={key} style={{ marginLeft: index > 0 ? -20 : 0 }}>
+                            <AchievementCardBody achievementKey={key} />
+                        </View>
+                    ))}
+                </View>
+            ) : (
+                <Image
+                    style={{ width: 36, height: 36 }}
+                    source={require("../images/conquista-off.png")}
+                />
+            )}
         </View>
     )
 

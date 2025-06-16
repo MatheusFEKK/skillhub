@@ -8,6 +8,7 @@ export type StackTypes = {
     Auth        : undefined;
     Post        : undefined;
     CreatePost  : undefined;
+    Follower    : undefined;
     FullPost    : { postId:string };
     ViewProfile : { userId:string };
 }
