@@ -19,9 +19,10 @@ export interface CommentProps{
     Comment:string | undefined | null;
     MakeModalVisible: () => void;
     CommentsOfComment: number | undefined | null;
+    Identifier:number;
 }
 
-export const CommentTemplate:React.FC<CommentProps> = (props) => {
+export const CommentOfComponentTemplate:React.FC<CommentProps> = (props) => {
     const navigation = useNavigation<NavigationPropStack>();
     const [ replys, setReplys ] = useState<number | undefined>(0);
     const [ ImageUser, setImageUser ] = useState<string>()
@@ -62,7 +63,7 @@ export const CommentTemplate:React.FC<CommentProps> = (props) => {
        },[])
 
     return (
-        <View style={[styles.root, styles.container, {height:'auto'}]}>
+        <View style={[styles.root, styles.container, {height:'auto', marginLeft: props.Identifier > 0 ? 30 * props.Identifier : 0}]}>
             <TouchableOpacity style={{alignSelf:'flex-start', width:'100%', flexDirection:'row', alignItems:'center'}} onPress={() => navigation.navigate('ViewProfile', {
                             userId:String(props.UIDUser)
                         })}>
@@ -75,7 +76,7 @@ export const CommentTemplate:React.FC<CommentProps> = (props) => {
                                 <Text>{props.Comment}</Text>
                             </View>
             </TouchableOpacity>
-                            <TouchableOpacity style={{alignItems:'center', justifyContent:'center',width:58, padding:7.5, outlineColor:'#A1A7B9', outlineWidth:1, borderRadius:30, flexDirection:'row'}} onPress={props.MakeModalVisible}>
+                        <TouchableOpacity style={{alignItems:'center', justifyContent:'center',width:58, padding:7.5, outlineColor:'#A1A7B9', outlineWidth:1, borderRadius:30, flexDirection:'row'}} onPress={props.MakeModalVisible}>
                             <Image source={require('../images/message-circle.png')} />
                             <Text style={{color:"#A1A7B9"}}>{props.CommentsOfComment}</Text>
                         </TouchableOpacity>

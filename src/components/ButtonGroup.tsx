@@ -19,7 +19,6 @@ export const ButtonGroup:React.FC<ButtonGroupProps> = (props) => {
             <TouchableOpacity style={[styles.buttonDefaultMin, styles.alignItemsCenter, styles.justifyContentCenter, (props.Activated == 1) ? {borderBottomColor:'#54A7F4'}: {borderBottomColor:'#C3C8D7'}]} onPress={() => props.functionButton2(1)}>
                 <Text style={[styles.fontSize4, styles.fontWeightMedium]}>{props.textButton2}</Text>
             </TouchableOpacity>
-
         </View>
     );
 }

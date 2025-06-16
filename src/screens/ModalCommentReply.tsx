@@ -1,14 +1,51 @@
-import { Text, Modal, View, TouchableOpacity, Image } from "react-native";
+import { Text, Modal, View, TouchableOpacity, Image, TextInput } from "react-native";
 import { CommentObj } from "../types/CommentObject";
 import { styles } from "../styles/GlobalStyles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import usePostHome from "../hooks/Posts";
+import { SmallerButtonDark } from "../components/ButtonSmallerDark";
+import { doc, getDoc, collection, getDocs, where, query } from "firebase/firestore";
+import { auth, db } from "../firebase/connectionFirebase";
+
 
 export const ModalCommentReply:React.FC<CommentObj> = (props) => {
+    const { CommentInAComment} = usePostHome();
+    const [ newComment, setComment ] = useState<string>('');
+    const [ replys, setReplys ] = useState<number | undefined>();
+
+      const getCommentId = async () =>
+    {
+        const postRef = doc(db, 'posts', props.IdPost);
+
+        const dataSnapshot = await getDoc(postRef);
+
+        if (dataSnapshot.exists())
+        {
+            const commentRef = collection(postRef, 'Comments')
+
+            const commentQuery = query(commentRef, where('IdComment', '==', props.IdComment));
+
+            const commentSnapshot = await getDocs(commentQuery);
+
+            setReplys(commentSnapshot.size)
+        }
+
+    }
+
+    
     useEffect(() => {
         console.log(props.ModalVisible)
+        getCommentId();
+        
+        console.log("O post tem " + replys + " respostas");
+        
     },[props.ModalVisible])
+
+    useEffect(() => {
+        console.log("esse é o id do comentário " + props.IdComment)
+    },[props.IdComment])
     return(
-        <Modal visible={props.ModalVisible} style={[styles.root, styles.container]}>
+        <Modal visible={props.ModalVisible} style={[styles.root, styles.container, styles.defaultRootBackground]}>
             <TouchableOpacity onPress={props.ChangeVisibility}>
                     <Image source={require('../images/back-icon.png')} />
                 </TouchableOpacity>
@@ -22,6 +59,10 @@ export const ModalCommentReply:React.FC<CommentObj> = (props) => {
                     <Text>{props.Comment}</Text>
                 </View>
                 </TouchableOpacity>
+                <View>
+                    <TextInput placeholder="Escreva seu comentário" value={newComment} onChangeText={(value) => setComment(value)} />
+                    <SmallerButtonDark PlaceHolderButtonSmallerDark="Comentar" FunctionButtonSmallerDark={() => CommentInAComment(props.IdPost, auth.currentUser?.uid, props.IdComment, newComment)} />
+                </View>
         </Modal>
     );
 }

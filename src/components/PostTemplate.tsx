@@ -6,7 +6,6 @@ import { auth, db } from "../firebase/connectionFirebase";
 import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationPropStack } from "../routes/Stack";
-import PostHome from "../hooks/Posts";
 
 export const PostTemplate:React.FC<Post> = (props) => {
     const { IsLiked, isDesliked ,setPostId, setUserId, countLike, countDeslike } = VerifyLikeDeslike();
@@ -46,7 +45,7 @@ export const PostTemplate:React.FC<Post> = (props) => {
                     <View>
                         <TouchableOpacity style={{alignItems:'center', justifyContent:'center',width:58, padding:7.5, outlineColor:'#A1A7B9', outlineWidth:1, borderRadius:30, flexDirection:'row'}}>
                             <Image source={require('../images/message-circle.png')} />
-                            <Text style={{color:"#A1A7B9"}}>{props.CommentsPost?.toString()}</Text>
+                            <Text style={{color:"#A1A7B9"}}>{props.CommentsPost?.length && props.CommentsOfComment?.length ? props.CommentsPost?.length + props.CommentsOfComment?.length : 0}</Text>
                         </TouchableOpacity>
 
                     </View>
