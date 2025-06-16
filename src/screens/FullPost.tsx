@@ -11,6 +11,7 @@ import { SmallerButtonDark } from "../components/ButtonSmallerDark";
 import fetchImageProfile from "../storage/fetchImageProfile";
 import { CommentTemplate } from "../components/CommentTemplate";
 import { ModalCommentReply } from "./ModalCommentReply";
+import { CommentOfComponentTemplate } from "../components/CommentOfComponentTemplate";
 
 export const FullPost = ({route} :NavigationScreenProp) => {
     const { getSpecficPost, post, getUserInfo, CommentInAPost } = usePostHome();
@@ -42,7 +43,6 @@ export const FullPost = ({route} :NavigationScreenProp) => {
         console.log("the liked is: " + IsLiked);
         console.log("The UID : " + post?.IdPost)
     },[post]);
-
 
 
     return(
@@ -81,7 +81,7 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                     <View>
                         <TouchableOpacity style={{alignItems:'center', justifyContent:'center',width:58, padding:7.5, outlineColor:'#A1A7B9', outlineWidth:1, borderRadius:30, flexDirection:'row'}}>
                             <Image source={require('../images/message-circle.png')} />
-                            <Text style={{color:"#A1A7B9"}}>{post?.CommentsPost?.length}</Text>
+                            <Text style={{color:"#A1A7B9"}}>{post?.CommentsPost && post.CommentsOfComment ? post?.CommentsPost?.length + post?.CommentsOfComment?.length : 0}</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -119,13 +119,16 @@ export const FullPost = ({route} :NavigationScreenProp) => {
                 <SmallerButtonDark PlaceHolderButtonSmallerDark="Postar" FunctionButtonSmallerDark={() => {CommentInAPost(auth.currentUser?.uid, post?.IdPost, comment); setComment('')}} />
             </View>  
         </KeyboardAvoidingView>  
-            <FlatList data={post?.CommentsPost} renderItem={({item}) => 
+            <FlatList data={post?.CommentsPost} nestedScrollEnabled={true} renderItem={({item}) => 
                 <View> 
-                    <CommentTemplate Username={item.Username} Realname={item.Username} ImageUser={ async () => await fetchImageProfile(item.ImageUser)} UIDUser={item.UIDUser} Comment={item.Comment} MakeModalVisible={() => setModalVisilibity(true)} CommentOfTheCommentsMany={item.CommentsOfThatComment.length} /> 
+                    <CommentTemplate Username={item.Username} Realname={item.Username} ImageUser={item.ImageUser} UIDUser={item.UIDUser} Comment={item.Comment} MakeModalVisible={() => setModalVisilibity(true)} IdPost={item.IdPost} IdComment={item.IdComment} CommentsOfComment={post?.CommentsOfComment?.length}/> 
                         
-                        <ModalCommentReply ModalVisible={modalVisible} Comment={item.Comment} CommentsOfThatComment={item.CommentsOfThatComment} ImageUser={item.ImageUser} Realname={item.Realname} UIDUser={item.UIDUser} Username={item.Username} /> 
-                        
-                        </View>}
+                    <ModalCommentReply ModalVisible={modalVisible} Comment={item.Comment} ChangeVisibility={() => setModalVisilibity(false)} IdPost={item.IdPost} ImageUser={item.ImageUser} Realname={item.Realname} UIDUser={item.UIDUser} Username={item.Username} IdComment={item.IdComment}  /> 
+
+                        <FlatList data={post?.CommentsOfComment} nestedScrollEnabled={true} renderItem={({item, index}) => 
+                        <CommentOfComponentTemplate Comment={item.Comment} IdComment={item.IdComment} IdPost={item.IdPost} MakeModalVisible={() => setModalVisilibity(true)} Username={item.Username} Realname={item.Realname} UIDUser={item.UIDUser} ImageUser={item.ImageUser} Identifier={index + 1} CommentsOfComment={null} />
+                         } />
+                </View>}
                     />
         </ScrollView>       
             </View>

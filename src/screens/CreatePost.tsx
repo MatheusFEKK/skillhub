@@ -19,7 +19,6 @@ interface PostData{
     UIDUser:string | undefined,
     DescriptionPost: string,
     ImagePost: string | null,
-    CommentsPost:[],
     Likes:[],
     Deslikes:[],
 }
@@ -54,7 +53,6 @@ export const CreatePost:React.FC = () => {
             UIDUser:auth.currentUser?.uid,
             DescriptionPost: textPost,
             ImagePost: image != null ? randomNameFile : null,
-            CommentsPost:[],
             Likes:[],
             Deslikes:[],
         }

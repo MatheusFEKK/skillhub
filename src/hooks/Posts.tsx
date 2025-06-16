@@ -1,4 +1,4 @@
-import { doc, getDoc, getDocs, query, collection, DocumentData, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, getDocs, query, collection, DocumentData, updateDoc, arrayUnion, where } from "firebase/firestore";
 import { Post, PostArray } from "../types/Post";
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebase/connectionFirebase";
@@ -10,6 +10,7 @@ import { CommentObj } from "../types/CommentObject";
 const usePostHome = () => {
     const [ posts, refreshPosts ] = useState<Post[]>();
     const [ post, refreshPost ]   = useState<Post>();
+    const [ postsFromUser, refreshPostsFromUser] = useState<Post[]>();
     const [ imageUser, setImageUser ] = useState<string | undefined>(undefined);
 
     const getUserInfo = async (UIDUser:string | undefined) => {
@@ -68,7 +69,8 @@ const usePostHome = () => {
                     Likes: doc.data()?.Likes,
                     Deslikes: doc.data()?.Deslikes,
                     ViewCount: 0,
-                    CommentsPost: null,
+                    CommentsPost: doc.data()?.Comments || [],
+                    CommentsOfComment: doc.data()?.CommentsOtherComment || []
                 };
             });
 
@@ -81,6 +83,56 @@ const usePostHome = () => {
             console.log("Something goes wrong while fetching the posts " + error);
         }
     }
+
+    const getTime = () => {
+        return new Date().getTime().toString();
+    }
+
+    const getAllPostsFromAUser = async (userId:string) => {
+        const queryPost = query(collection(db, 'posts'), where('UIDUser', '==', userId));
+        const querySnapshot = await getDocs(queryPost)
+
+        const Allposts = querySnapshot.docs.map(async (doc) => {
+                const response = await getUserInfo(doc.data()?.UIDUser);
+
+                let ImageURL = null;
+                let ImageUser = null;
+
+                if (doc.data().ImagePost != null)
+                {
+                    ImageURL = await fetchImage(doc.data()?.ImagePost)
+                    console.log("The image url is " +ImageURL)
+                }
+
+                if (response.data()?.profileImage != null)
+                {
+                    ImageUser = await fetchImageProfile(response.data()?.profileImage)
+                }
+                    
+                return{
+                    Realname: response.data()?.name,
+                    IdPost: doc.data()?.IdPost,
+                    UIDUser: doc.data()?.UIDUser,
+                    Username: response.data()?.username,
+                    DescriptionPost: doc.data()?.DescriptionPost,
+                    ImagePost: ImageURL,
+                    ImageUser: ImageUser,
+                    Likes: doc.data()?.Likes,
+                    Deslikes: doc.data()?.Deslikes,
+                    ViewCount: 0,
+                    CommentsPost: doc.data()?.Comments || [],
+                    CommentsOfComment: doc.data()?.CommentsOtherComment || []
+                };
+            });
+
+            const PostsFetch = await Promise.all(Allposts)
+            refreshPostsFromUser([...PostsFetch]); 
+
+
+    }
+
+
+
     const CommentInAPost = async (userId:string | undefined, postId:string | undefined, comment:string) => {
         if (postId && userId)
         {
@@ -90,12 +142,13 @@ const usePostHome = () => {
             const dataSnapshot = await getDoc(userRef);
 
             const data = {
+                IdPost: postId,
+                IdComment: getTime(),
                 UIDUser:userId,
                 Realname: dataSnapshot.data()?.name,
                 Username: dataSnapshot.data()?.username,
                 ImageUser: dataSnapshot.data()?.profileImage,
                 Comment:comment,
-                CommentsOfThatComment: []
             }
 
             try {
@@ -110,10 +163,38 @@ const usePostHome = () => {
         }
     }
 
-    const CommentInAComment = async (commentId:string, comment:string) => {
-        const commentRef = doc(db, 'posts/',  )
+    const CommentInAComment = async (postId:string | undefined, userId:string | undefined, commentId:string, Newcomment:string) => 
+    {
+        if (postId && userId)
+        {
+            const commentRef = doc(db, 'posts',  postId);
+            const userRef = doc(db, 'users', userId);
+
+            const dataSnapshot = await getDoc(userRef);
+
+            const data = {
+                IdPost: postId,
+                IdCommentFather:commentId,
+                IdComment: getTime(),
+                UIDUser:userId,
+                Realname: dataSnapshot.data()?.name,
+                Username: dataSnapshot.data()?.username,
+                ImageUser: dataSnapshot.data()?.profileImage,
+                Comment:Newcomment,
+            }
+
+            try {
+                await updateDoc(commentRef, {
+                    CommentsOtherComment: arrayUnion(data),
+                });
+            }catch(error)
+            {
+                console.log("Somethings goes wrong while trying to comment a comment! " + error);
+            }
+
+        }
     }
-    
+
 
     const getSpecficPost = async (postId:string) => {
         if (postId)
@@ -138,6 +219,7 @@ const usePostHome = () => {
                 Deslikes: query.data()?.Deslikes,
                 ViewCount: 0,
                 CommentsPost: query.data()?.Comments || [],
+                CommentsOfComment: query.data()?.CommentsOtherComment || [],
             })
             }
         }
@@ -153,7 +235,7 @@ const usePostHome = () => {
 
    
     
-    return { getAllPosts, getSpecficPost, posts, post, getUserInfo, getImageUser, imageUser, CommentInAPost }
+    return { getAllPosts, getSpecficPost, posts, post, getUserInfo, getImageUser, imageUser, CommentInAPost, CommentInAComment, getAllPostsFromAUser, postsFromUser }
 }
 export default usePostHome;
 

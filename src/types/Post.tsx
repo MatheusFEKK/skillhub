@@ -19,6 +19,7 @@ export interface Post{
     onSubmit?: () => void;
     VerifyLikeDeslike?: boolean;
     OpenPost?: (postId:string) => void;
-}
+    CommentsOfComment?:CommentObj[] | null
+} 
 
 export type PostArray = Post[];

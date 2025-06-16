@@ -14,6 +14,7 @@ import { v4 as uuid } from 'uuid'
 import ValidatePassword from "../hooks/PasswordValidation";
 import { UserConditions } from "../components/CheckBoxUser";
 import usePostHome from "../hooks/Posts";
+import { ButtonDark } from "../components/ButtonDark";
 interface childComponentFunction {
     updateHeaderType: (key: number) => void,
     title: string,
@@ -260,6 +261,15 @@ export const UserOptions = () => {
         }
     }
 
+    const signOutUser = async () => {
+            try {
+                await signOut(auth)
+                console.log("Disconnect from the account!");
+            } catch (error) {
+                console.log("It was not possible to log out from the app! " + error);
+            }
+        }
+
 
     return (
         <View style={[styles.root, styles.defaultRootBackground]}>
@@ -277,8 +287,8 @@ export const UserOptions = () => {
                     <Image source={require("../images/personOption.png")} style={{ width: 23, height: 23 }} />
                     <Text style={[styles.fontSize4, { fontWeight: "700" }]}>Informações adicionais</Text>
                 </Pressable>
+            <ButtonDark PlaceHolderButtonDark="Desconectar" FunctionButtonDark={() => signOutUser()} />
             </View> : bodyComponentType()}
-
         </View>
     )
 }

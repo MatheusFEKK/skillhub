@@ -1,10 +1,10 @@
-import { Text, View, ScrollView, Pressable, Image, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, Pressable, Image, TouchableOpacity, FlatList } from "react-native";
 import { styles } from "../styles/GlobalStyles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { signOut, User } from "firebase/auth";
 import { auth } from "../firebase/connectionFirebase";
 import { ButtonDark } from "../components/ButtonDark";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { db } from "../firebase/connectionFirebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { PseudoHeader } from "../components/PseudoHeader";
@@ -13,6 +13,8 @@ import usePostHome from "../hooks/Posts";
 import { NavigationPropStack } from "../routes/Stack";
 import AchievementCard from "../components/AchievementsCards";
 import { AchievementsDisplayProfile } from "../components/AchievementsDisplayProfile";
+import { PostTemplate } from "../components/PostTemplate";
+import VerifyLikeDeslike from "../hooks/LikeDeslikeVerification";
 
 interface UserInterface {
     Username: string;
@@ -27,18 +29,14 @@ export const ProfileUser: React.FC = () => {
 
     const [userStored, setUserStored] = useState<UserInterface | null>();
     const [postViewSwitcher, setPostViewSwitcher] = useState("Visão geral");
-    const { imageUser } = usePostHome();
+    const { WhichReacting } = VerifyLikeDeslike();
+    const { imageUser, postsFromUser, getAllPostsFromAUser } = usePostHome();
 
     function switcherActive(key: string) {
         if (key === "Visão geral") {
             setPostViewSwitcher("Visão geral")
         }
-        if (key === "Posts") {
-            setPostViewSwitcher("Posts")
-        }
-        if (key === "Respostas") {
-            setPostViewSwitcher("Respostas")
-        }
+        
     }
     
     async function getUserInfo() {
@@ -58,6 +56,7 @@ export const ProfileUser: React.FC = () => {
                 }
                 storeUser('UsuarioSalvo', UserObject);
                 changePreviousUser();
+                
             }
 
         });
@@ -90,21 +89,24 @@ export const ProfileUser: React.FC = () => {
         }
     }
 
+
+    useFocusEffect(
+            useCallback(() => {
+                if (auth.currentUser?.uid)
+                {
+                    getAllPostsFromAUser(auth.currentUser?.uid);
+                    console.log("Executada a função de pegar posts no perfil " + postsFromUser)
+                }else{
+                    console.log("Nao tem userid")
+                }
+            }, [])
+        );
+
     useEffect(() => {
         getUserInfo();
-    }, [])
+        console.log("A tela está em " + postViewSwitcher)
+    }, []);
 
-
-
-
-    const signOutUser = async () => {
-        try {
-            await signOut(auth)
-            console.log("Disconnect from the account!");
-        } catch (error) {
-            console.log("It was not possible to log out from the app! " + error);
-        }
-    }
     const navigation = useNavigation<NavigationPropStack>();
 
     const AwardNavigation = useNavigation<NavigationPropStack>();
@@ -148,19 +150,15 @@ export const ProfileUser: React.FC = () => {
                     </View>
                 </View>
                 <View style={[styles.flexDirectionRow, styles.mV5, styles.justifyContentCenter]}>
-                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF", borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }]} >
+                    <Pressable onPress={() => switcherActive("Visão geral")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Visão geral" ? "#54A7F4" : "#E5E7EF", borderRadius:10}]} >
                         <Text>Visão geral</Text>
                     </Pressable>
-                    <Pressable onPress={() => switcherActive("Posts")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Posts" ? "#54A7F4" : "#E5E7EF", }]} >
-                        <Text>Posts</Text>
-                    </Pressable>
-                    <Pressable onPress={() => switcherActive("Respostas")} style={[styles.pV2, styles.alignItemsCenter, styles.justifyContentCenter, { flex: 1, backgroundColor: postViewSwitcher === "Respostas" ? "#54A7F4" : "#E5E7EF", borderTopRightRadius: 10, borderBottomRightRadius: 10 }]} >
-                        <Text>Respostas</Text>
-                    </Pressable>
                 </View>
-                <View style={[styles.container, styles.mV2]}>
-                    <ButtonDark PlaceHolderButtonDark="Desconectar" FunctionButtonDark={() => signOutUser()} />
-                </View>
+                {postViewSwitcher === "Visão geral" ? 
+                    <FlatList data={postsFromUser} renderItem={({item}) => 
+                        <PostTemplate UIDUser={item?.UIDUser} profileImage={item?.profileImage} IdPost={item?.IdPost} ImagePost={item?.ImagePost} CommentsPost={item?.CommentsPost} CommentsOfComment={item?.CommentsOfComment} Username={item?.Username} ImageUser={item?.ImageUser} Realname={item?.Realname} DescriptionPost={item?.DescriptionPost} LikeFunction={() => WhichReacting('like', item?.IdPost, auth.currentUser?.uid)} DeslikeFunction={() => WhichReacting('deslike', item?.IdPost, auth.currentUser?.uid)} />
+                    } />
+                 : <View style={[styles.root, styles.container, styles.defaultRootBackground, styles.alignItemsCenter]}><Text>Nenhum Post</Text></View>}
             </ScrollView>
         </View>
     )
